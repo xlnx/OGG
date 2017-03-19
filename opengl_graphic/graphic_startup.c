@@ -14,8 +14,8 @@ static void paint_window(void)
 }
 
 static ogg_event_handler ogg_window_vtable[OGG_EVENT_COUNT] = {
-    destroy_window,  // OGG_DESTROY_EVENT
-    paint_window     // OGG_PAINT_EVENT
+    destroy_window,                  /* OGG_DESTROY_EVENT */
+    paint_window,                    /* OGG_PAINT_EVENT */
 };
 
 static ogg_window* create_window(void)
@@ -45,6 +45,24 @@ ogg_com_startup make_global_startup(void)
     return make_startup(main_window);
 }
 
+static glut_register glut_event_register[OGG_EVENT_COUNT] = {
+    0,
+    (glut_register)glutDisplayFunc,
+    (glut_register)glutKeyboardFunc,
+    (glut_register)glutSpecialFunc,
+    (glut_register)glutMouseFunc,
+    (glut_register)glutMotionFunc,
+    (glut_register)glutPassiveMotionFunc,
+    (glut_register)glutEntryFunc,
+};
+
+static glut_callback glut_events[OGG_EVENT_COUNT] = { 0 };
+
+void ogg_register_event(event event_name, glut_callback callback)
+{
+    glut_events[event_name] = callback;
+}
+
 int main(int argc, char *argv[])
 {
     main_window = create_window();
@@ -65,6 +83,12 @@ int main(int argc, char *argv[])
     glutCreateWindow(st.window.title);
 
     ogg_delegate();
+    event i = 1;
+    for (; i != OGG_EVENT_COUNT; ++i) {
+        if (glut_events[i] != 0) {
+            glut_event_register[i](glut_events[i]);
+        }
+    }
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
     glutMainLoop();
 

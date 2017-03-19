@@ -90,14 +90,14 @@ void set_component_anchor(ogg_com_ptr com_ptr, const ogg_anchor* anchor)
     }
 }
 
-static void ogg_single_event(ogg_com_ptr com_ptr, unsigned event_name, ogg_handle_flag *handled, va_list args)
+static void ogg_single_event(ogg_com_ptr com_ptr, event event_name, ogg_handle_flag *handled, va_list args)
 {
     if (((ogg_component*)com_ptr)->vptr[event_name] != 0) {
         ((ogg_component*)com_ptr)->vptr[event_name](com_ptr, args, handled);
     }
 }
 
-static void ogg_parent_handle_event(ogg_com_ptr com_ptr, unsigned event_name, ogg_handle_flag *handled, va_list args)
+static void ogg_parent_handle_event(ogg_com_ptr com_ptr, event event_name, ogg_handle_flag *handled, va_list args)
 {
     ogg_single_event(com_ptr, event_name, handled, args);
     ogg_subcomponent* iter = ((ogg_component*)com_ptr)->sub->next;
@@ -107,7 +107,7 @@ static void ogg_parent_handle_event(ogg_com_ptr com_ptr, unsigned event_name, og
     }
 }
 
-static void ogg_child_handle_event(ogg_com_ptr com_ptr, unsigned event_name, ogg_handle_flag *handled, va_list args)
+static void ogg_child_handle_event(ogg_com_ptr com_ptr, event event_name, ogg_handle_flag *handled, va_list args)
 {
     ogg_subcomponent* iter = ((ogg_component*)com_ptr)->sub->next;
     while (!*handled && iter != 0) {
@@ -119,7 +119,7 @@ static void ogg_child_handle_event(ogg_com_ptr com_ptr, unsigned event_name, ogg
     }
 }
 
-void ogg_send_event(ogg_com_ptr com_ptr, unsigned event_name, ...)
+void ogg_send_event(ogg_com_ptr com_ptr, event event_name, ...)
 {
     va_list args; va_start(args, event_name);
     ogg_handle_flag handled = OGG_UNHANDLED;

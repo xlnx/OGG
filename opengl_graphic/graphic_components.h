@@ -88,10 +88,10 @@
     /* set the anchor of a component */
     void set_component_anchor(ogg_com_ptr com_ptr, const ogg_anchor* anchor);
 
-    /* send event to a component with given args ... */
-    void ogg_send_event(ogg_com_ptr com_ptr, unsigned event_name, ...);
-
     /* event handler */
+    /* send event to a component with given args ... */
+    void ogg_send_event(ogg_com_ptr com_ptr, event event_name, ...);
+
     /* destroy any component */
     void ogg_destroy(ogg_com_ptr com_ptr);
 

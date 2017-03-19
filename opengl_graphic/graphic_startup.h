@@ -37,6 +37,7 @@
         ogg_component com;
     } ogg_window;
 
+    void ogg_register_event(event event_name, glut_callback callback);
     ogg_com_startup make_global_startup(void);
 
     void ogg_startup(ogg_startup_info*);
