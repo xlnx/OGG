@@ -40,12 +40,11 @@ extern "C"{
 
     void paint_grid(ogg_grid* grid);
 
-    // ============= 
-    void set_grid_elem(ogg_grid* grid, ogg_com_ptr com, ogg_coord pos);
-
-    void destroy_grid_elem(ogg_grid* grid, ogg_coord pos);
+    ogg_com_ptr get_grid_elem(ogg_grid* grid, ogg_coord pos);
 
     ogg_bool paint_grid_elem(ogg_grid* grid, ogg_coord pos);
+
+    ogg_com_startup make_grid_startup(ogg_grid* grid, ogg_coord pos);
 
 # ifdef __cplusplus
 }

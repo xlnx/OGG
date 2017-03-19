@@ -12,7 +12,9 @@ typedef struct {\
 } point##id;\
 \
 typedef point##id coord##id;\
-typedef point##id vector##id;\
+typedef struct {\
+    T x, y;\
+} vector##id;\
 \
 typedef struct {\
     point##id u, v;\
@@ -30,24 +32,28 @@ typedef struct {\
 } rect##id;
 
 #define inst_geometry_system(T, id) /* inst a geometry system */\
-point##id* add_point##id(point##id* lhs, const point##id* rhs) {\
-    lhs->x += rhs->x; lhs->y += rhs->y;\
+vector##id make_vector##id(point##id s, point##id t) {\
+    vector##id vec; vec.x = t.x - s.x, vec.y = t.y - s.y;\
+    return vec;\
+}\
+vector##id add_vector##id(vector##id lhs, vector##id rhs) {\
+    lhs.x += rhs.x; lhs.y += rhs.y;\
     return lhs;\
 }\
-point##id* sub_point##id(point##id* lhs, const point##id* rhs) {\
-    lhs->x -= rhs->x; lhs->y -= rhs->y;\
+vector##id sub_vector##id(vector##id lhs, vector##id rhs) {\
+    lhs.x -= rhs.x; lhs.y -= rhs.y;\
     return lhs;\
 }\
-double norm##id(const vector##id* v){\
-    return sqrt(v->x * v->x + v->y * v->y);\
+double norm##id(vector##id v){\
+    return sqrt(v.x * v.x + v.y * v.y);\
 }\
-T inner_product##id(const vector##id* lhs, const vector##id* rhs) {\
-    return lhs->x * rhs->x + lhs->y * rhs->y;\
+T inner_product##id(vector##id lhs, vector##id rhs) {\
+    return lhs.x * rhs.x + lhs.y * rhs.y;\
 }\
-T outer_product##id(const vector##id* lhs, const vector##id* rhs) {\
-    return lhs->x * rhs->y - rhs->x * lhs->y;\
+T outer_product##id(vector##id lhs, vector##id rhs) {\
+    return lhs.x * rhs.y - rhs.x * lhs.y;\
 }\
-double angle##id(const vector##id* lhs, const vector##id* rhs) {\
+double angle##id(vector##id lhs, vector##id rhs) {\
     return acos((double)inner_product##id(lhs, rhs)/(norm##id(lhs)*norm##id(rhs)));\
 }
 

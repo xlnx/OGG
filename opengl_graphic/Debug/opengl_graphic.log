@@ -1,4 +1,4 @@
-﻿生成启动时间为 2017/3/19 0:19:53。
+﻿生成启动时间为 2017/3/19 13:21:08。
      1>项目“C:\Users\xlnx\Desktop\opengl_test\opengl_graphic\opengl_graphic\opengl_graphic.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt graphic_component_grid.c
@@ -13,4 +13,4 @@
 
 生成成功。
 
-已用时间 00:00:00.50
+已用时间 00:00:00.53

@@ -12,6 +12,9 @@ extern "C"{
     ogg_shape* create_shape(const ogg_shape_info* st)
     {
         ogg_shape *shape = (ogg_shape*)malloc(sizeof(ogg_shape));
+# ifdef DEBUG
+        alloc_memory++;
+# endif
         ogg_component_info info = {
             .anchor = &st->startup.anchor,
             .parent = st->startup.parent,
@@ -25,8 +28,13 @@ extern "C"{
     void destroy_shape(ogg_shape* shape)
     {
         free(shape->vertex->point);
+# ifdef DEBUG
+        alloc_memory--;
+# endif
         free(shape->vertex);
-        free(shape);
+# ifdef DEBUG
+        alloc_memory--;
+# endif
     }
 
     void paint_shape(ogg_shape* shape)
@@ -46,8 +54,14 @@ extern "C"{
         va_list argp;
         va_start(argp, n);
         ogg_shape_vertex* vertex = (ogg_shape_vertex*)malloc(sizeof(ogg_shape_vertex));
+# ifdef DEBUG
+        alloc_memory++;
+# endif
         vertex->size = n;
         vertex->point = (coordf*)calloc(n, sizeof(coordf));
+# ifdef DEBUG
+        alloc_memory++;
+# endif
         int i = 0;
         for (; i != n; ++i) {
             memcpy(&vertex->point[i], &va_arg(argp, coordf), sizeof(coordf));

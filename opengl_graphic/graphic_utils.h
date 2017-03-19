@@ -1,7 +1,8 @@
 #ifndef OGG_GRAPHIC_UTILS__HEADER_FILE______
 #define OGG_GRAPHIC_UTILS__HEADER_FILE______
-#include "gl/glut.h"
+#include <GL/glut.h>
 #include "geometry.h"
+#define DEBUG
 
 # ifdef WIN32
 #  ifndef OGG_SHOW_CONSOLE
@@ -11,6 +12,10 @@
 
 # ifdef __cplusplus
 extern "C" {
+# endif
+
+# ifdef DEBUG
+    int alloc_memory;
 # endif
 
 # ifndef OGG_CUSTOM_STARTUP

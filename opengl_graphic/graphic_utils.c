@@ -1,4 +1,5 @@
 #include "graphic_utils.h"
+#include <GL/freeglut.h>
 
 #ifdef __cplusplus
 extern "C"{
@@ -37,6 +38,7 @@ int main(int argc, char *argv[])
     glutInitWindowSize(st.window.size.width, st.window.size.height);
     glutCreateWindow(st.window.title);
     ogg_delegate();
+    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
     glutMainLoop();
     return ogg_exit_status();
 }

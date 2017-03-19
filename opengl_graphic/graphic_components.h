@@ -34,20 +34,24 @@ extern "C"{
     } ogg_anchor;
 
     typedef void *ogg_com_ptr;
-    typedef void (*ogg_dtor)(ogg_com_ptr);
-    typedef void(*ogg_paint)(ogg_com_ptr);
 
     struct ogg_component_ty;
-
     typedef struct {
         ogg_anchor anchor;
         struct ogg_component_ty* parent;
     } ogg_com_startup;
 
+    struct ogg_subcomponent_ty;
+    typedef struct ogg_subcomponent_ty {
+        struct ogg_component_ty* object;
+        struct ogg_subcomponent_ty* next;
+    } ogg_subcomponent;
+
     typedef void (*ogg_event_handler)();
     typedef struct ogg_component_ty {
         ogg_event_handler* vptr;
         struct ogg_component_ty* parent;
+        ogg_subcomponent* sub, * subrear;
         ogg_anchor_type anchor_type;
         union {
             ogg_pec_anchor pec;
@@ -66,6 +70,8 @@ extern "C"{
     
     void create_component(ogg_com_ptr com_ptr, const ogg_component_info* cominfo);
 
+    //void destroy_component(ogg_com_ptr com_ptr);
+
     coordf get_real_coord(ogg_com_ptr com_ptr, coordf pix);
 
     void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor);
@@ -74,7 +80,9 @@ extern "C"{
 
     void ogg_send_event(ogg_com_ptr com_ptr, unsigned event_name);
 
-    void destroy_component(ogg_com_ptr* com_ptr);
+    void ogg_destroy(ogg_com_ptr com_ptr);
+
+    void ogg_paint(ogg_com_ptr com_ptr);
 
     ogg_coord coord(int x, int y);
 
@@ -100,7 +108,7 @@ extern "C"{
         .parent = 0
     };
 
-    ogg_com_startup ogg_make_startup(ogg_com_ptr parent);
+    ogg_com_startup make_startup(ogg_com_ptr parent);
 
 # ifdef __cplusplus
 }
