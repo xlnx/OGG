@@ -1,9 +1,5 @@
 #ifndef OGG_GEOMETRY__HEADER_FILE___
 #define OGG_GEOMETRY__HEADER_FILE___
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 #include <math.h>
 
 #define register_geometry_system(T, id) /* register a geometry system by given type */\
@@ -56,9 +52,5 @@ T outer_product##id(vector##id lhs, vector##id rhs) {\
 double angle##id(vector##id lhs, vector##id rhs) {\
     return acos((double)inner_product##id(lhs, rhs)/(norm##id(lhs)*norm##id(rhs)));\
 }
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif //OGG_GEOMETRY__HEADER_FILE___

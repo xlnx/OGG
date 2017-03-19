@@ -1,10 +1,10 @@
 #include "graphic_component_shape.h"
 
-# ifdef __cplusplus
-extern "C"{
-# endif
+    static void destroy_shape(ogg_shape* shape);
 
-    static ogg_event_handler ogg_shape_vtable[] = {
+    static void paint_shape(ogg_shape* shape);
+
+    static ogg_event_handler ogg_shape_vtable[OGG_EVENT_COUNT] = {
         destroy_shape, // OGG_DESTROY_EVENT
         paint_shape    // OGG_PAINT_EVENT
     };
@@ -25,7 +25,7 @@ extern "C"{
         return shape;
     }
 
-    void destroy_shape(ogg_shape* shape)
+    static void destroy_shape(ogg_shape* shape)
     {
         free(shape->vertex->point);
 # ifdef DEBUG
@@ -37,7 +37,7 @@ extern "C"{
 # endif
     }
 
-    void paint_shape(ogg_shape* shape)
+    static void paint_shape(ogg_shape* shape)
     {
         glBegin(GL_POLYGON);
         unsigned i = 0;
@@ -77,7 +77,3 @@ extern "C"{
         coordf pos = { x, y };
         return pos;
     }
-
-# ifdef __cplusplus
-}
-# endif

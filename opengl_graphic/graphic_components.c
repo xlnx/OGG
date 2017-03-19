@@ -1,9 +1,5 @@
 #include "graphic_components.h"
 
-# ifdef __cplusplus
-extern "C"{
-# endif
-
 void create_component(ogg_com_ptr com_ptr, const ogg_component_info* cominfo)
 {
     set_component_anchor(com_ptr, cominfo->anchor);
@@ -15,7 +11,7 @@ void create_component(ogg_com_ptr com_ptr, const ogg_component_info* cominfo)
     alloc_memory++;
 # endif
     if (com->parent != 0) {
-        com->parent->subrear->next = (ogg_component*)calloc(1, sizeof(ogg_subcomponent));
+        com->parent->subrear->next = (ogg_subcomponent*)calloc(1, sizeof(ogg_subcomponent));
 # ifdef DEBUG
         alloc_memory++;
 # endif
@@ -94,15 +90,50 @@ void set_component_anchor(ogg_com_ptr com_ptr, const ogg_anchor* anchor)
     }
 }
 
-void ogg_send_event(ogg_com_ptr com_ptr, unsigned event_name)
+static void ogg_single_event(ogg_com_ptr com_ptr, unsigned event_name, ogg_handle_flag *handled, va_list args)
 {
-    ((ogg_component*)com_ptr)->vptr[event_name](com_ptr);
+    if (((ogg_component*)com_ptr)->vptr[event_name] != 0) {
+        ((ogg_component*)com_ptr)->vptr[event_name](com_ptr, args, handled);
+    }
+}
+
+static void ogg_parent_handle_event(ogg_com_ptr com_ptr, unsigned event_name, ogg_handle_flag *handled, va_list args)
+{
+    ogg_single_event(com_ptr, event_name, handled, args);
+    ogg_subcomponent* iter = ((ogg_component*)com_ptr)->sub->next;
+    while (!*handled && iter != 0) {
+        ogg_parent_handle_event(iter->object, event_name, handled, args);
+        iter = iter->next;
+    }
+}
+
+static void ogg_child_handle_event(ogg_com_ptr com_ptr, unsigned event_name, ogg_handle_flag *handled, va_list args)
+{
+    ogg_subcomponent* iter = ((ogg_component*)com_ptr)->sub->next;
+    while (!*handled && iter != 0) {
+        ogg_child_handle_event(iter->object, event_name, handled, args);
+        iter = iter->next;
+    }
+    if (!*handled) {
+        ogg_single_event(com_ptr, event_name, handled, args);
+    }
+}
+
+void ogg_send_event(ogg_com_ptr com_ptr, unsigned event_name, ...)
+{
+    va_list args; va_start(args, event_name);
+    ogg_handle_flag handled = OGG_UNHANDLED;
+    switch (ogg_event_type[event_name]) {
+    case OGG_CHILD_HANDLE_EVENT: ogg_child_handle_event(com_ptr, event_name, &handled, args); break;
+    case OGG_PARENT_HANDLE_EVENT: ogg_parent_handle_event(com_ptr, event_name, &handled, args); break;
+    }
+    va_end(args);
 }
 
 void ogg_destroy(ogg_com_ptr com_ptr)
 {
     destroy_sub_components(com_ptr);
-    ogg_send_event(com_ptr, OGG_DESTROY_EVENT);
+    ogg_single_event(com_ptr, OGG_DESTROY_EVENT, 0, 0);
     ogg_component* parent = ((ogg_component*)com_ptr)->parent;
     if (parent != 0) {
         ogg_subcomponent* p = parent->sub;
@@ -127,21 +158,6 @@ void ogg_destroy(ogg_com_ptr com_ptr)
 # endif
 }
 
-static void paint_sub_components(ogg_com_ptr com_ptr)
-{
-    ogg_subcomponent* iter = ((ogg_component*)com_ptr)->sub->next;
-    while (iter != 0) {
-        ogg_paint(iter->object);
-        iter = iter->next;
-    }
-}
-
-void ogg_paint(ogg_com_ptr com_ptr)
-{
-    ogg_send_event(com_ptr, OGG_PAINT_EVENT);
-    paint_sub_components(com_ptr);
-}
-
 ogg_coord coord(int x, int y)
 {
     ogg_coord pos = { x, y };
@@ -164,7 +180,3 @@ ogg_com_startup make_startup(ogg_com_ptr parent)
     };
     return st;
 }
-
-# ifdef __cplusplus
-}
-# endif

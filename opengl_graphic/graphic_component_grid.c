@@ -1,16 +1,12 @@
 #include "graphic_component_grid.h"
 
-# ifdef __cplusplus
-extern "C"{
-# endif
-
     static ogg_grid_element* create_grid_element(ogg_grid* parent, ogg_coord pos);
 
     static void destroy_grid_element(ogg_grid_element* grid_elem);
 
     static void paint_grid_element(ogg_grid_element* grid_elem);
 
-    static ogg_event_handler ogg_grid_elem_vtable[] = {
+    static ogg_event_handler ogg_grid_elem_vtable[OGG_EVENT_COUNT] = {
         destroy_grid_element, // OGG_DESTROY_EVENT
         paint_grid_element    // OGG_PAINT_EVENT
     };
@@ -48,7 +44,14 @@ extern "C"{
     {
     }
 
-    static ogg_event_handler ogg_grid_vtable[] = {
+
+    /* GRID */
+
+    static void destroy_grid(ogg_grid* grid);
+
+    static void paint_grid(ogg_grid* grid);
+
+    static ogg_event_handler ogg_grid_vtable[OGG_EVENT_COUNT] = {
         destroy_grid, // OGG_DESTROY_EVENT
         paint_grid    // OGG_PAINT_EVENT
     };
@@ -84,7 +87,7 @@ extern "C"{
         return grid;
     }
 
-    void destroy_grid(ogg_grid* grid)
+    static void destroy_grid(ogg_grid* grid)
     {
         unsigned i = 0;
         for (; i != grid->size.y; ++i) {
@@ -122,7 +125,3 @@ extern "C"{
     {
         return make_startup(grid->sub[pos.y][pos.x]);
     }
-
-# ifdef __cplusplus
-}
-#endif

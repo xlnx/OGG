@@ -1,15 +1,20 @@
-﻿生成启动时间为 2017/3/18 17:35:05。
+﻿生成启动时间为 2017/3/19 17:30:44。
      1>项目“C:\Users\xlnx\Desktop\opengl_test\opengl_graphic\opengl_graphic\opengl_graphic.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt graphic_component_grid.c
+         D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt graphic_components.c graphic_component_grid.c graphic_component_shape.c graphic_utils.c
+         graphic_components.c
+     1>graphic_components.c(18): warning C4133: “=”: 从“ogg_component *”到“ogg_subcomponent_ty *”的类型不兼容
          graphic_component_grid.c
+         graphic_component_shape.c
+         graphic_utils.c
        Lib:
          D:\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\Users\xlnx\Desktop\opengl_test\opengl_graphic\Release\opengl_graphic.lib" /NOLOGO /LTCG Release\graphic_components.obj
          Release\graphic_component_grid.obj
+         Release\graphic_component_shape.obj
          Release\graphic_utils.obj
          opengl_graphic.vcxproj -> C:\Users\xlnx\Desktop\opengl_test\opengl_graphic\Release\opengl_graphic.lib
      1>已完成生成项目“C:\Users\xlnx\Desktop\opengl_test\opengl_graphic\opengl_graphic\opengl_graphic.vcxproj”(Build 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:00.55
+已用时间 00:00:01.65

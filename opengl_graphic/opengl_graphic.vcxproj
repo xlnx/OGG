@@ -76,12 +76,16 @@
     <ClInclude Include="graphic_components.h" />
     <ClInclude Include="graphic_component_grid.h" />
     <ClInclude Include="graphic_component_shape.h" />
+    <ClInclude Include="graphic_events.h" />
+    <ClInclude Include="graphic_startup.h" />
     <ClInclude Include="graphic_utils.h" />
+    <ClInclude Include="ogg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graphic_components.c" />
     <ClCompile Include="graphic_component_grid.c" />
     <ClCompile Include="graphic_component_shape.c" />
+    <ClCompile Include="graphic_startup.c" />
     <ClCompile Include="graphic_utils.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
