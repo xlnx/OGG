@@ -2,21 +2,18 @@
 #define OGG_GRAPHIC_COMPONENT__GRID__HEADER_FILE_____
 #include "graphic_components.h"
 
-    typedef struct  {
-        ogg_com_startup startup;
-        ogg_coord size;
-    } ogg_grid_info;
-
-    typedef struct {
-        ogg_component com;
+    def_component (
         ogg_com_ptr object;
-    } ogg_grid_element;
+    ) ogg_grid_element;
 
-    typedef struct {
-        ogg_component com;
+    def_startup (
+        ogg_coord size;
+    ) ogg_grid_info;
+
+    def_component (
         ogg_coord size;
         ogg_grid_element ***sub;
-    } ogg_grid;
+    ) ogg_grid;
 
     /* construct a grid */
     ogg_grid* create_grid(const ogg_grid_info* st);

@@ -2,8 +2,14 @@
 #define OGG_GRPHIC_EVENTS__HEADER_FILE____
 
 typedef unsigned event;
-typedef void (*glut_callback)();
-typedef void(_stdcall *glut_register)(glut_callback);
+
+/* call event by 
+    object->vptr[event_name](
+        ogg_com_ptr this, 
+        va_list args, 
+        ogg_handle_flag *handled
+    );
+*/
 
 /* event count */
 # define OGG_EVENT_COUNT         (8)

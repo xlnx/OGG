@@ -8,6 +8,7 @@ extern "C" {
 # include "graphic_startup.h"
 # include "graphic_component_grid.h"
 # include "graphic_component_shape.h"
+# include "graphic_component_button.h"
 
 # ifdef __cplusplus
 }

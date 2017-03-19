@@ -39,6 +39,12 @@
     <ClInclude Include="graphic_startup.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="graphic_default_events.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="graphic_component_button.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graphic_utils.c">
@@ -54,6 +60,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="graphic_startup.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="graphic_component_button.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

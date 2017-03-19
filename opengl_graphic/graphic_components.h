@@ -101,4 +101,22 @@
     /* make a int-int coord */
     ogg_coord coord(int x, int y);
 
+#  define def_startup(startup_interface, ...) \
+    typedef struct {\
+        ogg_com_startup startup;\
+        startup_interface##__VA_ARGS__\
+    }
+
+#  define def_component(component_interface/*, ...*/) \
+    typedef struct {\
+        ogg_component def_component__super_class____;\
+        component_interface/*##__VA_ARGS__*/\
+    }
+
+#  define def_component_inh(super_class, component_interface/*, ...*/) \
+    typedef struct {\
+        super_class super;\
+        component_interface/*##__VA_ARGS__*/\
+    }
+
 #endif //OGG_GRAPHIC_COMPONENTS__HEADER_FILE_____

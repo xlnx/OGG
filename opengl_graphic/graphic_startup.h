@@ -37,12 +37,30 @@
         ogg_component com;
     } ogg_window;
 
+    typedef void(*glut_callback)();
+    typedef void(_stdcall *glut_register)(glut_callback);
+
     void ogg_register_event(event event_name, glut_callback callback);
     ogg_com_startup make_global_startup(void);
 
     void ogg_startup(ogg_startup_info*);
-    void ogg_delegate(void);
-    int ogg_exit_status(void);
+# ifdef OGG_GRAPHIC_STARTUP__INST____
+    extern void ogg_delegate(void);
+    extern int ogg_exit_status(void);
+# else
+    void ogg_delegate(void)
+#  ifdef OGG_DELEGATE
+    ;
+#  else
+    {}
+#  endif
+    int ogg_exit_status(void)
+#  ifdef OGG_EXIT_STATUS
+    ;
+#  else
+    { return 0; }
+#  endif
+# endif
 
     int main(int argc, char *argv[]);
 # endif

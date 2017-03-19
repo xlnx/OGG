@@ -1,3 +1,4 @@
+#define OGG_GRAPHIC_STARTUP__INST____
 #include "graphic_startup.h"
 
 # ifndef OGG_CUSTOM_STARTUP
@@ -45,7 +46,7 @@ ogg_com_startup make_global_startup(void)
     return make_startup(main_window);
 }
 
-static glut_register glut_event_register[OGG_EVENT_COUNT] = {
+static const glut_register glut_event_register[OGG_EVENT_COUNT] = {
     0,
     (glut_register)glutDisplayFunc,
     (glut_register)glutKeyboardFunc,
@@ -56,7 +57,21 @@ static glut_register glut_event_register[OGG_EVENT_COUNT] = {
     (glut_register)glutEntryFunc,
 };
 
-static glut_callback glut_events[OGG_EVENT_COUNT] = { 0 };
+# include "graphic_default_events.h"
+static glut_callback glut_events[OGG_EVENT_COUNT] = {
+    0,
+    ogg_handler(OGG_PAINT_EVENT),
+    ogg_handler(OGG_KEYBOARD_EVENT),
+    ogg_handler(OGG_SPECIAL_KEY_EVENT),
+    ogg_handler(OGG_MOUSE_EVENT),
+    ogg_handler(OGG_MOUSE_DRAG_EVENT),
+    ogg_handler(OGG_MOUSE_MOVE_EVENT),
+    ogg_handler(OGG_MOUSE_ENTRY_EVENT),
+};
+
+# ifdef ogg_handler
+#  undef ogg_handler
+# endif
 
 void ogg_register_event(event event_name, glut_callback callback)
 {
