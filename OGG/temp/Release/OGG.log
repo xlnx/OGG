@@ -1,0 +1,23 @@
+﻿生成启动时间为 2017/3/20 23:09:24。
+     1>项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\glew-1.11.0\include" /IC:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\freeglut\include /IC:\Users\xlnx\Desktop\OGG\OGG\include /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\\" /Fd"C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt src\components\ogg_button.c src\components\ogg_components.c src\components\ogg_grid.c src\components\ogg_shape.c src\utils\ogg_startup.c src\utils\ogg_utils.c
+         ogg_button.c
+         ogg_components.c
+         ogg_grid.c
+         ogg_shape.c
+         ogg_startup.c
+         ogg_utils.c
+       Lib:
+         D:\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\Users\xlnx\Desktop\OGG\OGG\bin\Release\OGG.lib" /NOLOGO /LTCG C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_button.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_components.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_grid.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_shape.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_startup.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_utils.obj
+         OGG.vcxproj -> C:\Users\xlnx\Desktop\OGG\OGG\bin\Release\OGG.lib
+     1>已完成生成项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”(Build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:01.93

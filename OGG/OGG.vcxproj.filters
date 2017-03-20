@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="源文件\components">
+      <UniqueIdentifier>{e8d427e7-fd10-4518-80dc-e5f82f44a98e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\utils">
+      <UniqueIdentifier>{9973f03d-dad9-4fd4-b92f-ba849a95cad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\components">
+      <UniqueIdentifier>{f6a30a1f-5f95-4571-909c-f4303f29451c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\utils">
+      <UniqueIdentifier>{b0c1aa6a-d48b-4a0c-9704-90607304b0b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\events">
+      <UniqueIdentifier>{4aab1852-221f-4c5a-9485-7d21f2ebb10e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\components\ogg_shape.c">
+      <Filter>源文件\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\ogg_button.c">
+      <Filter>源文件\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\ogg_components.c">
+      <Filter>源文件\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\ogg_grid.c">
+      <Filter>源文件\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\ogg_startup.c">
+      <Filter>源文件\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\ogg_utils.c">
+      <Filter>源文件\utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\events\ogg_default_handlers.h">
+      <Filter>头文件\events</Filter>
+    </ClInclude>
+    <ClInclude Include="include\events\ogg_events.h">
+      <Filter>头文件\events</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\ogg_button.h">
+      <Filter>头文件\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\ogg_components.h">
+      <Filter>头文件\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\ogg_grid.h">
+      <Filter>头文件\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\ogg_shape.h">
+      <Filter>头文件\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\geometry.h">
+      <Filter>头文件\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\ogg_startup.h">
+      <Filter>头文件\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\ogg_utils.h">
+      <Filter>头文件\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ogg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
