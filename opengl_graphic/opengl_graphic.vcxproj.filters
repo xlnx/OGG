@@ -13,57 +13,72 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\components">
+      <UniqueIdentifier>{f823d4cd-acc5-4980-a806-d1ea1893c217}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\components">
+      <UniqueIdentifier>{dc24d68c-1209-4a3c-8a06-12b91cab4570}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\events">
+      <UniqueIdentifier>{91f83f85-14b2-497a-8b4d-52f86c2a5b76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\utils">
+      <UniqueIdentifier>{f01bbbb8-4d99-4351-bead-2d701d6c3c1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\utils">
+      <UniqueIdentifier>{12281a12-3301-4b7e-87f1-da4af769e0fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="geometry.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="graphic_components.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="graphic_utils.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="graphic_component_grid.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="graphic_component_shape.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="graphic_events.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ogg.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="graphic_startup.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="geometry.h">
+      <Filter>头文件\utils</Filter>
     </ClInclude>
-    <ClInclude Include="graphic_default_events.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="ogg_button.h">
+      <Filter>头文件\components</Filter>
     </ClInclude>
-    <ClInclude Include="graphic_component_button.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="ogg_grid.h">
+      <Filter>头文件\components</Filter>
+    </ClInclude>
+    <ClInclude Include="ogg_shape.h">
+      <Filter>头文件\components</Filter>
+    </ClInclude>
+    <ClInclude Include="ogg_components.h">
+      <Filter>头文件\components</Filter>
+    </ClInclude>
+    <ClInclude Include="ogg_default_handlers.h">
+      <Filter>头文件\events</Filter>
+    </ClInclude>
+    <ClInclude Include="ogg_events.h">
+      <Filter>头文件\events</Filter>
+    </ClInclude>
+    <ClInclude Include="ogg_startup.h">
+      <Filter>头文件\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ogg_utils.h">
+      <Filter>头文件\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="graphic_utils.c">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ogg_button.c">
+      <Filter>源文件\components</Filter>
     </ClCompile>
-    <ClCompile Include="graphic_components.c">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ogg_grid.c">
+      <Filter>源文件\components</Filter>
     </ClCompile>
-    <ClCompile Include="graphic_component_grid.c">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ogg_shape.c">
+      <Filter>源文件\components</Filter>
     </ClCompile>
-    <ClCompile Include="graphic_component_shape.c">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ogg_components.c">
+      <Filter>源文件\components</Filter>
     </ClCompile>
-    <ClCompile Include="graphic_startup.c">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ogg_startup.c">
+      <Filter>源文件\utils</Filter>
     </ClCompile>
-    <ClCompile Include="graphic_component_button.c">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ogg_utils.c">
+      <Filter>源文件\utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -73,23 +73,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="geometry.h" />
-    <ClInclude Include="graphic_components.h" />
-    <ClInclude Include="graphic_component_button.h" />
-    <ClInclude Include="graphic_component_grid.h" />
-    <ClInclude Include="graphic_component_shape.h" />
-    <ClInclude Include="graphic_default_events.h" />
-    <ClInclude Include="graphic_events.h" />
-    <ClInclude Include="graphic_startup.h" />
-    <ClInclude Include="graphic_utils.h" />
+    <ClInclude Include="ogg_components.h" />
+    <ClInclude Include="ogg_button.h" />
+    <ClInclude Include="ogg_grid.h" />
+    <ClInclude Include="ogg_shape.h" />
+    <ClInclude Include="ogg_default_handlers.h" />
+    <ClInclude Include="ogg_events.h" />
+    <ClInclude Include="ogg_startup.h" />
+    <ClInclude Include="ogg_utils.h" />
     <ClInclude Include="ogg.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="graphic_components.c" />
-    <ClCompile Include="graphic_component_button.c" />
-    <ClCompile Include="graphic_component_grid.c" />
-    <ClCompile Include="graphic_component_shape.c" />
-    <ClCompile Include="graphic_startup.c" />
-    <ClCompile Include="graphic_utils.c" />
+    <ClCompile Include="ogg_components.c" />
+    <ClCompile Include="ogg_button.c" />
+    <ClCompile Include="ogg_grid.c" />
+    <ClCompile Include="ogg_shape.c" />
+    <ClCompile Include="ogg_startup.c" />
+    <ClCompile Include="ogg_utils.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

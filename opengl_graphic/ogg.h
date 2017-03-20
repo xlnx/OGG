@@ -5,10 +5,10 @@
 extern "C" {
 # endif
 
-# include "graphic_startup.h"
-# include "graphic_component_grid.h"
-# include "graphic_component_shape.h"
-# include "graphic_component_button.h"
+# include "ogg_startup.h"
+# include "ogg_grid.h"
+# include "ogg_shape.h"
+# include "ogg_button.h"
 
 # ifdef __cplusplus
 }
