@@ -1,49 +1,14 @@
 #include "graphic_component_grid.h"
 
-    static ogg_grid_element* create_grid_element(ogg_grid* parent, ogg_coord pos);
+    static ogg_event_handler ogg_grid_element_vtable[OGG_EVENT_COUNT] = { 0 };
 
-    static void destroy_grid_element(ogg_grid_element* grid_elem);
+    def_startup(ogg_grid_element) (
+    );
 
-    static void paint_grid_element(ogg_grid_element* grid_elem);
-
-    static ogg_event_handler ogg_grid_elem_vtable[OGG_EVENT_COUNT] = {
-        destroy_grid_element, // OGG_DESTROY_EVENT
-        paint_grid_element    // OGG_PAINT_EVENT
-    };
-
-    static ogg_grid_element* create_grid_element(ogg_grid* parent, ogg_coord pos)
+    static def_constructor(ogg_grid_element, args)
     {
-        ogg_grid_element* grid_elem = (ogg_grid_element*)malloc(sizeof(ogg_grid_element));
-# ifdef DEBUG
-        alloc_memory++;
-# endif
-        ogg_anchor anchor = {
-            .type = ogg_anchor_pec,
-            .pec = {
-                .left = (float)pos.x * 100 / parent->size.x,
-                .right = (float)(pos.x + 1) * 100 / parent->size.x,
-                .top = (float)pos.y * 100 / parent->size.y,
-                .bottom = (float)(pos.y + 1) * 100 / parent->size.y
-            }
-        };
-        ogg_component_info info = {
-            .anchor = &anchor,
-            .parent = (ogg_component*)parent,
-            .vptr = ogg_grid_elem_vtable
-        };
-        create_component(grid_elem, &info);
-        grid_elem->object = 0;
-        return grid_elem;
+        this->object = 0;
     }
-
-    static void destroy_grid_element(ogg_grid_element* grid_elem)
-    {
-    }
-
-    static void paint_grid_element(ogg_grid_element* grid_elem)
-    {
-    }
-
 
     /* GRID */
 
@@ -51,40 +16,43 @@
 
     static void paint_grid(ogg_grid* grid);
 
-    static ogg_event_handler ogg_grid_vtable[OGG_EVENT_COUNT] = {
+    def_vtable(ogg_grid) (
         destroy_grid, // OGG_DESTROY_EVENT
         paint_grid    // OGG_PAINT_EVENT
-    };
+    );
 
-    ogg_grid* create_grid(const ogg_grid_info* st)
+    def_constructor(ogg_grid, args)
     {
-        ogg_grid *grid = (ogg_grid*)malloc(sizeof(ogg_grid));
-# ifdef DEBUG
-        alloc_memory++;
-# endif
-        ogg_component_info info = {
-            .anchor = &st->startup.anchor,
-            .parent = st->startup.parent,
-            .vptr = ogg_grid_vtable
-        };
-        create_component(grid, &info);
-        grid->size.x = st->size.x;
-        grid->size.y = st->size.y;
+        this->size.x = args->size.x;
+        this->size.y = args->size.y;
         ogg_coord pos = { 0, 0 };
-        grid->sub = (ogg_grid_element***)malloc(st->size.y * sizeof(ogg_grid_element**));
+        this->sub = (ogg_grid_element***)malloc(args->size.y * sizeof(ogg_grid_element**));
 # ifdef DEBUG
         alloc_memory++;
 # endif
-        for (pos.y = 0; pos.y != st->size.y; ++pos.y) {
-            grid->sub[pos.y] = (ogg_grid_element**)calloc(st->size.x, sizeof(ogg_grid_element*));
+        for (pos.y = 0; pos.y != args->size.y; ++pos.y) {
+            this->sub[pos.y] = (ogg_grid_element**)calloc(args->size.x, sizeof(ogg_grid_element*));
 # ifdef DEBUG
             alloc_memory++;
 # endif
-            for (pos.x = 0; pos.x != st->size.x; ++pos.x) {
-                grid->sub[pos.y][pos.x] = create_grid_element(grid, pos);
+            for (pos.x = 0; pos.x != args->size.x; ++pos.x) {
+                ogg_grid_element_info info = {
+                    .super = {
+                        .anchor = {
+                            .type = ogg_anchor_pec,
+                            .pec = {
+                                .left = (float)pos.x * 100 / args->size.x,
+                                .right = (float)(pos.x + 1) * 100 / args->size.x,
+                                .top = (float)pos.y * 100 / args->size.y,
+                                .bottom = (float)(pos.y + 1) * 100 / args->size.y
+                            }
+                        },
+                        .parent = (ogg_component*)this
+                    }
+                };
+                this->sub[pos.y][pos.x] = ogg_create(ogg_grid_element)(&info);
             }
         }
-        return grid;
     }
 
     static void destroy_grid(ogg_grid* grid)
@@ -121,7 +89,7 @@
         return ogg_true;
     }
 
-    ogg_com_startup make_grid_startup(ogg_grid* grid, ogg_coord pos)
+    ogg_component_info make_grid_startup(ogg_grid* grid, ogg_coord pos)
     {
         return make_startup(grid->sub[pos.y][pos.x]);
     }

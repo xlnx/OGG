@@ -1,11 +1,10 @@
 #include "graphic_components.h"
 
-void create_component(ogg_com_ptr com_ptr, const ogg_component_info* cominfo)
+void ogg_static_constructor_ogg_component___(ogg_com_ptr com_ptr, const ogg_component_info* cominfo)
 {
-    set_component_anchor(com_ptr, cominfo->anchor);
+    set_component_anchor(com_ptr, &cominfo->anchor);
     ogg_component* com = (ogg_component*)com_ptr;
     com->parent = cominfo->parent;
-    com->vptr = cominfo->vptr;
     com->sub = com->subrear = (ogg_subcomponent*)calloc(1, sizeof(ogg_subcomponent));
 # ifdef DEBUG
     alloc_memory++;
@@ -164,9 +163,9 @@ ogg_coord coord(int x, int y)
     return pos;
 }
 
-ogg_com_startup make_startup(ogg_com_ptr parent)
+ogg_component_info make_startup(ogg_com_ptr parent)
 {
-    ogg_com_startup st = {
+    ogg_component_info st = {
         .anchor = {
             .type = ogg_anchor_pec,
             .pec = {

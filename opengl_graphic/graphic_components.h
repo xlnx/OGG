@@ -43,10 +43,6 @@
     typedef void *ogg_com_ptr;
 
     struct ogg_component_ty;
-    typedef struct {
-        ogg_anchor anchor;
-        struct ogg_component_ty* parent;
-    } ogg_com_startup;
 
     struct ogg_subcomponent_ty;
     typedef struct ogg_subcomponent_ty {
@@ -68,16 +64,14 @@
 
     typedef struct {
         ogg_component* parent;
-        const ogg_anchor* anchor;
-        ogg_event_handler* vptr;
+        ogg_anchor anchor;
     } ogg_component_info;
+
+    static const void (*parent_static_constructor_ogg_component__)() = 0;
 
     typedef unsigned ogg_handle_flag;
 #  define OGG_HANDLED     (1)
 #  define OGG_UNHANDLED   (0)
-    
-    /* create a component, every component must call this function when created */
-    void create_component(ogg_com_ptr com_ptr, const ogg_component_info* cominfo);
 
     /* get the absolute coord of a coord in canvas */
     coordf get_real_coord(ogg_com_ptr com_ptr, coordf pix);
@@ -96,27 +90,100 @@
     void ogg_destroy(ogg_com_ptr com_ptr);
 
     /* create full anchor startup in a parent component */
-    ogg_com_startup make_startup(ogg_com_ptr parent);
+    ogg_component_info make_startup(ogg_com_ptr parent);
 
     /* make a int-int coord */
     ogg_coord coord(int x, int y);
 
-#  define def_startup(startup_interface, ...) \
-    typedef struct {\
-        ogg_com_startup startup;\
-        startup_interface##__VA_ARGS__\
+#  define OGG_COMPONENT_STARTUP_HELPER(...)                             \
+        __VA_ARGS__                                                     \
     }
 
-#  define def_component(component_interface/*, ...*/) \
-    typedef struct {\
-        ogg_component def_component__super_class____;\
-        component_interface/*##__VA_ARGS__*/\
+#  define def_startup_inh(component_type, super_class)                  \
+    struct OGG_COMPONENT_STARTUP_##component_type##_info;               \
+    typedef struct OGG_COMPONENT_STARTUP_##component_type##_info        \
+        component_type##_info;                                          \
+    struct OGG_COMPONENT_STARTUP_##component_type##_info {              \
+        super_class##_info super;                                       \
+        OGG_COMPONENT_STARTUP_HELPER
+
+#  define def_startup(component_type)                                   \
+    def_startup_inh(component_type, ogg_component)
+
+#  define OGG_COMPONENT_INH_INST(...)                                   \
+        __VA_ARGS__                                                     \
     }
 
-#  define def_component_inh(super_class, component_interface/*, ...*/) \
-    typedef struct {\
-        super_class super;\
-        component_interface/*##__VA_ARGS__*/\
+#  define def_component_inh(T, super_class)                             \
+    struct OGG_COMPONENT_HELPER_##T;                                    \
+    typedef struct OGG_COMPONENT_HELPER_##T T;                          \
+    void ogg_static_constructor_##T##___(T*, const void*);              \
+    extern void ogg_static_constructor_##super_class##___(              \
+        super_class*, const void*);                                     \
+    static const void (*parent_static_constructor_##T##__)(             \
+            super_class*, const super_class##_info*) =                  \
+        ogg_static_constructor_##super_class##___;                      \
+    struct OGG_COMPONENT_HELPER_##T {                                   \
+        super_class super;                                              \
+        OGG_COMPONENT_INH_INST
+
+#  define def_component(component_type)                                 \
+    def_component_inh(component_type, ogg_component)
+
+#  define OGG_COMPONENT_VTABLE_INST(...)                                \
+        __VA_ARGS__                                                     \
     }
+
+#  define def_vtable(component_type)                                    \
+    static ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT]= {\
+        OGG_COMPONENT_VTABLE_INST
+
+#  define ogg_create(T)                                                 \
+	ogg_constructor_##T##___
+
+#  define ogg_startup(T)                                                \
+    T##_info
+
+#  define constructor(T)                                                \
+    T* ogg_constructor_##T##___(const T##_info* args)
+
+#  ifdef DEBUG
+#    define def_constructor(T, args_name)                               \
+    T* ogg_constructor_##T##___(const T##_info* args_name)              \
+    {                                                                   \
+        T* object = (T*)malloc(sizeof(T));                              \
+        alloc_memory++;                                                 \
+        void ogg_static_constructor_##T##___(T*, const void*);          \
+        ogg_static_constructor_##T##___(object, args_name);             \
+        ((ogg_component*)object)->vptr = T##_vtable;                    \
+        return object;                                                  \
+    }                                                                   \
+    void ogg_static_constructor_##T##___(T* object, const void* args)   \
+    {                                                                   \
+        void create_##T(T* this, const T##_info* args_name);            \
+        if (parent_static_constructor_##T##__ != 0)                     \
+            parent_static_constructor_##T##__((void*)object, args);     \
+        create_##T(object, (const T##_info*)args);                      \
+    }                                                                   \
+    void create_##T(T* this, const T##_info* args_name)
+#  else
+#    define def_constructor(T, args_name)                               \
+    T* ogg_constructor_##T##___(const T##_info* args_name)              \
+    {                                                                   \
+        T* object = (T*)malloc(sizeof(T));                              \
+        void ogg_static_constructor_##T##___(T*, const void*);          \
+        ogg_static_constructor_##T##___(object, args_name);             \
+        ((ogg_component*)object)->vptr = T##_vtable;                    \
+        return object;                                                  \
+    }                                                                   \
+    void ogg_static_constructor_##T##___(T* object, const void* args)   \
+    {                                                                   \
+        void create_##T(T* this, const T##_info* args_name);            \
+        if (parent_static_constructor_##T##__ != 0)                     \
+            parent_static_constructor_##T##__((void*)object, args);     \
+        create_##T(object, (const T##_info*)args);                      \
+    }                                                                   \
+    void create_##T(T* this, const T##_info* args_name)
+#  endif
 
 #endif //OGG_GRAPHIC_COMPONENTS__HEADER_FILE_____

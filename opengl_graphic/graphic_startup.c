@@ -4,44 +4,20 @@
 # ifndef OGG_CUSTOM_STARTUP
 # include <gl/freeglut.h>
 
+def_component(ogg_window) (
+);
+
 static ogg_window* main_window;
 
-static void destroy_window(void)
+def_vtable(ogg_window) ( 0 );
+
+def_startup(ogg_window)();
+
+static def_constructor(ogg_window, args)
 {
 }
 
-static void paint_window(void)
-{
-}
-
-static ogg_event_handler ogg_window_vtable[OGG_EVENT_COUNT] = {
-    destroy_window,                  /* OGG_DESTROY_EVENT */
-    paint_window,                    /* OGG_PAINT_EVENT */
-};
-
-static ogg_window* create_window(void)
-{
-    ogg_window *window = (ogg_window*)malloc(sizeof(ogg_window));
-# ifdef DEBUG
-    alloc_memory++;
-# endif
-    static ogg_anchor anchor = {
-        .type = ogg_anchor_pec,
-        .pec = {
-            .top_left = {0, 0},
-            .bottom_right = {100, 100}
-        }
-    };
-    ogg_component_info info = {
-        .anchor = &anchor,
-        .parent = 0,
-        .vptr = ogg_window_vtable
-    };
-    create_component(window, &info);
-    return window;
-}
-
-ogg_com_startup make_global_startup(void)
+ogg_component_info make_global_startup(void)
 {
     return make_startup(main_window);
 }
@@ -80,7 +56,19 @@ void ogg_register_event(event event_name, glut_callback callback)
 
 int main(int argc, char *argv[])
 {
-    main_window = create_window();
+    static const ogg_startup(ogg_window) info = {
+        .super = {
+            .anchor = {
+                .type = ogg_anchor_pec,
+                .pec = {
+                    .top_left = { 0, 0 },
+                    .bottom_right = { 100, 100 }
+                }
+            },
+            .parent = 0
+        }
+    };
+    main_window = ogg_create(ogg_window)(&info);
 
     ogg_startup_info st = {
         .argc = argc,
@@ -90,7 +78,9 @@ int main(int argc, char *argv[])
         .window.size = { 400, 400 },
         .window.title = "OGG Form"
     };
-    ogg_startup(&st);
+
+    ogg_main(&st);
+
     glutInit(&st.argc, st.argv);
     glutInitDisplayMode(st.display_mode);
     glutInitWindowPosition(st.window.position.x, st.window.position.y);

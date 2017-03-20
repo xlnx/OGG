@@ -3,16 +3,16 @@
 #include "graphic_components.h"
 #include "graphic_component_shape.h"
 
-    typedef void(*button_callback)(void);
+    typedef void(*button_callback)(void* self);
 
-    def_startup(
+    def_startup(ogg_button) (
         button_callback callback;
-    ) ogg_button_info;
+    );
 
-    def_component_inh(ogg_rect,
+    def_component_inh(ogg_button, ogg_rect)(
         button_callback callback;
-    ) ogg_button;
+    );
 
-    ogg_button* create_button(const ogg_button_info* st);
+    constructor(ogg_button);
 
 #endif //OGG_GRAPHIC_COMPONENT__BUTTON__HEADER_FILE____

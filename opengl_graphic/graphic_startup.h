@@ -14,36 +14,32 @@
 
     typedef struct {
         int x, y;
-    } ogg_window_position;
+    } ogg_startup_window_position;
 
     typedef struct {
         int width, height;
-    } ogg_window_size;
+    } ogg_startup_window_size;
 
     typedef struct {
-        ogg_window_position position;
-        ogg_window_size size;
+        ogg_startup_window_position position;
+        ogg_startup_window_size size;
         const char *title;
-    } ogg_window_info;
+    } ogg_startup_window_info;
 
     typedef struct {
         int argc;
         char **argv;
         ogg_display_mode display_mode;
-        ogg_window_info window;
+        ogg_startup_window_info window;
     } ogg_startup_info;
-
-    typedef struct {
-        ogg_component com;
-    } ogg_window;
 
     typedef void(*glut_callback)();
     typedef void(_stdcall *glut_register)(glut_callback);
 
     void ogg_register_event(event event_name, glut_callback callback);
-    ogg_com_startup make_global_startup(void);
+    ogg_component_info make_global_startup(void);
 
-    void ogg_startup(ogg_startup_info*);
+    void ogg_main(ogg_startup_info*);
 # ifdef OGG_GRAPHIC_STARTUP__INST____
     extern void ogg_delegate(void);
     extern int ogg_exit_status(void);

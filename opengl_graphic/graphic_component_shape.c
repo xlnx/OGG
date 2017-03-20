@@ -4,56 +4,29 @@
 
     void paint_shape(ogg_shape* shape);
 
-    static ogg_event_handler ogg_shape_vtable[OGG_EVENT_COUNT] = {
+    def_vtable(ogg_shape) (
         destroy_shape, // OGG_DESTROY_EVENT
         paint_shape    // OGG_PAINT_EVENT
-    };
+    );
 
-    void create_shape_dest(ogg_shape* shape, const ogg_shape_info* st)
+    def_constructor(ogg_shape, args)
     {
-        ogg_component_info info = {
-            .anchor = &st->startup.anchor,
-            .parent = st->startup.parent,
-            .vptr = ogg_shape_vtable
-        };
-        create_component(shape, &info);
-        shape->vertex = st->vertex;
+        this->vertex = args->vertex;
     }
 
-    ogg_shape* create_shape(const ogg_shape_info* st)
-    {
-        ogg_shape *shape = (ogg_shape*)malloc(sizeof(ogg_shape));
-# ifdef DEBUG
-        alloc_memory++;
-# endif
-        create_shape_dest(shape, st);
-        return shape;
-    }
+    def_vtable(ogg_rect) (
+        destroy_shape, // OGG_DESTROY_EVENT
+        paint_shape    // OGG_PAINT_EVENT
+    );
 
-    void create_rect_dest(ogg_rect* rect, const ogg_rect_info* st)
+    def_constructor(ogg_rect, args)
     {
-        ogg_component_info info = {
-            .anchor = &st->startup.anchor,
-            .parent = st->startup.parent,
-            .vptr = ogg_shape_vtable
-        };
-        create_component(rect, &info);
-        rect->super.vertex = vertex_list(4,
+        this->super.vertex = vertex_list(4,
             vertex(0, 0),
             vertex(0, 100),
             vertex(100, 100),
             vertex(100, 0)
         );
-    }
-
-    ogg_rect* create_rect(const ogg_rect_info* st)
-    {
-        ogg_rect *rect = (ogg_rect*)malloc(sizeof(ogg_rect));
-# ifdef DEBUG
-        alloc_memory++;
-# endif
-        create_rect_dest(rect, st);
-        return rect;
     }
 
     void destroy_shape(ogg_shape* shape)
