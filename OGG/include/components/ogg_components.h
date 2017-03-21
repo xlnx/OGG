@@ -104,11 +104,14 @@
 #  define def_startup_inh(T, super_class)                               \
     struct OGG_COMPONENT_STARTUP_##T##_info;                            \
     typedef struct OGG_COMPONENT_STARTUP_##T##_info T##_info;           \
+                                                                        \
     T##_info ogg_default_info_##T##___(ogg_com_ptr);                    \
     extern super_class##_info ogg_default_info_##super_class##___(      \
         ogg_com_ptr);                                                   \
+                                                                        \
     static super_class##_info (*const parent_default_info_##T##__)(     \
             ogg_com_ptr) = ogg_default_info_##super_class##___;         \
+                                                                        \
     struct OGG_COMPONENT_STARTUP_##T##_info {                           \
         super_class##_info super_class;                                 \
         OGG_EXPAND_ARGS_WITH_BRAK
@@ -139,6 +142,8 @@
 #  define def_component_inh(T, super_class)                             \
     struct OGG_COMPONENT_HELPER_##T;                                    \
     typedef struct OGG_COMPONENT_HELPER_##T T;                          \
+                                                                        \
+    T* ogg_constructor_##T##___(const T##_info* args);                  \
                                                                         \
     void ogg_static_constructor_##T##___(T*, const void*);              \
                                                                         \
@@ -227,8 +232,6 @@
             OGG_CREATOR__HELPER
 
 
-#  define constructor(T)                                                \
-    T* ogg_constructor_##T##___(const T##_info* args)
 
 #  ifdef DEBUG
 #    define def_constructor(T, args_name)                               \

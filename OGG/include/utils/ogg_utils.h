@@ -1,7 +1,7 @@
 #ifndef OGG_GRAPHIC_UTILS__HEADER_FILE______
 #define OGG_GRAPHIC_UTILS__HEADER_FILE______
 #include "geometry.h"
-# define DEBUG
+//# define DEBUG
 # ifdef DEBUG
     int alloc_memory;
 # endif

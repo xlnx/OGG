@@ -21,10 +21,6 @@
     def_component_inh(ogg_rect, ogg_shape)(
     );
 
-    constructor(ogg_shape);
-
-    constructor(ogg_rect);
-
     ogg_shape_vertex* vertex_list(unsigned n, ...);
 
     coordf vertex(float x, float y);

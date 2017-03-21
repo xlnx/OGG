@@ -5,6 +5,9 @@
 # ifndef OGG_CUSTOM_STARTUP
 # include <gl/freeglut.h>
 
+def_startup(ogg_window)(
+);
+
 def_component(ogg_window) (
 );
 
@@ -13,8 +16,6 @@ handler(ogg_window, OGG_PAINT_EVENT);
 def_vtable(ogg_window) (
     [OGG_PAINT_EVENT] = ogg_handler(ogg_window, OGG_PAINT_EVENT)
 );
-
-def_startup(ogg_window)();
 
 static def_constructor(ogg_window, args)
 {   /* do nothing */

@@ -12,6 +12,4 @@
         button_callback callback;
     );
 
-    constructor(ogg_button);
-
 #endif //OGG_GRAPHIC_COMPONENT__BUTTON__HEADER_FILE____

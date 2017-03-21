@@ -4,9 +4,6 @@
     def_vtable(ogg_grid_element)(
     );
 
-    def_startup(ogg_grid_element)(
-    );
-
     default_startup(ogg_grid_element)(
     )
 
