@@ -8,22 +8,29 @@
 def_component(ogg_window) (
 );
 
-static ogg_window* main_window;
-
-static void ogg_window_paint()
-{
-    glFlush();
-}
+handler(ogg_window, OGG_PAINT_EVENT);
 
 def_vtable(ogg_window) (
-    [OGG_PAINT_EVENT] = ogg_window_paint
+    [OGG_PAINT_EVENT] = ogg_handler(ogg_window, OGG_PAINT_EVENT)
 );
 
 def_startup(ogg_window)();
 
 static def_constructor(ogg_window, args)
-{
+{   /* do nothing */
 }
+
+static def_destructor(ogg_window)
+{   /* do nothing */
+}
+
+def_handler(ogg_window, OGG_PAINT_EVENT)
+{
+    glFlush();
+}
+
+static ogg_window* main_window;
+
 
 ogg_component_info ogg_fill_window(void)
 {
@@ -44,17 +51,17 @@ static const glut_register glut_event_register[OGG_EVENT_COUNT] = {
 # include "events/ogg_default_handlers.h"
 static glut_callback glut_events[OGG_EVENT_COUNT] = {
     0,
-    ogg_handler(OGG_PAINT_EVENT),
-    ogg_handler(OGG_KEYBOARD_EVENT),
-    ogg_handler(OGG_SPECIAL_KEY_EVENT),
-    ogg_handler(OGG_MOUSE_EVENT),
-    ogg_handler(OGG_MOUSE_DRAG_EVENT),
-    ogg_handler(OGG_MOUSE_MOVE_EVENT),
-    ogg_handler(OGG_MOUSE_ENTRY_EVENT),
+    ogg_default_handler(OGG_PAINT_EVENT),
+    ogg_default_handler(OGG_KEYBOARD_EVENT),
+    ogg_default_handler(OGG_SPECIAL_KEY_EVENT),
+    ogg_default_handler(OGG_MOUSE_EVENT),
+    ogg_default_handler(OGG_MOUSE_DRAG_EVENT),
+    ogg_default_handler(OGG_MOUSE_MOVE_EVENT),
+    ogg_default_handler(OGG_MOUSE_ENTRY_EVENT),
 };
 
-# ifdef ogg_handler
-#  undef ogg_handler
+# ifdef ogg_default_handler
+#  undef ogg_default_handler
 # endif
 
 void ogg_register_event(event event_name, glut_callback callback)

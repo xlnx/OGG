@@ -1,13 +1,12 @@
 #include <GL/glut.h>
 #include "components/ogg_shape.h"
 
-    void destroy_shape(ogg_shape* shape);
+    /* ====================== OGG_SHAPE ======================= */    
 
-    void paint_shape(ogg_shape* shape);
+    handler(ogg_shape, OGG_PAINT_EVENT);
 
     def_vtable(ogg_shape) (
-        [OGG_DESTROY_EVENT] = destroy_shape,
-        [OGG_PAINT_EVENT] = paint_shape
+        [OGG_PAINT_EVENT] = ogg_handler(ogg_shape, OGG_PAINT_EVENT)
     );
 
     default_startup(ogg_shape)(
@@ -19,9 +18,33 @@
         this->vertex = args->vertex;
     }
 
+    def_destructor(ogg_shape)
+    {
+        free(this->vertex->point);
+# ifdef DEBUG
+        alloc_memory--;
+# endif
+        free(this->vertex);
+# ifdef DEBUG
+        alloc_memory--;
+# endif
+    }
+
+    def_handler(ogg_shape, OGG_PAINT_EVENT)
+    {
+        glBegin(GL_POLYGON);
+        unsigned i = 0;
+        for (; i != this->vertex->size; ++i) {
+            coordf pix = get_real_coord(this, this->vertex->point[i]);
+            glVertex2f(pix.x, pix.y);
+        }
+        glEnd();
+    }
+
+    /* ====================== OGG_RECT ======================= */
+
     def_vtable(ogg_rect) (
-        [OGG_DESTROY_EVENT] = destroy_shape,
-        [OGG_PAINT_EVENT] = paint_shape
+        [OGG_PAINT_EVENT] = ogg_handler(ogg_shape, OGG_PAINT_EVENT)
     );
 
     default_startup_inh(ogg_rect, ogg_shape)(
@@ -47,28 +70,11 @@
         );
     }
 
-    void destroy_shape(ogg_shape* shape)
-    {
-        free(shape->vertex->point);
-# ifdef DEBUG
-        alloc_memory--;
-# endif
-        free(shape->vertex);
-# ifdef DEBUG
-        alloc_memory--;
-# endif
+    def_destructor(ogg_rect)
+    {   /* don't need to do anything */
     }
 
-    void paint_shape(ogg_shape* shape)
-    {
-        glBegin(GL_POLYGON);
-        unsigned i = 0;
-        for (; i != shape->vertex->size; ++i) {
-            coordf pix = get_real_coord(shape, shape->vertex->point[i]);
-            glVertex2f(pix.x, pix.y);
-        }
-        glEnd();
-    }
+    /* ====================== UTILS ======================= */
 
     ogg_shape_vertex* vertex_list(unsigned n, ...)
     {

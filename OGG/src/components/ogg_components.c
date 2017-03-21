@@ -151,10 +151,17 @@ void ogg_send_event(ogg_com_ptr com_ptr, event event_name, ...)
     va_end(args);
 }
 
+void ogg_destructor_ogg_component___(ogg_component* this)
+{   /* leave a empty destructor of ogg_component here to ensure the macro works properly */
+}
+
 void ogg_destroy(ogg_com_ptr com_ptr)
 {
+    /* delete all child components */
     destroy_sub_components(com_ptr);
+    /* destroy this component */
     ogg_single_event(((ogg_component*)com_ptr), OGG_DESTROY_EVENT, 0, 0);
+    /* delete this object from parent */
     ogg_component* parent = ((ogg_component*)com_ptr)->parent;
     if (parent != 0) {
         ogg_subcomponent* p = parent->sub;
@@ -166,6 +173,7 @@ void ogg_destroy(ogg_com_ptr com_ptr)
                 }
                 last->next = p->next;
                 free(p);
+                /* delete link node */
 # ifdef DEBUG
                 alloc_memory--;
 # endif
@@ -173,6 +181,7 @@ void ogg_destroy(ogg_com_ptr com_ptr)
             }
         }
     }
+    /* free the momory of this object */
     free(com_ptr);
 # ifdef DEBUG
     alloc_memory--;

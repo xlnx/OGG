@@ -1,11 +1,13 @@
 #include <GL/glut.h>
 #include "components/ogg_grid.h"
 
-    static ogg_event_handler ogg_grid_element_vtable[OGG_EVENT_COUNT] = { 0 };
-
-    def_startup(ogg_grid_element) (
+    def_vtable(ogg_grid_element)(
     );
-    default_startup(ogg_grid_element) (
+
+    def_startup(ogg_grid_element)(
+    );
+
+    default_startup(ogg_grid_element)(
     )
 
     static def_constructor(ogg_grid_element, args)
@@ -13,15 +15,16 @@
         this->object = 0;
     }
 
+    static def_destructor(ogg_grid_element)
+    {   /* do nothing */
+    }
+
     /* GRID */
 
-    static void destroy_grid(ogg_grid* grid);
-
-    static void paint_grid(ogg_grid* grid);
+    handler(ogg_grid, OGG_PAINT_EVENT);
 
     def_vtable(ogg_grid) (
-        [OGG_DESTROY_EVENT] = destroy_grid,
-        [OGG_PAINT_EVENT] = paint_grid
+        [OGG_PAINT_EVENT] = ogg_handler(ogg_grid, OGG_PAINT_EVENT)
     );
 
     default_startup(ogg_grid) (
@@ -61,22 +64,22 @@
         }
     }
 
-    static void destroy_grid(ogg_grid* grid)
+    def_destructor(ogg_grid)
     {
         unsigned i = 0;
-        for (; i != grid->size.y; ++i) {
-            free(grid->sub[i]);
+        for (; i != this->size.y; ++i) {
+            free(this->sub[i]);
 # ifdef DEBUG
             alloc_memory--;
 # endif
         }
-        free(grid->sub);
+        free(this->sub);
 # ifdef DEBUG
         alloc_memory--;
 # endif
     }
 
-    void paint_grid(ogg_grid* grid)
+    def_handler(ogg_grid, OGG_PAINT_EVENT)
     {
         glClear(GL_COLOR_BUFFER_BIT);
     }

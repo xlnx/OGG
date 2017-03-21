@@ -67,8 +67,6 @@
         ogg_anchor anchor;
     } ogg_component_info;
 
-    static const void (*parent_static_constructor_ogg_component__)() = 0;
-
     typedef unsigned ogg_handle_flag;
 #  define OGG_HANDLED     (1)
 #  define OGG_UNHANDLED   (0)
@@ -141,12 +139,23 @@
 #  define def_component_inh(T, super_class)                             \
     struct OGG_COMPONENT_HELPER_##T;                                    \
     typedef struct OGG_COMPONENT_HELPER_##T T;                          \
+                                                                        \
     void ogg_static_constructor_##T##___(T*, const void*);              \
+                                                                        \
     extern void ogg_static_constructor_##super_class##___(              \
         super_class*, const void*);                                     \
+                                                                        \
     static void (*const parent_static_constructor_##T##__)(             \
             super_class*, const void*) =                                \
         ogg_static_constructor_##super_class##___;                      \
+                                                                        \
+    void ogg_destructor_##T##___(T* this);                              \
+                                                                        \
+    extern void ogg_destructor_##super_class##___(super_class* this);   \
+                                                                        \
+    static void (*const parent_destructor_##T##__)(super_class*) =      \
+        ogg_destructor_##super_class##___;                              \
+                                                                        \
     struct OGG_COMPONENT_HELPER_##T {                                   \
         super_class super;                                              \
         OGG_EXPAND_ARGS_WITH_BRAK
@@ -156,6 +165,7 @@
 
 #  define def_vtable(component_type)                                    \
     static ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT]= {\
+        [OGG_DESTROY_EVENT] = ogg_destructor(component_type),           \
         OGG_EXPAND_ARGS_WITH_BRAK
 
 
@@ -234,8 +244,7 @@
     void ogg_static_constructor_##T##___(T* object, const void* args)   \
     {                                                                   \
         void create_##T(T* this, const T##_info* args_name);            \
-        if (parent_static_constructor_##T##__ != 0)                     \
-            parent_static_constructor_##T##__((void*)object, args);     \
+        parent_static_constructor_##T##__((void*)object, args);         \
         create_##T(object, (const T##_info*)args);                      \
     }                                                                   \
     void create_##T(T* this, const T##_info* args_name)
@@ -252,11 +261,24 @@
     void ogg_static_constructor_##T##___(T* object, const void* args)   \
     {                                                                   \
         void create_##T(T* this, const T##_info* args_name);            \
-        if (parent_static_constructor_##T##__ != 0)                     \
-            parent_static_constructor_##T##__((void*)object, args);     \
+        parent_static_constructor_##T##__((void*)object, args);         \
         create_##T(object, (const T##_info*)args);                      \
     }                                                                   \
     void create_##T(T* this, const T##_info* args_name)
 #  endif
+
+
+#  define ogg_destructor(T)                                             \
+    ogg_destructor_##T##___
+
+#  define def_destructor(T)                                             \
+    void ogg_destructor_##T##___(T* this)                               \
+    {                                                                   \
+        void ogg_destructor_##T##_helper__(T*);                         \
+        ogg_destructor_##T##_helper__(this);                            \
+        parent_destructor_##T##__((ogg_com_ptr)this);                   \
+    }                                                                   \
+    void ogg_destructor_##T##_helper__(T* this)
+
 
 #endif //OGG_GRAPHIC_COMPONENTS__HEADER_FILE_____

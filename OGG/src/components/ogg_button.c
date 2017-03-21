@@ -1,16 +1,12 @@
 #include <GL/glut.h>
 #include "components/ogg_button.h"
 
-extern void destroy_shape(ogg_shape* shape);
-
-extern void paint_shape(ogg_shape* shape);
-
-static void button_click(ogg_button* button, va_list args, ogg_handle_flag *handled);
+handler(ogg_button, OGG_MOUSE_EVENT);
+extern handler(ogg_shape, OGG_PAINT_EVENT);
 
 def_vtable(ogg_button) (
-    [OGG_DESTROY_EVENT] = destroy_shape,
-    [OGG_PAINT_EVENT] = paint_shape,
-    [OGG_MOUSE_EVENT] = button_click
+    [OGG_PAINT_EVENT] = ogg_handler(ogg_shape, OGG_PAINT_EVENT),
+    [OGG_MOUSE_EVENT] = ogg_handler(ogg_button, OGG_MOUSE_EVENT)
 );
 
 default_startup_inh(ogg_button, ogg_rect)(
@@ -22,11 +18,14 @@ def_constructor(ogg_button, args)
     this->callback = args->callback;
 }
 
-static void button_click(ogg_button* button, va_list args, ogg_handle_flag *handled)
+def_destructor(ogg_button)
+{   /* do nothing */
+}
+
+def_handler(ogg_button, OGG_MOUSE_EVENT)
 {
-    ogg_coord coord; coord.x = va_arg(args, int); coord.y = va_arg(args, int);
     if (1) {
-        button->callback(button);
+        this->callback(this);
         *handled = ogg_true;
     }
 }
