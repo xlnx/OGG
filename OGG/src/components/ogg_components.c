@@ -1,3 +1,4 @@
+#include <GL/glut.h>
 #include "components/ogg_components.h"
 
 void ogg_static_constructor_ogg_component___(ogg_com_ptr com_ptr, const ogg_component_info* cominfo)
@@ -19,19 +20,30 @@ void ogg_static_constructor_ogg_component___(ogg_com_ptr com_ptr, const ogg_comp
     }
 }
 
-static void destroy_sub_components(ogg_com_ptr com_ptr)
-{
-    ogg_subcomponent* iter = ((ogg_component*)com_ptr)->sub->next;
-    while (iter != 0) {
-        ogg_subcomponent* p = iter->next;
-        ogg_destroy(iter->object);
-        iter = p;
-    }
-    free(((ogg_component*)com_ptr)->sub);
-# ifdef DEBUG
-    alloc_memory--;
-# endif
-}
+#  ifdef DEBUG
+#    define destroy_sub_components(com_ptr)                                 \
+    do {                                                                    \
+        ogg_subcomponent* iter = ((ogg_component*)com_ptr)->sub->next;      \
+        while (iter != 0) {                                                 \
+            ogg_subcomponent* p = iter->next;                               \
+            ogg_destroy(iter->object);                                      \
+            iter = p;                                                       \
+        }                                                                   \
+        free(((ogg_component*)com_ptr)->sub);                               \
+        alloc_memory--;                                                     \
+    } while (0)
+#  else
+#    define destroy_sub_components(com_ptr)                                 \
+    do {                                                                    \
+        ogg_subcomponent* iter = ((ogg_component*)com_ptr)->sub->next;      \
+        while (iter != 0) {                                                 \
+            ogg_subcomponent* p = iter->next;                               \
+            ogg_destroy(iter->object);                                      \
+            iter = p;                                                       \
+        }                                                                   \
+        free(((ogg_component*)com_ptr)->sub);                               \
+    } while (0)
+#  endif
 
 coordf get_real_coord(ogg_com_ptr com_ptr, coordf pix)
 {
@@ -89,26 +101,34 @@ void set_component_anchor(ogg_com_ptr com_ptr, const ogg_anchor* anchor)
     }
 }
 
-static void ogg_single_event(ogg_com_ptr com_ptr, event event_name, ogg_handle_flag *handled, va_list args)
-{
-    if (((ogg_component*)com_ptr)->vptr[event_name] != 0) {
-        ((ogg_component*)com_ptr)->vptr[event_name](com_ptr, args, handled);
-    }
-}
+#  define ogg_single_event(com_ptr, event_name, handled, args)                      \
+    do {                                                                            \
+        if (com_ptr->vptr[event_name] != 0) {                                       \
+            com_ptr->vptr[event_name](com_ptr, args, handled);                      \
+        }                                                                           \
+    } while (0)
 
-static void ogg_parent_handle_event(ogg_com_ptr com_ptr, event event_name, ogg_handle_flag *handled, va_list args)
+static void ogg_parent_handle_event(
+        ogg_component* com_ptr,
+        event event_name,
+        ogg_handle_flag* handled, 
+        va_list args)
 {
     ogg_single_event(com_ptr, event_name, handled, args);
-    ogg_subcomponent* iter = ((ogg_component*)com_ptr)->sub->next;
+    ogg_subcomponent* iter = com_ptr->sub->next;
     while (!*handled && iter != 0) {
         ogg_parent_handle_event(iter->object, event_name, handled, args);
         iter = iter->next;
     }
 }
 
-static void ogg_child_handle_event(ogg_com_ptr com_ptr, event event_name, ogg_handle_flag *handled, va_list args)
+static void ogg_child_handle_event(
+        ogg_component* com_ptr,
+        event event_name,
+        ogg_handle_flag* handled, 
+        va_list args)
 {
-    ogg_subcomponent* iter = ((ogg_component*)com_ptr)->sub->next;
+    ogg_subcomponent* iter = com_ptr->sub->next;
     while (!*handled && iter != 0) {
         ogg_child_handle_event(iter->object, event_name, handled, args);
         iter = iter->next;
@@ -123,8 +143,10 @@ void ogg_send_event(ogg_com_ptr com_ptr, event event_name, ...)
     va_list args; va_start(args, event_name);
     ogg_handle_flag handled = OGG_UNHANDLED;
     switch (ogg_event_type[event_name]) {
-    case OGG_CHILD_HANDLE_EVENT: ogg_child_handle_event(com_ptr, event_name, &handled, args); break;
-    case OGG_PARENT_HANDLE_EVENT: ogg_parent_handle_event(com_ptr, event_name, &handled, args); break;
+    case OGG_CHILD_HANDLE_EVENT: 
+        ogg_child_handle_event(com_ptr, event_name, &handled, args); break;
+    case OGG_PARENT_HANDLE_EVENT:
+        ogg_parent_handle_event(com_ptr, event_name, &handled, args); break;
     }
     va_end(args);
 }
@@ -132,7 +154,7 @@ void ogg_send_event(ogg_com_ptr com_ptr, event event_name, ...)
 void ogg_destroy(ogg_com_ptr com_ptr)
 {
     destroy_sub_components(com_ptr);
-    ogg_single_event(com_ptr, OGG_DESTROY_EVENT, 0, 0);
+    ogg_single_event(((ogg_component*)com_ptr), OGG_DESTROY_EVENT, 0, 0);
     ogg_component* parent = ((ogg_component*)com_ptr)->parent;
     if (parent != 0) {
         ogg_subcomponent* p = parent->sub;
@@ -163,7 +185,7 @@ ogg_coord coord(int x, int y)
     return pos;
 }
 
-ogg_component_info make_startup(ogg_com_ptr parent)
+ogg_component_info ogg_default_info_ogg_component___(ogg_com_ptr parent)
 {
     ogg_component_info st = {
         .anchor = {
@@ -179,3 +201,5 @@ ogg_component_info make_startup(ogg_com_ptr parent)
     };
     return st;
 }
+
+#  undef ogg_single_event

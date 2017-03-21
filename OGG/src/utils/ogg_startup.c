@@ -1,3 +1,4 @@
+#include <GL/glut.h>
 #define OGG_GRAPHIC_STARTUP__INST____
 #include "utils/ogg_startup.h"
 
@@ -9,7 +10,14 @@ def_component(ogg_window) (
 
 static ogg_window* main_window;
 
-def_vtable(ogg_window) ( 0 );
+static void ogg_window_paint()
+{
+    glFlush();
+}
+
+def_vtable(ogg_window) (
+    [OGG_PAINT_EVENT] = ogg_window_paint
+);
 
 def_startup(ogg_window)();
 
@@ -17,9 +25,9 @@ static def_constructor(ogg_window, args)
 {
 }
 
-ogg_component_info make_global_startup(void)
+ogg_component_info ogg_fill_window(void)
 {
-    return make_startup(main_window);
+    return ogg_default_info_ogg_component___(main_window);
 }
 
 static const glut_register glut_event_register[OGG_EVENT_COUNT] = {
@@ -56,8 +64,8 @@ void ogg_register_event(event event_name, glut_callback callback)
 
 int main(int argc, char *argv[])
 {
-    static const ogg_startup(ogg_window) info = {
-        .super = {
+    ogg_create(ogg_window)(
+        .ogg_component = {
             .anchor = {
                 .type = ogg_anchor_pec,
                 .pec = {
@@ -67,8 +75,7 @@ int main(int argc, char *argv[])
             },
             .parent = 0
         }
-    };
-    main_window = ogg_create(ogg_window)(&info);
+    )(main_window);
 
     ogg_startup_info st = {
         .argc = argc,

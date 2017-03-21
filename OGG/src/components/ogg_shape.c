@@ -1,3 +1,4 @@
+#include <GL/glut.h>
 #include "components/ogg_shape.h"
 
     void destroy_shape(ogg_shape* shape);
@@ -5,9 +6,13 @@
     void paint_shape(ogg_shape* shape);
 
     def_vtable(ogg_shape) (
-        destroy_shape, // OGG_DESTROY_EVENT
-        paint_shape    // OGG_PAINT_EVENT
+        [OGG_DESTROY_EVENT] = destroy_shape,
+        [OGG_PAINT_EVENT] = paint_shape
     );
+
+    default_startup(ogg_shape)(
+        .vertex = 0
+    )
 
     def_constructor(ogg_shape, args)
     {
@@ -15,12 +20,25 @@
     }
 
     def_vtable(ogg_rect) (
-        destroy_shape, // OGG_DESTROY_EVENT
-        paint_shape    // OGG_PAINT_EVENT
+        [OGG_DESTROY_EVENT] = destroy_shape,
+        [OGG_PAINT_EVENT] = paint_shape
     );
+
+    default_startup_inh(ogg_rect, ogg_shape)(
+    )
 
     def_constructor(ogg_rect, args)
     {
+        if (this->super.vertex) {
+            free(this->super.vertex->point);
+# ifdef DEBUG
+            alloc_memory--;
+# endif
+            free(this->super.vertex);
+# ifdef DEBUG
+            alloc_memory--;
+# endif
+        }
         this->super.vertex = vertex_list(4,
             vertex(0, 0),
             vertex(0, 100),
@@ -50,7 +68,6 @@
             glVertex2f(pix.x, pix.y);
         }
         glEnd();
-        glFlush();
     }
 
     ogg_shape_vertex* vertex_list(unsigned n, ...)

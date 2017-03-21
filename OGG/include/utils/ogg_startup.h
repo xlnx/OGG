@@ -1,7 +1,6 @@
 #ifndef OGG_GRAPHIC_STARUP__HEADER_FILE____
 #define OGG_GRAPHIC_STARUP__HEADER_FILE____
 #include "components/ogg_components.h"
-#include <GL/glut.h>
 
 # ifdef WIN32
 #  ifndef OGG_SHOW_CONSOLE
@@ -37,7 +36,7 @@
     typedef void(_stdcall *glut_register)(glut_callback);
 
     void ogg_register_event(event event_name, glut_callback callback);
-    ogg_component_info make_global_startup(void);
+    ogg_component_info ogg_fill_window(void);
 
     void ogg_main(ogg_startup_info*);
 # ifdef OGG_GRAPHIC_STARTUP__INST____

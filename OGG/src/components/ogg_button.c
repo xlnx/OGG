@@ -1,3 +1,4 @@
+#include <GL/glut.h>
 #include "components/ogg_button.h"
 
 extern void destroy_shape(ogg_shape* shape);
@@ -7,15 +8,14 @@ extern void paint_shape(ogg_shape* shape);
 static void button_click(ogg_button* button, va_list args, ogg_handle_flag *handled);
 
 def_vtable(ogg_button) (
-    destroy_shape,  // OGG_DESTROY_EVENT
-    paint_shape,    // OGG_PAINT_EVENT
-    0,              // OGG_KEYBOARD_EVENT
-    0,              // OGG_SPECIAL_KEY_EVENT
-    button_click,   // OGG_MOUSE_EVENT
-    0,              // OGG_MOUSE_DRAG_EVENT
-    0,              // OGG_MOUSE_MOVE_EVENT
-    0,              // OGG_MOUSE_ENTRY_EVENT
+    [OGG_DESTROY_EVENT] = destroy_shape,
+    [OGG_PAINT_EVENT] = paint_shape,
+    [OGG_MOUSE_EVENT] = button_click
 );
+
+default_startup_inh(ogg_button, ogg_rect)(
+    .callback = 0
+)
 
 def_constructor(ogg_button, args)
 {

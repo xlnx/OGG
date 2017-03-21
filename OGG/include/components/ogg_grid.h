@@ -19,8 +19,8 @@
 
     ogg_com_ptr get_grid_elem(ogg_grid* grid, ogg_coord pos);
 
-    ogg_bool paint_grid_elem(ogg_grid* grid, ogg_coord pos);
+    ogg_com_ptr get_grid_coord(ogg_grid* grid, ogg_coord pos);
 
-    ogg_component_info make_grid_startup(ogg_grid* grid, ogg_coord pos);
+    ogg_bool paint_grid_elem(ogg_grid* grid, ogg_coord pos);
 
 #endif //OGG_GRAPHIC_COMPONENT__GRID__HEADER_FILE_____

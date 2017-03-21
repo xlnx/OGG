@@ -11,7 +11,7 @@
         ogg_shape_vertex* vertex;
     );
 
-    def_startup(ogg_rect) (
+    def_startup_inh(ogg_rect, ogg_shape) (
     );
 
     def_component(ogg_shape) (

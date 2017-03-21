@@ -90,29 +90,53 @@
     void ogg_destroy(ogg_com_ptr com_ptr);
 
     /* create full anchor startup in a parent component */
-    ogg_component_info make_startup(ogg_com_ptr parent);
+    ogg_component_info ogg_default_info_ogg_component___(ogg_com_ptr parent);
 
     /* make a int-int coord */
     ogg_coord coord(int x, int y);
 
-#  define OGG_COMPONENT_STARTUP_HELPER(...)                             \
+#  define OGG_EXPAND_ARGS_DBL_BRAK(...)                                 \
+        __VA_ARGS__                                                     \
+    })
+
+#  define OGG_EXPAND_ARGS_WITH_BRAK(...)                                \
         __VA_ARGS__                                                     \
     }
 
-#  define def_startup_inh(component_type, super_class)                  \
-    struct OGG_COMPONENT_STARTUP_##component_type##_info;               \
-    typedef struct OGG_COMPONENT_STARTUP_##component_type##_info        \
-        component_type##_info;                                          \
-    struct OGG_COMPONENT_STARTUP_##component_type##_info {              \
-        super_class##_info super;                                       \
-        OGG_COMPONENT_STARTUP_HELPER
+#  define def_startup_inh(T, super_class)                               \
+    struct OGG_COMPONENT_STARTUP_##T##_info;                            \
+    typedef struct OGG_COMPONENT_STARTUP_##T##_info T##_info;           \
+    T##_info ogg_default_info_##T##___(ogg_com_ptr);                    \
+    extern super_class##_info ogg_default_info_##super_class##___(      \
+        ogg_com_ptr);                                                   \
+    static super_class##_info (*const parent_default_info_##T##__)(     \
+            ogg_com_ptr) = ogg_default_info_##super_class##___;         \
+    struct OGG_COMPONENT_STARTUP_##T##_info {                           \
+        super_class##_info super_class;                                 \
+        OGG_EXPAND_ARGS_WITH_BRAK
+
+#  define OGG_DEFAULT_ARGS_EXPAND_ARGS(...)                             \
+            __VA_ARGS__                                                 \
+        };                                                              \
+        return info;                                                    \
+    }
+
+#  define default_startup_inh(T, super_class)                           \
+    T##_info ogg_default_info_##T##___(ogg_com_ptr parent)              \
+    {                                                                   \
+        T##_info info = {                                               \
+            .super_class = parent_default_info_##T##__(parent),         \
+            OGG_DEFAULT_ARGS_EXPAND_ARGS
 
 #  define def_startup(component_type)                                   \
     def_startup_inh(component_type, ogg_component)
 
-#  define OGG_COMPONENT_INH_INST(...)                                   \
-        __VA_ARGS__                                                     \
-    }
+#  define default_startup(component_type)                               \
+    default_startup_inh(component_type, ogg_component)
+
+#  define ogg_default(T)                                                \
+    ogg_default_info_##T##___
+
 
 #  define def_component_inh(T, super_class)                             \
     struct OGG_COMPONENT_HELPER_##T;                                    \
@@ -120,29 +144,78 @@
     void ogg_static_constructor_##T##___(T*, const void*);              \
     extern void ogg_static_constructor_##super_class##___(              \
         super_class*, const void*);                                     \
-    static const void (*parent_static_constructor_##T##__)(             \
-            super_class*, const super_class##_info*) =                  \
+    static void (*const parent_static_constructor_##T##__)(             \
+            super_class*, const void*) =                                \
         ogg_static_constructor_##super_class##___;                      \
     struct OGG_COMPONENT_HELPER_##T {                                   \
         super_class super;                                              \
-        OGG_COMPONENT_INH_INST
+        OGG_EXPAND_ARGS_WITH_BRAK
 
 #  define def_component(component_type)                                 \
     def_component_inh(component_type, ogg_component)
 
-#  define OGG_COMPONENT_VTABLE_INST(...)                                \
-        __VA_ARGS__                                                     \
-    }
-
 #  define def_vtable(component_type)                                    \
     static ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT]= {\
-        OGG_COMPONENT_VTABLE_INST
+        OGG_EXPAND_ARGS_WITH_BRAK
 
-#  define ogg_create(T)                                                 \
-	ogg_constructor_##T##___
 
 #  define ogg_startup(T)                                                \
     T##_info
+
+#  define OGG_CREATOR_RAW__HELPER_DEF(st)                               \
+        object__constructor__(&st);                                     \
+    } while (0)
+
+#  define ogg_create_def_raw(T)                                         \
+	do {                                                                \
+        static T* (*object__constructor__)() =                          \
+            ogg_constructor_##T##___;                                   \
+        OGG_CREATOR_RAW__HELPER_DEF
+
+#  define OGG_CREATOR_RAW__FINISH(object)                               \
+        object = object__constructor__(object__startup_info__);         \
+    } while (0)
+
+#  define OGG_CREATOR_RAW__HELPER(st)                                   \
+        const ogg_startup(T)* object__startup_info__ = &st;             \
+        OGG_CREATOR_RAW__FINISH
+
+#  define ogg_create_raw(T)                                             \
+	do {                                                                \
+        static T* (*object__constructor__)() =                          \
+            ogg_constructor_##T##___;                                   \
+        OGG_CREATOR_RAW__HELPER
+
+
+#  define OGG_CREATOR__HELPER_DEF(...)                                  \
+            __VA_ARGS__                                                 \
+        };                                                              \
+        object__constructor__(&object__startup_info__);                 \
+    } while (0)
+
+#  define ogg_create_def(T)                                             \
+	do {                                                                \
+        static T* (*object__constructor__)() =                          \
+            ogg_constructor_##T##___;                                   \
+        const ogg_startup(T) object__startup_info__ = {                 \
+            OGG_CREATOR__HELPER_DEF
+
+#  define OGG_CREATOR__FINISH(object)                                   \
+        object = object__constructor__(&object__startup_info__);        \
+    } while (0)
+
+#  define OGG_CREATOR__HELPER(...)                                      \
+            __VA_ARGS__                                                 \
+        };                                                              \
+        OGG_CREATOR__FINISH
+
+#  define ogg_create(T)                                                 \
+	do {                                                                \
+        static T* (*object__constructor__)() =                          \
+            ogg_constructor_##T##___;                                   \
+        const ogg_startup(T) object__startup_info__ = {                 \
+            OGG_CREATOR__HELPER
+
 
 #  define constructor(T)                                                \
     T* ogg_constructor_##T##___(const T##_info* args)

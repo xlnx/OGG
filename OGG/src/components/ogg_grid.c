@@ -1,9 +1,12 @@
+#include <GL/glut.h>
 #include "components/ogg_grid.h"
 
     static ogg_event_handler ogg_grid_element_vtable[OGG_EVENT_COUNT] = { 0 };
 
     def_startup(ogg_grid_element) (
     );
+    default_startup(ogg_grid_element) (
+    )
 
     static def_constructor(ogg_grid_element, args)
     {
@@ -17,9 +20,13 @@
     static void paint_grid(ogg_grid* grid);
 
     def_vtable(ogg_grid) (
-        destroy_grid, // OGG_DESTROY_EVENT
-        paint_grid    // OGG_PAINT_EVENT
+        [OGG_DESTROY_EVENT] = destroy_grid,
+        [OGG_PAINT_EVENT] = paint_grid
     );
+
+    default_startup(ogg_grid) (
+        .size = { 1, 1 }
+    )
 
     def_constructor(ogg_grid, args)
     {
@@ -36,8 +43,8 @@
             alloc_memory++;
 # endif
             for (pos.x = 0; pos.x != args->size.x; ++pos.x) {
-                ogg_grid_element_info info = {
-                    .super = {
+                ogg_create(ogg_grid_element)(
+                    .ogg_component = {
                         .anchor = {
                             .type = ogg_anchor_pec,
                             .pec = {
@@ -49,8 +56,7 @@
                         },
                         .parent = (ogg_component*)this
                     }
-                };
-                this->sub[pos.y][pos.x] = ogg_create(ogg_grid_element)(&info);
+                )(this->sub[pos.y][pos.x]);
             }
         }
     }
@@ -86,10 +92,11 @@
             return ogg_false;
         }
         ogg_send_event(grid->sub[pos.y][pos.x], OGG_PAINT_EVENT);
+        glFlush();
         return ogg_true;
     }
 
-    ogg_component_info make_grid_startup(ogg_grid* grid, ogg_coord pos)
+    ogg_com_ptr get_grid_coord(ogg_grid* grid, ogg_coord pos)
     {
-        return make_startup(grid->sub[pos.y][pos.x]);
+        return grid->sub[pos.y][pos.x];
     }

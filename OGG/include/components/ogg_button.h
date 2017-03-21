@@ -4,7 +4,7 @@
 
     typedef void(*button_callback)(void* self);
 
-    def_startup(ogg_button) (
+    def_startup_inh(ogg_button, ogg_rect) (
         button_callback callback;
     );
 

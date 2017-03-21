@@ -1,3 +1,4 @@
+#include <GL/glut.h>
 #include "utils/ogg_utils.h"
 
 # ifndef INST__GEOMETRY_SYSTEM__FLOAT__F___
