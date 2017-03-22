@@ -32,6 +32,10 @@ def_handler(ogg_window, OGG_PAINT_EVENT)
 
 static ogg_window* main_window;
 
+const ogg_com_ptr ogg_main_window(void)
+{
+    return main_window;
+}
 
 ogg_component_info ogg_fill_window(void)
 {

@@ -53,7 +53,7 @@ coordf get_real_coord(ogg_com_ptr com_ptr, coordf pix)
         switch (anchor.type) {
         case ogg_anchor_pec:
             pix.x = ((pix.x + 1) * anchor.pec.right - (pix.x - 1) * anchor.pec.left) / 2;
-            pix.y = ((pix.y + 1) * anchor.pec.bottom - (pix.y - 1) * anchor.pec.top) / 2;
+            pix.y = ((1 + pix.y) * anchor.pec.top + (1 - pix.y) * anchor.pec.bottom) / 2;
             break;
         case ogg_anchor_coord:;
         }
@@ -79,9 +79,11 @@ void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
             anchor->pec.right = 
                 ((com->pec.right + 1) * x2 - (com->pec.right - 1) * x1) / 2;
             anchor->pec.top = 
-                ((com->pec.top + 1) * y2 - (com->pec.top - 1) * y1) / 2;
+                ((1 + com->pec.top) * y1 + (1 - com->pec.top) * y2) / 2;
+                //((com->pec.top + 1) * y2 - (com->pec.top - 1) * y1) / 2;
             anchor->pec.bottom = 
-                ((com->pec.bottom + 1) * y2 - (com->pec.bottom - 1) * y1) / 2; break;
+                //((com->pec.bottom + 1) * y2 - (com->pec.bottom - 1) * y1) / 2;
+                ((1 + com->pec.bottom) * y1 + (1 - com->pec.bottom) * y2) / 2; break;
         }
         case ogg_anchor_coord:;
         }
@@ -94,9 +96,9 @@ void set_component_anchor(ogg_com_ptr com_ptr, const ogg_anchor* anchor)
     switch (com->anchor_type = anchor->type) {
     case ogg_anchor_pec:
         com->pec.left = anchor->pec.left / 50 - 1;
-        com->pec.top = anchor->pec.top / 50 - 1;
+        com->pec.top = 1 - anchor->pec.top / 50;
         com->pec.right = anchor->pec.right / 50 - 1;
-        com->pec.bottom = anchor->pec.bottom / 50 - 1; break;
+        com->pec.bottom = 1 - anchor->pec.bottom / 50; break;
     case ogg_anchor_coord:;
     }
 }

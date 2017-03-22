@@ -93,7 +93,7 @@
         for (; i != n; ++i) {
             memcpy(&vertex->point[i], &va_arg(argp, coordf), sizeof(coordf));
             vertex->point[i].x = vertex->point[i].x / 50 - 1;
-            vertex->point[i].y = vertex->point[i].y / 50 - 1;
+            vertex->point[i].y = 1 - vertex->point[i].y / 50;
         }
         va_end(argp);
         return vertex;
