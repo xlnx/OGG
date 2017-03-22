@@ -10,11 +10,13 @@
     );
 
     default_startup(ogg_shape)(
+        .color = OGG_BLUE,
         .vertex = 0
     )
 
     def_constructor(ogg_shape, args)
     {
+        memcpy(&this->color, &args->color, sizeof(ogg_color));
         this->vertex = args->vertex;
     }
 
@@ -32,6 +34,7 @@
 
     def_handler(ogg_shape, OGG_PAINT_EVENT)
     {
+        glColor3f(this->color.R, this->color.G, this->color.B);
         glBegin(GL_POLYGON);
         unsigned i = 0;
         for (; i != this->vertex->size; ++i) {
@@ -75,6 +78,12 @@
     }
 
     /* ====================== UTILS ======================= */
+
+    void set_color(ogg_com_ptr this, ogg_color color)
+    {
+        memcpy(&((ogg_shape*)this)->color, &color, sizeof(ogg_color));
+        ogg_send_event(this, OGG_PAINT_EVENT);
+    }
 
     ogg_shape_vertex* vertex_list(unsigned n, ...)
     {

@@ -36,6 +36,8 @@
     typedef void(_stdcall *glut_register)(glut_callback);
 
     const ogg_com_ptr ogg_main_window(void);
+    int ogg_window_width(void);
+    int ogg_window_height(void);
     void ogg_register_event(event event_name, glut_callback callback);
     ogg_component_info ogg_fill_window(void);
 

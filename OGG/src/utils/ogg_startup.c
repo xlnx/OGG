@@ -32,42 +32,61 @@ def_handler(ogg_window, OGG_PAINT_EVENT)
 
 static ogg_window* main_window;
 
-const ogg_com_ptr ogg_main_window(void)
-{
-    return main_window;
-}
-
 ogg_component_info ogg_fill_window(void)
 {
     return ogg_default_info_ogg_component___(main_window);
 }
 
 static const glut_register glut_event_register[OGG_EVENT_COUNT] = {
-    0,
-    (glut_register)glutDisplayFunc,
-    (glut_register)glutKeyboardFunc,
-    (glut_register)glutSpecialFunc,
-    (glut_register)glutMouseFunc,
-    (glut_register)glutMotionFunc,
-    (glut_register)glutPassiveMotionFunc,
-    (glut_register)glutEntryFunc,
+    [OGG_DESTROY_EVENT] = 0,
+    [OGG_PAINT_EVENT] = (glut_register)glutDisplayFunc,
+    [OGG_KEYBOARD_EVENT] = (glut_register)glutKeyboardFunc,
+    [OGG_SPECIAL_KEY_EVENT] =(glut_register)glutSpecialFunc,
+    [OGG_MOUSE_EVENT] = (glut_register)glutMouseFunc,
+    [OGG_MOUSE_DRAG_EVENT] = (glut_register)glutMotionFunc,
+    [OGG_MOUSE_MOVE_EVENT] = (glut_register)glutPassiveMotionFunc,
+    [OGG_MOUSE_ENTRY_EVENT] = (glut_register)glutEntryFunc,
+    [OGG_RESHAPE_EVENT] = (glut_register)glutReshapeFunc,
+    [OGG_MOUSE_LEAVE_EVENT] = 0,
+    [OGG_MOUSE_ENTER_EVENT] = 0,
 };
 
 # include "events/ogg_default_handlers.h"
 static glut_callback glut_events[OGG_EVENT_COUNT] = {
-    0,
-    ogg_default_handler(OGG_PAINT_EVENT),
-    ogg_default_handler(OGG_KEYBOARD_EVENT),
-    ogg_default_handler(OGG_SPECIAL_KEY_EVENT),
-    ogg_default_handler(OGG_MOUSE_EVENT),
-    ogg_default_handler(OGG_MOUSE_DRAG_EVENT),
-    ogg_default_handler(OGG_MOUSE_MOVE_EVENT),
-    ogg_default_handler(OGG_MOUSE_ENTRY_EVENT),
+    [OGG_DESTROY_EVENT] = 0,
+    [OGG_PAINT_EVENT] = ogg_default_handler(OGG_PAINT_EVENT),
+    [OGG_KEYBOARD_EVENT] = ogg_default_handler(OGG_KEYBOARD_EVENT),
+    [OGG_SPECIAL_KEY_EVENT] = ogg_default_handler(OGG_SPECIAL_KEY_EVENT),
+    [OGG_MOUSE_EVENT] = ogg_default_handler(OGG_MOUSE_EVENT),
+    [OGG_MOUSE_DRAG_EVENT] = ogg_default_handler(OGG_MOUSE_DRAG_EVENT),
+    [OGG_MOUSE_MOVE_EVENT] = ogg_default_handler(OGG_MOUSE_MOVE_EVENT),
+    [OGG_MOUSE_ENTRY_EVENT] = ogg_default_handler(OGG_MOUSE_ENTRY_EVENT),
+    [OGG_RESHAPE_EVENT] = ogg_default_handler(OGG_RESHAPE_EVENT),
+    [OGG_MOUSE_LEAVE_EVENT] = 0,
+    [OGG_MOUSE_ENTER_EVENT] = 0,
 };
 
 # ifdef ogg_default_handler
 #  undef ogg_default_handler
 # endif
+
+const ogg_com_ptr ogg_main_window(void)
+{
+    return main_window;
+}
+
+extern int window_width;
+extern int window_height;
+
+int ogg_window_width(void)
+{
+    return window_width;
+}
+
+int ogg_window_height(void)
+{
+    return window_height;
+}
 
 void ogg_register_event(event event_name, glut_callback callback)
 {

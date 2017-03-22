@@ -45,6 +45,9 @@ void ogg_static_constructor_ogg_component___(ogg_com_ptr com_ptr, const ogg_comp
     } while (0)
 #  endif
 
+int window_width;
+int window_height;
+
 coordf get_real_coord(ogg_com_ptr com_ptr, coordf pix)
 {
     if (com_ptr) {
@@ -55,10 +58,26 @@ coordf get_real_coord(ogg_com_ptr com_ptr, coordf pix)
             pix.x = ((pix.x + 1) * anchor.pec.right - (pix.x - 1) * anchor.pec.left) / 2;
             pix.y = ((1 + pix.y) * anchor.pec.top + (1 - pix.y) * anchor.pec.bottom) / 2;
             break;
-        case ogg_anchor_coord:;
+        case ogg_anchor_coord:
+            pix.x = ((anchor.coord.right - anchor.coord.left) * (pix.x + 1) + 2 * anchor.coord.left) / window_width - 1;
+            pix.y = 1 - ((anchor.coord.bottom - anchor.coord.top) * (1 - pix.y) + 2 * anchor.coord.top) / window_height;
         }
     }
     return pix;
+}
+
+void get_component_real_coord_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
+{
+    get_component_real_anchor(com_ptr, anchor);
+    if (anchor->type == ogg_anchor_pec) {
+        anchor->type = ogg_anchor_coord;
+        float x1 = anchor->pec.left, x2 = anchor->pec.right,
+            y1 = anchor->pec.top, y2 = anchor->pec.bottom;
+        anchor->coord.left = (int)(window_width * (x1 + 1) / 2);
+        anchor->coord.right = (int)(window_width * (x2 + 1) / 2);
+        anchor->coord.top = (int)(window_height * (1 - y1) / 2);
+        anchor->coord.bottom = (int)(window_height * (1 - y2) / 2);
+    }
 }
 
 void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
@@ -70,22 +89,51 @@ void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
     }
     else {
         get_component_real_anchor(com->parent, anchor);
+        /* anchor is the parent anchor */
+        /* com is temporary anchor */
         switch (anchor->type){
-        case ogg_anchor_pec: {
-            float x1 = anchor->pec.left, x2 = anchor->pec.right,
-                y1 = anchor->pec.top, y2 = anchor->pec.bottom;
-            anchor->pec.left =
-                ((com->pec.left + 1) * x2 - (com->pec.left - 1) * x1) / 2;
-            anchor->pec.right = 
-                ((com->pec.right + 1) * x2 - (com->pec.right - 1) * x1) / 2;
-            anchor->pec.top = 
-                ((1 + com->pec.top) * y1 + (1 - com->pec.top) * y2) / 2;
-                //((com->pec.top + 1) * y2 - (com->pec.top - 1) * y1) / 2;
-            anchor->pec.bottom = 
-                //((com->pec.bottom + 1) * y2 - (com->pec.bottom - 1) * y1) / 2;
-                ((1 + com->pec.bottom) * y1 + (1 - com->pec.bottom) * y2) / 2; break;
-        }
-        case ogg_anchor_coord:;
+        case ogg_anchor_pec:
+            switch (com->anchor_type) {
+            case ogg_anchor_pec: {              /* parent is pec and this is pec */
+                float x1 = anchor->pec.left, x2 = anchor->pec.right,
+                    y1 = anchor->pec.top, y2 = anchor->pec.bottom;
+                anchor->pec.left =
+                    ((com->pec.left + 1) * x2 - (com->pec.left - 1) * x1) / 2;
+                anchor->pec.right = 
+                    ((com->pec.right + 1) * x2 - (com->pec.right - 1) * x1) / 2;
+                anchor->pec.top = 
+                    ((1 + com->pec.top) * y1 + (1 - com->pec.top) * y2) / 2;
+                    //((com->pec.top + 1) * y2 - (com->pec.top - 1) * y1) / 2;
+                anchor->pec.bottom = 
+                    //((com->pec.bottom + 1) * y2 - (com->pec.bottom - 1) * y1) / 2;
+                    ((1 + com->pec.bottom) * y1 + (1 - com->pec.bottom) * y2) / 2;
+            } break;
+            case ogg_anchor_coord: {            /* parent is pec and this is coord */
+                float x1 = anchor->pec.left, y1 = anchor->pec.top;
+                anchor->coord.left = (int)(window_width * (x1 + 1) / 2 + com->coord.left);
+                anchor->coord.right = (int)(window_width * (x1 + 1) / 2 + com->coord.right);
+                anchor->coord.top = (int)(window_height * (1 - y1) / 2 + com->coord.top);
+                anchor->coord.bottom = (int)(window_height * (1 - y1) / 2 + com->coord.bottom);
+                anchor->type = ogg_anchor_coord;
+            } break;
+            } break;
+        case ogg_anchor_coord:
+            switch (com->anchor_type) {         /* parent is coord and this is pec */
+            case ogg_anchor_pec: {
+                int x1 = anchor->coord.left, x2 = anchor->coord.right,
+                    y1 = anchor->coord.top, y2 = anchor->coord.bottom;
+                anchor->coord.left += (int)((x2 - x1) * (com->pec.left + 1) / 2);
+                anchor->coord.right += (int)((x2 - x1) * (com->pec.right + 1) / 2);
+                anchor->coord.top += (int)((y2 - y1) * (1 - com->pec.top) / 2);
+                anchor->coord.bottom += (int)((y2 - y1) * (1 - com->pec.bottom) / 2);
+            } break;
+            case ogg_anchor_coord: {            /* parent is coord and this is coord */
+                anchor->coord.left += com->coord.left;
+                anchor->coord.right += com->coord.right;
+                anchor->coord.top += com->coord.top;
+                anchor->coord.bottom += com->coord.bottom;
+            } break;
+            }
         }
     }
 }
@@ -95,20 +143,29 @@ void set_component_anchor(ogg_com_ptr com_ptr, const ogg_anchor* anchor)
     ogg_component* com = (ogg_component*)com_ptr;
     switch (com->anchor_type = anchor->type) {
     case ogg_anchor_pec:
+        com->anchor_type = ogg_anchor_pec;
         com->pec.left = anchor->pec.left / 50 - 1;
         com->pec.top = 1 - anchor->pec.top / 50;
         com->pec.right = anchor->pec.right / 50 - 1;
         com->pec.bottom = 1 - anchor->pec.bottom / 50; break;
-    case ogg_anchor_coord:;
+    case ogg_anchor_coord:
+        com->anchor_type = ogg_anchor_coord;
+        com->coord.left = anchor->coord.left;
+        com->coord.right = anchor->coord.right;
+        com->coord.top = anchor->coord.top;
+        com->coord.bottom = anchor->coord.bottom;
     }
 }
 
 #  define ogg_single_event(com_ptr, event_name, handled, args)                      \
     do {                                                                            \
-        if (com_ptr->vptr[event_name] != 0) {                                       \
+        if (event_checker[event_name]((ogg_component*)com_ptr, args) &&             \
+            com_ptr->vptr[event_name] != 0) {                                       \
             com_ptr->vptr[event_name](com_ptr, args, handled);                      \
         }                                                                           \
     } while (0)
+
+extern const ogg_bool (*event_checker[OGG_EVENT_COUNT])(ogg_component*, va_list);
 
 static void ogg_parent_handle_event(
         ogg_component* com_ptr,
@@ -149,6 +206,8 @@ void ogg_send_event(ogg_com_ptr com_ptr, event event_name, ...)
         ogg_child_handle_event(com_ptr, event_name, &handled, args); break;
     case OGG_PARENT_HANDLE_EVENT:
         ogg_parent_handle_event(com_ptr, event_name, &handled, args); break;
+    case OGG_SELF_HANDLE_EVENT:
+        ogg_single_event(((ogg_component*)com_ptr), event_name, &handled, args); break;
     }
     va_end(args);
 }

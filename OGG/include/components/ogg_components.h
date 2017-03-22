@@ -74,6 +74,9 @@
     /* get the absolute coord of a coord in canvas */
     coordf get_real_coord(ogg_com_ptr com_ptr, coordf pix);
 
+    /* get the real coord anchor of component */
+    void get_component_real_coord_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor);
+
     /* get the absolute anchor of a component in canvas */
     void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor);
 
