@@ -71,8 +71,20 @@
 #  define OGG_HANDLED     (1)
 #  define OGG_UNHANDLED   (0)
 
-    /* get the absolute coord of a coord in canvas */
-    coordf get_real_coord(ogg_com_ptr com_ptr, coordf pix);
+    typedef coordf ogg_pec;
+    /* coord utils */
+    ogg_pec ogg_make_pec(float x, float y);
+
+    ogg_pec coord2pec(ogg_coord p);
+    ogg_coord pec2coord(ogg_pec p);
+
+    ogg_pec pec_add_pec(ogg_pec a, ogg_pec b);
+    ogg_pec pec_sub_pec(ogg_pec a, ogg_pec b);
+    ogg_pec pec_add_coord(ogg_pec a, ogg_coord b);
+    ogg_pec pec_sub_coord(ogg_pec a, ogg_coord b);
+
+    /* get the absolute coord of a pec coord in canvas */
+    ogg_pec get_real_pec(ogg_com_ptr com_ptr, ogg_pec pix);
 
     /* get the real coord anchor of component */
     void get_component_real_coord_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor);

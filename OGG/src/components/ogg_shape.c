@@ -38,7 +38,7 @@
         glBegin(GL_POLYGON);
         unsigned i = 0;
         for (; i != this->vertex->size; ++i) {
-            coordf pix = get_real_coord(this, this->vertex->point[i]);
+            coordf pix = get_real_pec(this, this->vertex->point[i]);
             glVertex2f(pix.x, pix.y);
         }
         glEnd();

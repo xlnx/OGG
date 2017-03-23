@@ -48,7 +48,53 @@ void ogg_static_constructor_ogg_component___(ogg_com_ptr com_ptr, const ogg_comp
 int window_width;
 int window_height;
 
-coordf get_real_coord(ogg_com_ptr com_ptr, coordf pix)
+ogg_pec ogg_make_pec(float x, float y)
+{
+    ogg_pec pec = { x, y };
+    return pec;
+}
+
+ogg_pec coord2pec(ogg_coord p)
+{
+    ogg_pec pix = { (float)p.x * 2 / window_width - 1,
+        1 - (float)p.y * 2 / window_height };
+    return pix;
+}
+
+ogg_coord pec2coord(ogg_pec p)
+{
+    ogg_coord pix = { (int)(window_width * (p.x + 1) / 2),
+        (int)(window_height * (1 - p.y) / 2) };
+    return pix;
+}
+
+ogg_pec pec_add_pec(ogg_pec a, ogg_pec b)
+{
+    a.x += b.x; a.y += b.y;
+    return a;
+}
+
+ogg_pec pec_sub_pec(ogg_pec a, ogg_pec b)
+{
+    a.x -= b.x; a.y -= b.y;
+    return a;
+}
+
+ogg_pec pec_add_coord(ogg_pec a, ogg_coord b)
+{
+    a.x += (float)b.x * 2 / window_width;
+    a.y += (float)b.y * 2 / window_height;
+    return a;
+}
+
+ogg_pec pec_sub_coord(ogg_pec a, ogg_coord b)
+{
+    a.x -= (float)b.x * 2 / window_width;
+    a.y -= (float)b.y * 2 / window_height;
+    return a;
+}
+
+ogg_pec get_real_pec(ogg_com_ptr com_ptr, ogg_pec pix)
 {
     if (com_ptr) {
         ogg_anchor anchor;

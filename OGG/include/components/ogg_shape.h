@@ -33,6 +33,9 @@
 
     coordf vertex(float x, float y);
 
+    static const ogg_color OGG_BLACK = {
+        0.0, 0.0, 0.0
+    };
     static const ogg_color OGG_RED = {
         255.0/255.0, 0.0, 0.0
     };
@@ -41,6 +44,18 @@
     };
     static const ogg_color OGG_BLUE = {
         0.0, 0.0, 255.0/255.0
+    };
+    static const ogg_color OGG_YELLOW = {
+        255.0/255.0, 255.0/255.0, 0.0
+    };
+    static const ogg_color OGG_FUCHSIN = {
+        255.0/255.0, 0.0, 255.0/255.0
+    };
+    static const ogg_color OGG_CYAN = {
+        0.0, 255.0/255.0, 255.0/255.0
+    };
+    static const ogg_color OGG_WHITE = {
+        255.0/255.0, 255.0/255.0, 255.0/255.0
     };
 
 #endif //OGG_GRAPHIC_COMPONENTS__SHAPE__HEADER_FILE_____
