@@ -49,6 +49,10 @@ static const glut_register glut_event_register[OGG_EVENT_COUNT] = {
     [OGG_RESHAPE_EVENT] = (glut_register)glutReshapeFunc,
     [OGG_MOUSE_LEAVE_EVENT] = 0,
     [OGG_MOUSE_ENTER_EVENT] = 0,
+    [OGG_MOUSE_DOWN_EVENT] = 0,
+    [OGG_MOUSE_UP_EVENT] = 0,
+    [OGG_MOUSE_DRAG_BEGIN_EVENT] = 0,
+    [OGG_MOUSE_DRAG_END_EVENT] = 0,
 };
 
 # include "events/ogg_default_handlers.h"
@@ -64,6 +68,10 @@ static glut_callback glut_events[OGG_EVENT_COUNT] = {
     [OGG_RESHAPE_EVENT] = ogg_default_handler(OGG_RESHAPE_EVENT),
     [OGG_MOUSE_LEAVE_EVENT] = 0,
     [OGG_MOUSE_ENTER_EVENT] = 0,
+    [OGG_MOUSE_DOWN_EVENT] = 0,
+    [OGG_MOUSE_UP_EVENT] = 0,
+    [OGG_MOUSE_DRAG_BEGIN_EVENT] = 0,
+    [OGG_MOUSE_DRAG_END_EVENT] = 0,
 };
 
 # ifdef ogg_default_handler

@@ -159,7 +159,8 @@ void set_component_anchor(ogg_com_ptr com_ptr, const ogg_anchor* anchor)
 
 #  define ogg_single_event(com_ptr, event_name, handled, args)                      \
     do {                                                                            \
-        if (event_checker[event_name]((ogg_component*)com_ptr, args) &&             \
+        if ((!event_checker[event_name] ||                                          \
+                event_checker[event_name]((ogg_component*)com_ptr, args)) &&        \
             com_ptr->vptr[event_name] != 0) {                                       \
             com_ptr->vptr[event_name](com_ptr, args, handled);                      \
         }                                                                           \

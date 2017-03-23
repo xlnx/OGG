@@ -4,6 +4,8 @@
 handler(ogg_button, OGG_MOUSE_EVENT);
 handler(ogg_button, OGG_MOUSE_ENTER_EVENT);
 handler(ogg_button, OGG_MOUSE_LEAVE_EVENT);
+handler(ogg_button, OGG_MOUSE_DOWN_EVENT);
+handler(ogg_button, OGG_MOUSE_UP_EVENT);
 extern handler(ogg_shape, OGG_PAINT_EVENT);
 
 def_vtable(ogg_button) (
@@ -11,15 +13,19 @@ def_vtable(ogg_button) (
     [OGG_MOUSE_EVENT] = ogg_handler(ogg_button, OGG_MOUSE_EVENT),
     [OGG_MOUSE_ENTER_EVENT] = ogg_handler(ogg_button, OGG_MOUSE_ENTER_EVENT),
     [OGG_MOUSE_LEAVE_EVENT] = ogg_handler(ogg_button, OGG_MOUSE_LEAVE_EVENT),
+    [OGG_MOUSE_DOWN_EVENT] = ogg_handler(ogg_button, OGG_MOUSE_DOWN_EVENT),
+    [OGG_MOUSE_UP_EVENT] = ogg_handler(ogg_button, OGG_MOUSE_UP_EVENT)
 );
 
 default_startup_inh(ogg_button, ogg_rect)(
     .focused_color = OGG_GREEN,
+    .down_color = OGG_RED,
     .callback = 0
 )
 
 def_constructor(ogg_button, args)
 {
+    memcpy(&this->down_color, &args->down_color, sizeof(ogg_color));
     memcpy(&this->focused_color, &args->focused_color, sizeof(ogg_color));
     memcpy(&this->default_color, &((ogg_shape*)this)->color, sizeof(ogg_color));
     this->callback = args->callback;
@@ -31,7 +37,8 @@ def_destructor(ogg_button)
 
 def_handler(ogg_button, OGG_MOUSE_EVENT)
 {
-    this->callback(this);
+    if (this->callback != 0)
+        this->callback(this);
     *handled = ogg_true;
 }
 
@@ -45,6 +52,20 @@ def_handler(ogg_button, OGG_MOUSE_ENTER_EVENT)
 def_handler(ogg_button, OGG_MOUSE_LEAVE_EVENT)
 {
     set_color(this, this->default_color);
+    ogg_send_event(this, OGG_PAINT_EVENT);
+    glFlush();
+}
+
+def_handler(ogg_button, OGG_MOUSE_DOWN_EVENT)
+{
+    set_color(this, this->down_color);
+    ogg_send_event(this, OGG_PAINT_EVENT);
+    glFlush();
+}
+
+def_handler(ogg_button, OGG_MOUSE_UP_EVENT)
+{
+    set_color(this, this->focused_color);
     ogg_send_event(this, OGG_PAINT_EVENT);
     glFlush();
 }

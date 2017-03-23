@@ -48,7 +48,7 @@ typedef unsigned event;
         ogg_component* this)
 
 /* event count */
-# define OGG_EVENT_COUNT                                                (11)
+# define OGG_EVENT_COUNT                                                (15)
 
 
 
@@ -199,6 +199,52 @@ typedef unsigned event;
 
 
 
+#  define OGG_MOUSE_DOWN_EVENT              /* mouse down event */      (11)
+#  define OGG_MOUSE_DOWN_EVENT_ARGS                                     \
+        int button, int x, int y, 
+#  define OGG_MOUSE_DOWN_EVENT_EXTRACT_ARGS                             \
+        int button = va_arg(args, int);                                 \
+        int x = va_arg(args, int);                                      \
+        int y = va_arg(args, int);
+#  define OGG_MOUSE_DOWN_EVENT_PASS_ARGS                                \
+        button, x, y,
+
+
+
+#  define OGG_MOUSE_UP_EVENT                /* mouse down event */      (12)
+#  define OGG_MOUSE_UP_EVENT_ARGS                                       \
+        int button, int x, int y, 
+#  define OGG_MOUSE_UP_EVENT_EXTRACT_ARGS                               \
+        int button = va_arg(args, int);                                 \
+        int x = va_arg(args, int);                                      \
+        int y = va_arg(args, int);
+#  define OGG_MOUSE_UP_EVENT_PASS_ARGS                                  \
+        button, x, y,
+
+
+
+# define OGG_MOUSE_DRAG_BEGIN_EVENT         /* mouse drag begin event */(5)
+# define OGG_MOUSE_DRAG_BEGIN_EVENT_ARGS                                \
+        int x, int y,
+# define OGG_MOUSE_DRAG_BEGIN_EVENT_EXTRACT_ARGS                        \
+        int x = va_arg(args, int);                                      \
+        int y = va_arg(args, int);
+# define OGG_MOUSE_DRAG_BEGIN_EVENT_PASS_ARGS                           \
+        x, y,
+
+
+
+# define OGG_MOUSE_DRAG_END_EVENT           /* mouse drag end event */  (5)
+# define OGG_MOUSE_DRAG_END_EVENT_ARGS                                  \
+        int x, int y,
+# define OGG_MOUSE_DRAG_END_EVENT_EXTRACT_ARGS                          \
+        int x = va_arg(args, int);                                      \
+        int y = va_arg(args, int);
+# define OGG_MOUSE_DRAG_END_EVENT_PASS_ARGS                             \
+        x, y,
+
+
+
 /* event type */
 # define OGG_CHILD_HANDLE_EVENT                                         (0)
 # define OGG_PARENT_HANDLE_EVENT                                        (1)
@@ -217,6 +263,10 @@ static const event ogg_event_type[OGG_EVENT_COUNT] = {
     [OGG_RESHAPE_EVENT] = OGG_PARENT_HANDLE_EVENT,
     [OGG_MOUSE_LEAVE_EVENT] = OGG_SELF_HANDLE_EVENT,
     [OGG_MOUSE_ENTER_EVENT] = OGG_SELF_HANDLE_EVENT,
+    [OGG_MOUSE_DOWN_EVENT] = OGG_SELF_HANDLE_EVENT,
+    [OGG_MOUSE_UP_EVENT] = OGG_SELF_HANDLE_EVENT,
+    [OGG_MOUSE_DRAG_BEGIN_EVENT] = OGG_CHILD_HANDLE_EVENT,
+    [OGG_MOUSE_DRAG_END_EVENT] = OGG_CHILD_HANDLE_EVENT,
 };
 
 #endif //OGG_GRPHIC_EVENTS__HEADER_FILE____
