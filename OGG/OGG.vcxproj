@@ -88,7 +88,9 @@
   <ItemGroup>
     <ClCompile Include="src\components\ogg_button.c" />
     <ClCompile Include="src\components\ogg_components.c" />
+    <ClCompile Include="src\components\ogg_edit.c" />
     <ClCompile Include="src\components\ogg_grid.c" />
+    <ClCompile Include="src\components\ogg_grid_canvas.c" />
     <ClCompile Include="src\components\ogg_shape.c" />
     <ClCompile Include="src\utils\ogg_startup.c" />
     <ClCompile Include="src\utils\ogg_utils.c" />
@@ -96,7 +98,9 @@
   <ItemGroup>
     <ClInclude Include="include\components\ogg_button.h" />
     <ClInclude Include="include\components\ogg_components.h" />
+    <ClInclude Include="include\components\ogg_edit.h" />
     <ClInclude Include="include\components\ogg_grid.h" />
+    <ClInclude Include="include\components\ogg_grid_canvas.h" />
     <ClInclude Include="include\components\ogg_shape.h" />
     <ClInclude Include="include\events\ogg_default_handlers.h" />
     <ClInclude Include="include\events\ogg_events.h" />

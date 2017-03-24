@@ -9,6 +9,8 @@ extern "C" {
 # include "components/ogg_grid.h"
 # include "components/ogg_shape.h"
 # include "components/ogg_button.h"
+# include "components/ogg_edit.h"
+# include "components/ogg_grid_canvas.h"
 
 # ifdef __cplusplus
 }

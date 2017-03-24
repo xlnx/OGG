@@ -92,6 +92,9 @@
     /* get the absolute anchor of a component in canvas */
     void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor);
 
+    /* get the absolute pec anchor of a component in canvas */
+    void get_component_real_pec_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor);
+
     /* set the anchor of a component */
     void set_component_anchor(ogg_com_ptr com_ptr, const ogg_anchor* anchor);
 

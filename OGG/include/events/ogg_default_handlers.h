@@ -11,6 +11,7 @@ static ogg_bool is_dragging;
 static void ogg_default_handler(OGG_PAINT_EVENT)(void)
 {
     ogg_send_event(main_window, OGG_PAINT_EVENT);
+    glFlush();
 }
 
 static void ogg_default_handler(OGG_KEYBOARD_EVENT)(unsigned char key, int x, int y)

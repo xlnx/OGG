@@ -24,8 +24,4 @@
         button_callback callback;
     );
 
-    void ogg_paint_text(ogg_text* text, coordf pix);
-
-    ogg_color ogg_make_color(int R, int G, int B);
-
 #endif //OGG_GRAPHIC_COMPONENT__BUTTON__HEADER_FILE____

@@ -1,8 +1,6 @@
 #include <GL/glut.h>
 #include "components/ogg_shape.h"
 
-    /* ====================== OGG_SHAPE ======================= */    
-
     handler(ogg_shape, OGG_PAINT_EVENT);
 
     def_vtable(ogg_shape) (
@@ -44,7 +42,12 @@
         glEnd();
     }
 
-    /* ====================== OGG_RECT ======================= */
+    void set_shape_color(ogg_com_ptr this, ogg_color color)
+    {
+        memcpy(&((ogg_shape*)this)->color, &color, sizeof(ogg_color));
+        ogg_send_event(this, OGG_PAINT_EVENT);
+    }
+
 
     def_vtable(ogg_rect) (
         [OGG_PAINT_EVENT] = ogg_handler(ogg_shape, OGG_PAINT_EVENT)
@@ -77,39 +80,3 @@
     {   /* don't need to do anything */
     }
 
-    /* ====================== UTILS ======================= */
-
-    void set_color(ogg_com_ptr this, ogg_color color)
-    {
-        memcpy(&((ogg_shape*)this)->color, &color, sizeof(ogg_color));
-        ogg_send_event(this, OGG_PAINT_EVENT);
-    }
-
-    ogg_shape_vertex* vertex_list(unsigned n, ...)
-    {
-        va_list argp;
-        va_start(argp, n);
-        ogg_shape_vertex* vertex = (ogg_shape_vertex*)malloc(sizeof(ogg_shape_vertex));
-# ifdef DEBUG
-        alloc_memory++;
-# endif
-        vertex->size = n;
-        vertex->point = (coordf*)calloc(n, sizeof(coordf));
-# ifdef DEBUG
-        alloc_memory++;
-# endif
-        int i = 0;
-        for (; i != n; ++i) {
-            memcpy(&vertex->point[i], &va_arg(argp, coordf), sizeof(coordf));
-            vertex->point[i].x = vertex->point[i].x / 50 - 1;
-            vertex->point[i].y = 1 - vertex->point[i].y / 50;
-        }
-        va_end(argp);
-        return vertex;
-    }
-
-    coordf vertex(float x, float y)
-    {
-        coordf pos = { x, y };
-        return pos;
-    }

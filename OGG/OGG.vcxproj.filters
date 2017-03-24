@@ -48,6 +48,12 @@
     <ClCompile Include="src\utils\ogg_utils.c">
       <Filter>源文件\utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\components\ogg_edit.c">
+      <Filter>源文件\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\ogg_grid_canvas.c">
+      <Filter>源文件\components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\events\ogg_default_handlers.h">
@@ -79,6 +85,12 @@
     </ClInclude>
     <ClInclude Include="include\ogg.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\ogg_edit.h">
+      <Filter>头文件\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\ogg_grid_canvas.h">
+      <Filter>头文件\components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

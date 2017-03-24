@@ -47,7 +47,7 @@ def_handler(ogg_button, OGG_PAINT_EVENT)
     coordf pix = { 0, 0 };
     pix = pec_sub_coord(get_real_pec(this, pix), 
         coord(strlen(this->text.content) * 4, 4));
-    ogg_paint_text(&this->text, pix);
+    ogg_paint_string(this->text.content, this->text.color, pix);
 }
 
 def_handler(ogg_button, OGG_MOUSE_EVENT)
@@ -59,43 +59,29 @@ def_handler(ogg_button, OGG_MOUSE_EVENT)
 
 def_handler(ogg_button, OGG_MOUSE_ENTER_EVENT)
 {
-    set_color(this, this->focused_color);
+    set_shape_color(this, this->focused_color);
     ogg_send_event(this, OGG_PAINT_EVENT);
     glFlush();
 }
 
 def_handler(ogg_button, OGG_MOUSE_LEAVE_EVENT)
 {
-    set_color(this, this->default_color);
+    set_shape_color(this, this->default_color);
     ogg_send_event(this, OGG_PAINT_EVENT);
     glFlush();
 }
 
 def_handler(ogg_button, OGG_MOUSE_DOWN_EVENT)
 {
-    set_color(this, this->down_color);
+    set_shape_color(this, this->down_color);
     ogg_send_event(this, OGG_PAINT_EVENT);
     glFlush();
 }
 
 def_handler(ogg_button, OGG_MOUSE_UP_EVENT)
 {
-    set_color(this, this->focused_color);
+    set_shape_color(this, this->focused_color);
     ogg_send_event(this, OGG_PAINT_EVENT);
     glFlush();
 }
 
-void ogg_paint_text(ogg_text* text, coordf pix)
-{
-    glColor3f(text->color.R, text->color.G, text->color.B);
-    glRasterPos2f(pix.x, pix.y);
-    const char* p = text->content;
-    for (; *p != 0; ++p)
-        glutBitmapCharacter(GLUT_BITMAP_8_BY_13, *p);
-}
-
-ogg_color ogg_make_color(int R, int G, int B)
-{
-    ogg_color color = { (float)R / 255, (float)G / 255, (float)B / 255 };
-    return color;
-}

@@ -126,6 +126,20 @@ void get_component_real_coord_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
     }
 }
 
+void get_component_real_pec_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
+{
+    get_component_real_anchor(com_ptr, anchor);
+    if (anchor->type == ogg_anchor_coord) {
+        anchor->type = ogg_anchor_pec;
+        int x1 = anchor->coord.left, x2 = anchor->coord.right,
+            y1 = anchor->coord.top, y2 = anchor->coord.bottom;
+        anchor->pec.left = (float)(2 * x1) / window_width - 1;
+        anchor->pec.right = (float)(2 * x2) / window_width - 1;
+        anchor->pec.top = 1 - (float)(2 * y1) / window_height;
+        anchor->pec.bottom = 1 - (float)(2 * y2) / window_height;
+    }
+}
+
 void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
 {
     ogg_component* com = (ogg_component*)com_ptr;

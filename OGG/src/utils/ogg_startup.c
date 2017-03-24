@@ -11,10 +11,8 @@ def_startup(ogg_window)(
 def_component(ogg_window) (
 );
 
-handler(ogg_window, OGG_PAINT_EVENT);
-
 def_vtable(ogg_window) (
-    [OGG_PAINT_EVENT] = ogg_handler(ogg_window, OGG_PAINT_EVENT)
+    0
 );
 
 static def_constructor(ogg_window, args)
@@ -23,11 +21,6 @@ static def_constructor(ogg_window, args)
 
 static def_destructor(ogg_window)
 {   /* do nothing */
-}
-
-def_handler(ogg_window, OGG_PAINT_EVENT)
-{
-    glFlush();
 }
 
 static ogg_window* main_window;
