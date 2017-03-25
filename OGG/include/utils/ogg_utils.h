@@ -54,6 +54,8 @@
         255.0/255.0, 255.0/255.0, 255.0/255.0
     };
 
+    void ogg_paint_char(char chr, ogg_color color, coordf pix);
+
     void ogg_paint_string(const char* str, ogg_color color, coordf pix);
 
     ogg_color ogg_make_color(int R, int G, int B);

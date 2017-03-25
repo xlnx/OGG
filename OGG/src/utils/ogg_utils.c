@@ -21,6 +21,13 @@ void ogg_flush_screen(void)
     glFlush();
 }
 
+void ogg_paint_char(char chr, ogg_color color, coordf pix)
+{
+    glColor3f(color.R, color.G, color.B);
+    glRasterPos2f(pix.x, pix.y);
+    glutBitmapCharacter(GLUT_BITMAP_8_BY_13, chr);
+}
+
 void ogg_paint_string(const char* str, ogg_color color, coordf pix)
 {
     glColor3f(color.R, color.G, color.B);

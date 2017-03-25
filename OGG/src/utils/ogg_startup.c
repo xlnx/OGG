@@ -4,6 +4,8 @@
 
 # ifndef OGG_CUSTOM_STARTUP
 # include <gl/freeglut.h>
+# define OGG_TIME_INTERVAL  (500)/* ms */
+# define OGG_TIMER_INDEX    (0)
 
 def_startup(ogg_window)(
 );
@@ -46,6 +48,9 @@ static const glut_register glut_event_register[OGG_EVENT_COUNT] = {
     [OGG_MOUSE_UP_EVENT] = 0,
     [OGG_MOUSE_DRAG_BEGIN_EVENT] = 0,
     [OGG_MOUSE_DRAG_END_EVENT] = 0,
+    [OGG_FOCUS_EVENT] = 0,
+    [OGG_TIMER_EVENT] = 0,
+    [OGG_LOSE_FOCUS_EVENT] = 0,
 };
 
 # include "events/ogg_default_handlers.h"
@@ -65,6 +70,9 @@ static glut_callback glut_events[OGG_EVENT_COUNT] = {
     [OGG_MOUSE_UP_EVENT] = 0,
     [OGG_MOUSE_DRAG_BEGIN_EVENT] = 0,
     [OGG_MOUSE_DRAG_END_EVENT] = 0,
+    [OGG_FOCUS_EVENT] = 0,
+    [OGG_TIMER_EVENT] = ogg_default_handler(OGG_TIMER_EVENT),
+    [OGG_LOSE_FOCUS_EVENT] = 0,
 };
 
 # ifdef ogg_default_handler
@@ -129,10 +137,12 @@ int main(int argc, char *argv[])
     ogg_delegate();
     event i = 1;
     for (; i != OGG_EVENT_COUNT; ++i) {
-        if (glut_events[i] != 0) {
+        if (glut_events[i] != 0 && glut_event_register[i] != 0) {
             glut_event_register[i](glut_events[i]);
         }
     }
+    glut_events[OGG_TIMER_EVENT](OGG_TIME_INTERVAL, 
+            glut_events[OGG_TIMER_EVENT], OGG_TIMER_INDEX);
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
     glutMainLoop();
 

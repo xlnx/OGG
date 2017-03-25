@@ -14,6 +14,9 @@
 
     def_component_inh(ogg_edit, ogg_rect)(
         ogg_buffered_text text;
+        unsigned caret;
+        ogg_bool caret_visible;
+        ogg_bool insert_mode;
     );
 
     char* ogg_edit_get_text(ogg_edit* edit);

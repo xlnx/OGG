@@ -48,7 +48,7 @@ typedef unsigned event;
         ogg_component* this)
 
 /* event count */
-# define OGG_EVENT_COUNT                                                (15)
+# define OGG_EVENT_COUNT                                                (18)
 
 
 
@@ -223,7 +223,7 @@ typedef unsigned event;
 
 
 
-# define OGG_MOUSE_DRAG_BEGIN_EVENT         /* mouse drag begin event */(5)
+# define OGG_MOUSE_DRAG_BEGIN_EVENT         /* mouse drag begin event */(13)
 # define OGG_MOUSE_DRAG_BEGIN_EVENT_ARGS                                \
         int x, int y,
 # define OGG_MOUSE_DRAG_BEGIN_EVENT_EXTRACT_ARGS                        \
@@ -234,7 +234,7 @@ typedef unsigned event;
 
 
 
-# define OGG_MOUSE_DRAG_END_EVENT           /* mouse drag end event */  (5)
+# define OGG_MOUSE_DRAG_END_EVENT           /* mouse drag end event */  (14)
 # define OGG_MOUSE_DRAG_END_EVENT_ARGS                                  \
         int x, int y,
 # define OGG_MOUSE_DRAG_END_EVENT_EXTRACT_ARGS                          \
@@ -242,6 +242,41 @@ typedef unsigned event;
         int y = va_arg(args, int);
 # define OGG_MOUSE_DRAG_END_EVENT_PASS_ARGS                             \
         x, y,
+
+
+
+# define OGG_FOCUS_EVENT                    /* get focus */             (15)
+# define OGG_FOCUS_EVENT_ARGS                                           \
+        /* no args */
+# define OGG_FOCUS_EVENT_EXTRACT_ARGS                                   \
+        /* no args */
+# define OGG_FOCUS_EVENT_PASS_ARGS                                      \
+        /* no args */
+
+
+
+/* glutTimerFunc(
+     unsigned int millis, 
+     void (*func)(int value),
+     int value
+   ) */
+# define OGG_TIMER_EVENT                    /* on timer */              (16)
+# define OGG_TIMER_EVENT_ARGS                                           \
+        /* no args */
+# define OGG_TIMER_EVENT_EXTRACT_ARGS                                   \
+        /* no args */
+# define OGG_TIMER_EVENT_PASS_ARGS                                      \
+        /* no args */
+
+
+
+# define OGG_LOSE_FOCUS_EVENT               /* get focus */             (17)
+# define OGG_LOSE_FOCUS_EVENT_ARGS                                      \
+        /* no args */
+# define OGG_LOSE_FOCUS_EVENT_EXTRACT_ARGS                              \
+        /* no args */
+# define OGG_LOSE_FOCUS_EVENT_PASS_ARGS                                 \
+        /* no args */
 
 
 
@@ -267,6 +302,9 @@ static const event ogg_event_type[OGG_EVENT_COUNT] = {
     [OGG_MOUSE_UP_EVENT] = OGG_SELF_HANDLE_EVENT,
     [OGG_MOUSE_DRAG_BEGIN_EVENT] = OGG_CHILD_HANDLE_EVENT,
     [OGG_MOUSE_DRAG_END_EVENT] = OGG_CHILD_HANDLE_EVENT,
+    [OGG_FOCUS_EVENT] = OGG_SELF_HANDLE_EVENT,
+    [OGG_TIMER_EVENT] = OGG_PARENT_HANDLE_EVENT,
+    [OGG_LOSE_FOCUS_EVENT] = OGG_SELF_HANDLE_EVENT,
 };
 
 #endif //OGG_GRPHIC_EVENTS__HEADER_FILE____

@@ -62,7 +62,7 @@ def_handler(ogg_grid_canvas, OGG_PAINT_EVENT)
 
 void resize_canvas(ogg_grid_canvas* this, ogg_coord size)
 {
-    if (size.x != this->size.x && size.y != this->size.y) {
+    if (size.x != this->size.x || size.y != this->size.y) {
         free(this->sub);
 #  ifdef DEBUG
     alloc_memeory--;
