@@ -54,6 +54,8 @@
         255.0/255.0, 255.0/255.0, 255.0/255.0
     };
 
+    void set_screen_color(ogg_color color);
+
     void ogg_paint_char(char chr, ogg_color color, coordf pix);
 
     void ogg_paint_string(const char* str, ogg_color color, coordf pix);

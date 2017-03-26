@@ -44,7 +44,7 @@
 
     def_handler(ogg_grid, OGG_PAINT_EVENT)
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        //glClear(GL_COLOR_BUFFER_BIT);
     }
 
     static void destroy_grid(ogg_grid* this)

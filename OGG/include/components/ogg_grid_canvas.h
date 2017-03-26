@@ -28,9 +28,11 @@
         ogg_paint_unit* sub;
     );
 
-    void resize_canvas(ogg_grid_canvas* canvas, ogg_coord size);
+    void paint_grid_canvas_elem(ogg_com_ptr canvas, ogg_coord pos);
 
-    void set_canvas_color(ogg_grid_canvas* canvas, ogg_coord pos, ogg_color color);
+    void resize_canvas(ogg_com_ptr canvas, ogg_coord size);
+
+    void set_canvas_color(ogg_com_ptr canvas, ogg_coord pos, ogg_color color);
 
     //void set_canvas_bitmap
 

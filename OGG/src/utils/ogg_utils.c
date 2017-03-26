@@ -11,8 +11,16 @@ inst_geometry_system(float, f);
 inst_geometry_system(int, i)
 # endif
 
+static ogg_color ogg_clear_color;
+
+void set_screen_color(ogg_color color)
+{
+    memcpy(&ogg_clear_color, &color, sizeof(ogg_color));
+}
+
 void ogg_clear_screen(void)
 {
+    glClearColor(ogg_clear_color.R, ogg_clear_color.G, ogg_clear_color.B, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 

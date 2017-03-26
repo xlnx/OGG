@@ -1,6 +1,7 @@
 #ifndef OGG_GRPHIC_EVENTS__HEADER_FILE____
 #define OGG_GRPHIC_EVENTS__HEADER_FILE____
-
+# include <stdarg.h>
+# include <stdlib.h>
 typedef unsigned event;
 
 /* call event by 
