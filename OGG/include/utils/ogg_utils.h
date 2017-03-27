@@ -60,6 +60,8 @@
 
     void ogg_paint_string(const char* str, ogg_color color, coordf pix);
 
+    void ogg_paint_string_len(const char* p, int len, ogg_color color, coordf pix);
+
     ogg_color ogg_make_color(int R, int G, int B);
 
     typedef struct {

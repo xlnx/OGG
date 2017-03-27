@@ -119,7 +119,7 @@
             return ogg_false;
         }
         ogg_send_event(this->sub[pos.y][pos.x], OGG_PAINT_EVENT);
-        glFlush();
+        ogg_flush_screen();
         return ogg_true;
     }
 

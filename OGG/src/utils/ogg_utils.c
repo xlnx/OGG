@@ -26,7 +26,7 @@ void ogg_clear_screen(void)
 
 void ogg_flush_screen(void)
 {
-    glFlush();
+    glFlush();//glutSwapBuffers();
 }
 
 void ogg_paint_char(char chr, ogg_color color, coordf pix)
@@ -36,12 +36,20 @@ void ogg_paint_char(char chr, ogg_color color, coordf pix)
     glutBitmapCharacter(GLUT_BITMAP_8_BY_13, chr);
 }
 
-void ogg_paint_string(const char* str, ogg_color color, coordf pix)
+void ogg_paint_string(const char* p, ogg_color color, coordf pix)
 {
     glColor3f(color.R, color.G, color.B);
     glRasterPos2f(pix.x, pix.y);
-    const char* p = str;
     for (; *p != 0; ++p)
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13, *p);
+}
+
+void ogg_paint_string_len(const char* p, int len, ogg_color color, coordf pix)
+{
+    glColor3f(color.R, color.G, color.B);
+    glRasterPos2f(pix.x, pix.y);
+    const char* end = p + len;
+    for (; *p != 0 && p != end; ++p)
         glutBitmapCharacter(GLUT_BITMAP_8_BY_13, *p);
 }
 

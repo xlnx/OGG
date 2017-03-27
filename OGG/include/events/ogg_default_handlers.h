@@ -9,11 +9,20 @@ static ogg_com_ptr current_component = 0;
 static int mouse_state = -1;
 static ogg_bool is_dragging;
 
+static ogg_bool is_child_of(ogg_com_ptr child, ogg_com_ptr parent)
+{
+    ogg_component* ptr = child;
+    while (ptr != parent && ptr) {
+        ptr = ptr->parent;
+    }
+    return (ogg_bool)ptr;
+}
+
 static void ogg_default_handler(OGG_PAINT_EVENT)(void)
 {
     ogg_clear_screen();
     ogg_send_event(main_window, OGG_PAINT_EVENT);
-    glFlush();
+    ogg_flush_screen();
 }
 
 static void ogg_default_handler(OGG_KEYBOARD_EVENT)(unsigned char key, int x, int y)
@@ -80,12 +89,12 @@ static def_checker(OGG_DESTROY_EVENT)
 
 static def_checker(OGG_KEYBOARD_EVENT)
 {
-    return current_component == this;
+    return is_child_of(current_component, this);
 }
 
 static def_checker(OGG_SPECIAL_KEY_EVENT)
 {
-    return current_component == this;
+    return is_child_of(current_component, this);
 }
 
 static def_checker(OGG_MOUSE_EVENT)
@@ -189,7 +198,7 @@ static def_checker(OGG_MOUSE_ENTRY_EVENT)
 
 static def_checker(OGG_TIMER_EVENT)
 {
-    return current_component == this;
+    return is_child_of(current_component, this);
 }
 
 const ogg_bool (*event_checker[OGG_EVENT_COUNT])(ogg_component*, va_list) = {

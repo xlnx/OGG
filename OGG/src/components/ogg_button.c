@@ -61,27 +61,27 @@ def_handler(ogg_button, OGG_MOUSE_ENTER_EVENT)
 {
     set_shape_color(this, this->focused_color);
     ogg_send_event(this, OGG_PAINT_EVENT);
-    glFlush();
+    ogg_flush_screen();
 }
 
 def_handler(ogg_button, OGG_MOUSE_LEAVE_EVENT)
 {
     set_shape_color(this, this->default_color);
     ogg_send_event(this, OGG_PAINT_EVENT);
-    glFlush();
+    ogg_flush_screen();
 }
 
 def_handler(ogg_button, OGG_MOUSE_DOWN_EVENT)
 {
     set_shape_color(this, this->down_color);
     ogg_send_event(this, OGG_PAINT_EVENT);
-    glFlush();
+    ogg_flush_screen();
 }
 
 def_handler(ogg_button, OGG_MOUSE_UP_EVENT)
 {
     set_shape_color(this, this->focused_color);
     ogg_send_event(this, OGG_PAINT_EVENT);
-    glFlush();
+    ogg_flush_screen();
 }
 

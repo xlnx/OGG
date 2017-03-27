@@ -13,8 +13,10 @@ def_startup(ogg_window)(
 def_component(ogg_window) (
 );
 
+handler(ogg_window, OGG_SPECIAL_KEY_EVENT);
+
 def_vtable(ogg_window) (
-    0
+    [OGG_SPECIAL_KEY_EVENT] = ogg_handler(ogg_window, OGG_SPECIAL_KEY_EVENT),
 );
 
 static def_constructor(ogg_window, args)
@@ -23,6 +25,21 @@ static def_constructor(ogg_window, args)
 
 static def_destructor(ogg_window)
 {   /* do nothing */
+}
+
+static void leave_loop(ogg_window* this)
+{
+    ogg_destroy(this);
+    exit(ogg_exit_status());
+}
+
+def_handler(ogg_window, OGG_SPECIAL_KEY_EVENT)
+{
+    switch (key) {
+    case GLUT_KEY_F4: {
+        leave_loop(this);
+    } break;
+    }
 }
 
 static ogg_window* main_window;

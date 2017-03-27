@@ -14,7 +14,8 @@
 
     def_component_inh(ogg_edit, ogg_rect)(
         ogg_buffered_text text;
-        unsigned caret;
+        int caret;
+        int offset;
         ogg_bool caret_visible;
         ogg_bool insert_mode;
     );
