@@ -410,10 +410,10 @@
  * usage:
  *   def_constructor(ogg_button, args)
  *   {
- *     memcpy(&this->down_color, &args->down_color, sizeof(ogg_color));
- *     memcpy(&this->focused_color, &args->focused_color, sizeof(ogg_color));
- *     memcpy(&this->default_color, &((ogg_shape*)this)->color, sizeof(ogg_color));
- *     memcpy(&this->text, &args->text, sizeof(ogg_text));
+ *     this->down_color = args->down_color;
+ *     this->focused_color = args->focused_color;
+ *     this->default_color = ((ogg_shape*)this)->color;
+ *     this->text = args->text;
  *     this->callback = args->callback;
  *   }
  *   // define the constructor of ogg_button type. this macro function will

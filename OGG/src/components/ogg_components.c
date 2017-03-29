@@ -144,7 +144,7 @@ void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
 {
     ogg_component* com = (ogg_component*)com_ptr;
     if (com->parent == 0) {
-        memcpy(&anchor->pec, &com->pec, sizeof(ogg_pec_anchor));
+        anchor->pec = com->pec;
         anchor->type = com->anchor_type;
     }
     else {

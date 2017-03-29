@@ -15,7 +15,7 @@ static ogg_color ogg_clear_color;
 
 void set_screen_color(ogg_color color)
 {
-    memcpy(&ogg_clear_color, &color, sizeof(ogg_color));
+    ogg_clear_color = color;
 }
 
 void ogg_clear_screen(void)
@@ -74,7 +74,7 @@ ogg_vertex* vertex_list(unsigned n, ...)
 # endif
     int i = 0;
     for (; i != n; ++i) {
-        memcpy(&vertex->point[i], &va_arg(argp, coordf), sizeof(coordf));
+        vertex->point[i] = va_arg(argp, coordf);
         vertex->point[i].x = vertex->point[i].x / 50 - 1;
         vertex->point[i].y = 1 - vertex->point[i].y / 50;
     }

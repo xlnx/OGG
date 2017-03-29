@@ -1,3 +1,4 @@
+//#include <GL/glew.h>
 #include <GL/glut.h>
 #define OGG_GRAPHIC_STARTUP__INST____
 #include "utils/ogg_startup.h"
@@ -152,6 +153,7 @@ int main(int argc, char *argv[])
     glutInitWindowPosition(st.window.position.x, st.window.position.y);
     glutInitWindowSize(st.window.size.width, st.window.size.height);
     glutCreateWindow(st.window.title);
+    //glewInit();
 
     ogg_delegate();
     event i = 1;

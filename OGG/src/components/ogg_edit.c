@@ -31,8 +31,8 @@ default_startup_inh(ogg_edit, ogg_rect)(
 def_constructor(ogg_edit, args)
 {
     memset(&this->text.content, 0, sizeof(this->text.content));
-    memcpy(&this->text.color, &args->color, sizeof(ogg_color));
-    memcpy(&((ogg_shape*)this)->color, &OGG_WHITE, sizeof(ogg_color));
+    this->text.color = args->color;
+    ((ogg_shape*)this)->color = OGG_WHITE;
     this->caret = this->offset = 0;
     this->caret_visible = ogg_false;
     this->insert_mode = ogg_true;

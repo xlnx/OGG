@@ -15,7 +15,7 @@ static ogg_bool is_child_of(ogg_com_ptr child, ogg_com_ptr parent)
     while (ptr != parent && ptr) {
         ptr = ptr->parent;
     }
-    return (ogg_bool)ptr;
+    return ptr != 0;
 }
 
 static void ogg_default_handler(OGG_PAINT_EVENT)(void)

@@ -14,7 +14,7 @@
 
     def_constructor(ogg_shape, args)
     {
-        memcpy(&this->color, &args->color, sizeof(ogg_color));
+        this->color = args->color;
         this->vertex = args->vertex;
     }
 
@@ -44,7 +44,7 @@
 
     void set_shape_color(ogg_com_ptr this, ogg_color color)
     {
-        memcpy(&((ogg_shape*)this)->color, &color, sizeof(ogg_color));
+        ((ogg_shape*)this)->color = color;
         ogg_send_event(this, OGG_PAINT_EVENT);
     }
 
