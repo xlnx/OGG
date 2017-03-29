@@ -37,7 +37,8 @@ def_handler(ogg_window, OGG_SPECIAL_KEY_EVENT)
 {
     switch (key) {
     case GLUT_KEY_F4: {
-        leave_loop(this);
+        if (glutGetModifiers() == GLUT_ACTIVE_ALT)
+            leave_loop(this);
     } break;
     }
 }
@@ -133,6 +134,7 @@ int main(int argc, char *argv[])
             .parent = 0
         }
     )(main_window);
+    current_component = main_window;
 
     ogg_startup_info st = {
         .argc = argc,

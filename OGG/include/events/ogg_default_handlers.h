@@ -82,7 +82,7 @@ static def_checker(OGG_DESTROY_EVENT)
     }
     if (current_component == this) {
         ogg_send_event(current_component, OGG_LOSE_FOCUS_EVENT);
-        current_component = 0;
+        current_component = main_window;
     }
     return ogg_true;
 }
@@ -106,6 +106,12 @@ static def_checker(OGG_MOUSE_EVENT)
     {
         if (is_top_level) {
             is_top_level = ogg_false;
+            if (current_component != this) {
+                if (current_component != 0)
+                    ogg_send_event(current_component, OGG_LOSE_FOCUS_EVENT);
+                current_component = this;
+                ogg_send_event(this, OGG_FOCUS_EVENT);
+            }
             if (focused_component != this) {
                 if (focused_component)
                     ogg_send_event(focused_component, OGG_MOUSE_LEAVE_EVENT);
@@ -118,12 +124,6 @@ static def_checker(OGG_MOUSE_EVENT)
                     OGG_MOUSE_DOWN_EVENT : OGG_MOUSE_UP_EVENT,
                     button, x, y
                 );
-            }
-            if (current_component != this) {
-                if (current_component != 0)
-                    ogg_send_event(current_component, OGG_LOSE_FOCUS_EVENT);
-                current_component = this;
-                ogg_send_event(this, OGG_FOCUS_EVENT);
             }
         }
         return state == GLUT_UP;
