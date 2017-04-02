@@ -21,47 +21,47 @@ static ogg_bool is_child_of(ogg_com_ptr child, ogg_com_ptr parent)
 static void ogg_default_handler(OGG_PAINT_EVENT)(void)
 {
     ogg_clear_screen();
-    ogg_send_event(main_window, OGG_PAINT_EVENT);
+    ogg_send_event(ogg_active_form(), OGG_PAINT_EVENT);
     ogg_flush_screen();
 }
 
 static void ogg_default_handler(OGG_KEYBOARD_EVENT)(unsigned char key, int x, int y)
 {
-    ogg_send_event(main_window, OGG_KEYBOARD_EVENT, key, x, y);
+    ogg_send_event(ogg_active_form(), OGG_KEYBOARD_EVENT, key, x, y);
 }
 
 static void ogg_default_handler(OGG_SPECIAL_KEY_EVENT)(int key, int x, int y)
 {
-    ogg_send_event(main_window, OGG_SPECIAL_KEY_EVENT, key, x, y);
+    ogg_send_event(ogg_active_form(), OGG_SPECIAL_KEY_EVENT, key, x, y);
 }
 
 static void ogg_default_handler(OGG_MOUSE_EVENT)(int button, int state, int x, int y)
 {
     is_top_level = ogg_true;
-    ogg_send_event(main_window, OGG_MOUSE_EVENT, button, state, x, y);
+    ogg_send_event(ogg_active_form(), OGG_MOUSE_EVENT, button, state, x, y);
 }
 
 static void ogg_default_handler(OGG_MOUSE_DRAG_EVENT)(int x, int y)
 {
     is_top_level = ogg_true;
-    ogg_send_event(main_window, OGG_MOUSE_DRAG_EVENT, x, y);
+    ogg_send_event(ogg_active_form(), OGG_MOUSE_DRAG_EVENT, x, y);
 }
 
 static void ogg_default_handler(OGG_MOUSE_MOVE_EVENT)(int x, int y)
 {
     is_top_level = ogg_true;
-    ogg_send_event(main_window, OGG_MOUSE_MOVE_EVENT, x, y);
+    ogg_send_event(ogg_active_form(), OGG_MOUSE_MOVE_EVENT, x, y);
 }
 
 static void ogg_default_handler(OGG_MOUSE_ENTRY_EVENT)(int state)
 {
     is_top_level = ogg_true;
-    ogg_send_event(main_window, OGG_MOUSE_ENTRY_EVENT, state);
+    ogg_send_event(ogg_active_form(), OGG_MOUSE_ENTRY_EVENT, state);
 }
 
 static void ogg_default_handler(OGG_TIMER_EVENT)(int value)
 {
-    ogg_send_event(main_window, OGG_TIMER_EVENT);
+    ogg_send_event(ogg_active_form(), OGG_TIMER_EVENT);
     glutTimerFunc(OGG_TIME_INTERVAL, ogg_default_handler(OGG_TIMER_EVENT), value);
 }
 
@@ -72,7 +72,7 @@ static void ogg_default_handler(OGG_RESHAPE_EVENT)(int width, int height)
 {
     window_width = width; window_height = height;
     glViewport(0, 0, width, height);
-    ogg_send_event(main_window, OGG_RESHAPE_EVENT, width, height);
+    ogg_send_event(ogg_active_form(), OGG_RESHAPE_EVENT, width, height);
 }
 
 static def_checker(OGG_DESTROY_EVENT)
@@ -82,7 +82,7 @@ static def_checker(OGG_DESTROY_EVENT)
     }
     if (current_component == this) {
         ogg_send_event(current_component, OGG_LOSE_FOCUS_EVENT);
-        current_component = main_window;
+        current_component = ogg_active_form();
     }
     return ogg_true;
 }

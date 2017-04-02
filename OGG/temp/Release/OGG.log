@@ -1,4 +1,4 @@
-﻿生成启动时间为 2017/3/29 21:11:36。
+﻿生成启动时间为 2017/4/2 18:49:41。
      1>项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\glew-1.11.0\include" /IC:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\freeglut\include /IC:\Users\xlnx\Desktop\OGG\OGG\include /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /Oy /GT /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\\" /Fd"C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt src\utils\ogg_startup.c
@@ -17,4 +17,4 @@
 
 生成成功。
 
-已用时间 00:00:00.72
+已用时间 00:00:00.70
