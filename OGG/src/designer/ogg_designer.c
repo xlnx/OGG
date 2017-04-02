@@ -152,11 +152,6 @@ void ogg_terminate()
     ogg_terminate_application(application);
 }
 
-ogg_com_ptr get_current_component()
-{
-    return current_component;
-}
-
 ogg_form* ogg_create_form(form_info info)
 {
     ogg_form* frm;

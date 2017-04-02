@@ -333,4 +333,35 @@ ogg_component_info ogg_default_info_ogg_component___(ogg_com_ptr parent)
     return st;
 }
 
+#  ifdef DESIGN_TIME
+void draw_design_anchor(ogg_com_ptr this)
+{
+    ogg_anchor anchor;
+    get_component_real_pec_anchor(this, &anchor);
+    static const ogg_coord det[4] = {
+        { -3, -3 }, { 3, -3 }, { 3, 3 }, { -3, 3 } };
+    int i = 0, j = 0;
+    ogg_pec pix;
+    ogg_pec vec[8] = {
+        anchor.pec.top_left,
+        anchor.pec.bottom_right,
+        { anchor.pec.left, anchor.pec.bottom },
+        { anchor.pec.right, anchor.pec.top },
+        { (anchor.pec.left + anchor.pec.right) / 2, anchor.pec.bottom },
+        { (anchor.pec.left + anchor.pec.right) / 2, anchor.pec.top },
+        { anchor.pec.left, (anchor.pec.bottom + anchor.pec.top) / 2 },
+        { anchor.pec.right, (anchor.pec.bottom + anchor.pec.top) / 2 },
+    };
+    glColor3f(OGG_BLACK.R, OGG_BLACK.G, OGG_BLACK.B);
+    glBegin(GL_QUADS);
+        for (; j != 8; ++j) {
+            for (i = 0; i != 4; ++i) {
+                pix = pec_add_coord(vec[j], det[i]);
+                glVertex2f(pix.x, pix.y);
+            }
+        }
+    glEnd();
+}
+#  endif
+
 #  undef ogg_single_event

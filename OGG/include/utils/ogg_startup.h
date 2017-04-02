@@ -11,47 +11,45 @@
 # ifndef OGG_CUSTOM_STARTUP
     typedef unsigned int ogg_display_mode;
 
-    typedef struct {
-        int x, y;
-    } ogg_startup_window_position;
-
-    typedef struct {
-        int width, height;
-    } ogg_startup_window_size;
-
-    typedef struct {
-        ogg_startup_window_position position;
-        ogg_startup_window_size size;
-        const char *title;
-    } ogg_startup_window_info;
-
-    typedef struct {
-        int argc;
-        char **argv;
-        ogg_display_mode display_mode;
-        ogg_startup_window_info window;
-    } ogg_startup_info;
-
     typedef void(*glut_callback)();
     typedef void(_stdcall *glut_register)(glut_callback);
 
-    const ogg_com_ptr ogg_main_window(void);
-    int ogg_window_width(void);
-    int ogg_window_height(void);
-    void ogg_register_event(event event_name, glut_callback callback);
-    ogg_component_info ogg_fill_window(void);
+    typedef struct {
+        int left, top;
+        int width, height;
+    } ogg_form_position;
 
-    void ogg_main(ogg_startup_info*);
+    typedef struct {
+        ogg_form_position position;
+        const char *title;
+    } form_info;
+
+    def_startup(ogg_form)(
+        form_info info;
+    );
+
+    typedef unsigned short ogg_form_id;
+    def_component(ogg_form)(
+        ogg_form_id form_id;
+        ogg_form_position position;
+        const char *title;
+    );
+
+    ogg_form* ogg_create_form(form_info info);
+
+    //void ogg_destroy_form(ogg_form* this);
+    
+    ogg_form* ogg_get_active_form();
+
+    void ogg_terminate();
+
+    ogg_com_ptr get_current_component();
+
+    extern void ogg_init_application_forms();
+
 # ifdef OGG_GRAPHIC_STARTUP__INST____
-    extern void ogg_delegate(void);
     extern int ogg_exit_status(void);
 # else
-    void ogg_delegate(void)
-#  ifdef OGG_DELEGATE
-    ;
-#  else
-    {}
-#  endif
     int ogg_exit_status(void)
 #  ifdef OGG_EXIT_STATUS
     ;

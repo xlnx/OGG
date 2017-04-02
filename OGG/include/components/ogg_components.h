@@ -186,6 +186,11 @@
     /* make a int-int coord */
     ogg_coord coord(int x, int y);
 
+#  ifdef DESIGN_TIME
+    /* draw the border anchor of component */
+    void draw_design_anchor(ogg_com_ptr this);
+#  endif
+
 #  define OGG_EXPAND_ARGS_DBL_BRAK(...)                                 \
         __VA_ARGS__                                                     \
     })
@@ -332,10 +337,27 @@
  *   // now button can handle events as the table says.
  */
 #  define def_vtable(component_type)                                    \
+    static ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT];  \
+    static void ogg_design_time_painter_##component_type##_(            \
+        component_type* this, va_list args, ogg_handle_flag* handled)   \
+    {                                                                   \
+        if (component_type##_vtable[OGG_PAINT_EVENT] != 0) {            \
+            component_type##_vtable[OGG_PAINT_EVENT](                   \
+                    this, args, handled);                               \
+        }                                                               \
+        ogg_com_ptr get_current_component();                            \
+        if (this == get_current_component())                            \
+            draw_design_anchor(this);                                   \
+        *handled = ogg_false;                                           \
+    }                                                                   \
+    static ogg_event_handler ogg_design_time_##component_type##_vtable  \
+            [OGG_EVENT_COUNT] = {                                       \
+        [OGG_DESTROY_EVENT] = ogg_destructor(component_type),           \
+        [OGG_PAINT_EVENT] = ogg_design_time_painter_##component_type##_,\
+    };                                                                  \
     static ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT]= {\
         [OGG_DESTROY_EVENT] = ogg_destructor(component_type),           \
         OGG_EXPAND_ARGS_WITH_BRAK
-
 
 #  define ogg_startup(T)                                                \
     T##_info
@@ -421,7 +443,8 @@
  *   // and will automatically alloc memory for the created component.
  */
 #  ifdef DEBUG
-#    define def_constructor(T, args_name)                               \
+#    ifndef DESIGN_TIME
+#      define def_constructor(T, args_name)                             \
     T* ogg_constructor_##T##___(const T##_info* args_name)              \
     {                                                                   \
         T* object = (T*)malloc(sizeof(T));                              \
@@ -438,8 +461,28 @@
         create_##T(object, (const T##_info*)args);                      \
     }                                                                   \
     void create_##T(T* this, const T##_info* args_name)
+#    else
+#      define def_constructor(T, args_name)                             \
+    T* ogg_constructor_##T##___(const T##_info* args_name)              \
+    {                                                                   \
+        T* object = (T*)malloc(sizeof(T));                              \
+        alloc_memory++;                                                 \
+        void ogg_static_constructor_##T##___(T*, const void*);          \
+        ogg_static_constructor_##T##___(object, args_name);             \
+        ((ogg_component*)object)->vptr = ogg_design_time_##T##_vtable;  \
+        return object;                                                  \
+    }                                                                   \
+    void ogg_static_constructor_##T##___(T* object, const void* args)   \
+    {                                                                   \
+        void create_##T(T* this, const T##_info* args_name);            \
+        parent_static_constructor_##T##__((void*)object, args);         \
+        create_##T(object, (const T##_info*)args);                      \
+    }                                                                   \
+    void create_##T(T* this, const T##_info* args_name)
+#    endif
 #  else
-#    define def_constructor(T, args_name)                               \
+#    ifndef DESIGN_TIME
+#      define def_constructor(T, args_name)                             \
     T* ogg_constructor_##T##___(const T##_info* args_name)              \
     {                                                                   \
         T* object = (T*)malloc(sizeof(T));                              \
@@ -455,6 +498,24 @@
         create_##T(object, (const T##_info*)args);                      \
     }                                                                   \
     void create_##T(T* this, const T##_info* args_name)
+#    else
+#      define def_constructor(T, args_name)                             \
+    T* ogg_constructor_##T##___(const T##_info* args_name)              \
+    {                                                                   \
+        T* object = (T*)malloc(sizeof(T));                              \
+        void ogg_static_constructor_##T##___(T*, const void*);          \
+        ogg_static_constructor_##T##___(object, args_name);             \
+        ((ogg_component*)object)->vptr = ogg_design_time_##T##_vtable;  \
+        return object;                                                  \
+    }                                                                   \
+    void ogg_static_constructor_##T##___(T* object, const void* args)   \
+    {                                                                   \
+        void create_##T(T* this, const T##_info* args_name);            \
+        parent_static_constructor_##T##__((void*)object, args);         \
+        create_##T(object, (const T##_info*)args);                      \
+    }                                                                   \
+    void create_##T(T* this, const T##_info* args_name)
+#    endif
 #  endif
 
 #  define ogg_destructor(T)                                             \

@@ -28,6 +28,9 @@
     <Filter Include="头文件\events">
       <UniqueIdentifier>{4aab1852-221f-4c5a-9485-7d21f2ebb10e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\designer">
+      <UniqueIdentifier>{74d85f22-e785-4dac-8382-5d94a4ae43ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\components\ogg_shape.c">
