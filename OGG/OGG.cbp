@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="OGG" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug Win32">
+				<Option output="bin/Debug/OGG" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="temp" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-DLIB_OGG__BUILDING" />
+					<Add option="-DGLUT_DISABLE_ATEXIT_HACK" />
+					<Add directory="include" />
+					<Add directory="dependency/freeglut/glew-1.11.0/include" />
+					<Add directory="dependency/freeglut/freeglut/include" />
+				</Compiler>
+				<Linker>
+					<Add directory="dependency/freeglut/freeglut/lib" />
+					<Add directory="dependency/freeglut/glew-1.11.0/lib" />
+				</Linker>
+			</Target>
+			<Target title="DesignDebug Win32">
+				<Option output="bin/DesignDebug/OGG" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="temp" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-DLIB_OGG__BUILDING" />
+					<Add option="-DDESIGN_TIME" />
+					<Add option="-DGLUT_DISABLE_ATEXIT_HACK" />
+					<Add directory="include" />
+					<Add directory="dependency/freeglut/glew-1.11.0/include" />
+					<Add directory="dependency/freeglut/freeglut/include" />
+				</Compiler>
+				<Linker>
+					<Add directory="dependency/freeglut/freeglut/lib" />
+					<Add directory="dependency/freeglut/glew-1.11.0/lib" />
+				</Linker>
+			</Target>
+			<Target title="DesignRelease Win32">
+				<Option output="bin/DesignRelease/OGG" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="temp" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-DLIB_OGG__BUILDING" />
+					<Add option="-DDESIGN_TIME" />
+					<Add option="-DGLUT_DISABLE_ATEXIT_HACK" />
+					<Add directory="include" />
+					<Add directory="dependency/freeglut/glew-1.11.0/include" />
+					<Add directory="dependency/freeglut/freeglut/include" />
+				</Compiler>
+				<Linker>
+					<Add directory="dependency/freeglut/freeglut/lib" />
+					<Add directory="dependency/freeglut/glew-1.11.0/lib" />
+				</Linker>
+			</Target>
+			<Target title="Release Win32">
+				<Option output="bin/Release/OGG" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="temp" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-DLIB_OGG__BUILDING" />
+					<Add option="-DGLUT_DISABLE_ATEXIT_HACK" />
+					<Add directory="include" />
+					<Add directory="dependency/freeglut/glew-1.11.0/include" />
+					<Add directory="dependency/freeglut/freeglut/include" />
+				</Compiler>
+				<Linker>
+					<Add directory="dependency/freeglut/freeglut/lib" />
+					<Add directory="dependency/freeglut/glew-1.11.0/lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="include/components/ogg_button.h" />
+		<Unit filename="include/components/ogg_components.h" />
+		<Unit filename="include/components/ogg_edit.h" />
+		<Unit filename="include/components/ogg_forms.h" />
+		<Unit filename="include/components/ogg_grid.h" />
+		<Unit filename="include/components/ogg_grid_canvas.h" />
+		<Unit filename="include/components/ogg_shape.h" />
+		<Unit filename="include/events/ogg_default_handlers.h" />
+		<Unit filename="include/events/ogg_events.h" />
+		<Unit filename="include/ogg.h" />
+		<Unit filename="include/utils/geometry.h" />
+		<Unit filename="include/utils/ogg_utils.h" />
+		<Unit filename="src/components/ogg_button.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/components/ogg_components.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/components/ogg_edit.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/components/ogg_forms.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/components/ogg_grid.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/components/ogg_grid_canvas.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/components/ogg_shape.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/ogg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/utils/ogg_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

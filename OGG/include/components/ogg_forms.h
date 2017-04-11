@@ -2,17 +2,10 @@
 #define OGG_GRAPHIC_STARUP__HEADER_FILE____
 #include "components/ogg_components.h"
 
-# ifdef WIN32
-#  ifndef OGG_SHOW_CONSOLE
-#   pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
-#  endif
-# endif
-
-# ifndef OGG_CUSTOM_STARTUP
     typedef unsigned int ogg_display_mode;
 
     typedef void(*glut_callback)();
-    typedef void(_stdcall *glut_register)(glut_callback);
+    typedef void(__stdcall *glut_register)(glut_callback);
 
     typedef struct {
         int left, top;
@@ -35,30 +28,31 @@
         const char *title;
     );
 
+    def_startup(ogg_application)(
+        int *argc;
+        char **argv;
+        ogg_display_mode display_mode;
+    );
+
+    def_component(ogg_application)(
+        int *argc;
+        char **argv;
+        ogg_display_mode display_mode;
+        ogg_form **forms_lookup;
+    );
+
+    //void ogg_init_application(ogg_application* this);
+
+    //void ogg_terminate_application(ogg_application* this);
+
+    //void ogg_run_application(ogg_application* this);
+
+    //void ogg_terminate();
+
     ogg_form* ogg_create_form(form_info info);
 
-    //void ogg_destroy_form(ogg_form* this);
-    
     ogg_form* ogg_get_active_form();
 
-    void ogg_terminate();
-
     ogg_com_ptr get_current_component();
-
-    extern void ogg_init_application_forms();
-
-# ifdef OGG_GRAPHIC_STARTUP__INST____
-    extern int ogg_exit_status(void);
-# else
-    int ogg_exit_status(void)
-#  ifdef OGG_EXIT_STATUS
-    ;
-#  else
-    { return 0; }
-#  endif
-# endif
-
-    int main(int argc, char *argv[]);
-# endif
 
 #endif //OGG_GRAPHIC_STARUP__HEADER_FILE____

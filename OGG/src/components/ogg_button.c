@@ -45,7 +45,7 @@ def_handler(ogg_button, OGG_PAINT_EVENT)
 {
     ogg_handler(ogg_shape, OGG_PAINT_EVENT)((ogg_shape*)this, 0, handled);
     coordf pix = { 0, 0 };
-    pix = pec_sub_coord(get_real_pec(this, pix), 
+    pix = pec_sub_coord(get_real_pec(this, pix),
         coord(strlen(this->text.content) * 4, 4));
     ogg_paint_string(this->text.content, this->text.color, pix);
 }

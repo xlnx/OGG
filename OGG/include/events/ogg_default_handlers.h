@@ -201,7 +201,7 @@ static def_checker(OGG_TIMER_EVENT)
     return is_child_of(current_component, this);
 }
 
-const ogg_bool (*event_checker[OGG_EVENT_COUNT])(ogg_component*, va_list) = {
+ogg_bool (*const event_checker[OGG_EVENT_COUNT])(ogg_component*, va_list) = {
     [OGG_DESTROY_EVENT] = ogg_checker(OGG_DESTROY_EVENT),
     [OGG_PAINT_EVENT] = 0,
     [OGG_KEYBOARD_EVENT] = ogg_checker(OGG_KEYBOARD_EVENT),

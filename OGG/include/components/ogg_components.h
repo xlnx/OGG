@@ -336,6 +336,7 @@
  *   );
  *   // now button can handle events as the table says.
  */
+# ifdef DESIGN_TIME
 #  define def_vtable(component_type)                                    \
     static ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT];  \
     static void ogg_design_time_painter_##component_type##_(            \
@@ -358,6 +359,12 @@
     static ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT]= {\
         [OGG_DESTROY_EVENT] = ogg_destructor(component_type),           \
         OGG_EXPAND_ARGS_WITH_BRAK
+# else
+#  define def_vtable(component_type)                                    \
+    static ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT]= {\
+        [OGG_DESTROY_EVENT] = ogg_destructor(component_type),           \
+        OGG_EXPAND_ARGS_WITH_BRAK
+# endif
 
 #  define ogg_startup(T)                                                \
     T##_info

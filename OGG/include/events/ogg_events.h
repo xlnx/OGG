@@ -4,10 +4,10 @@
 # include <stdlib.h>
 typedef unsigned event;
 
-/* call event by 
+/* call event by
     object->vptr[event_name](
-        ogg_com_ptr this, 
-        va_list args, 
+        ogg_com_ptr this,
+        va_list args,
         ogg_handle_flag *handled
     );
 */
@@ -29,7 +29,7 @@ typedef unsigned event;
         T##_##event_name##_helper__(this,                               \
             event_name##_PASS_ARGS handled);                            \
     }                                                                   \
-    static void T##_##event_name##_helper__(                            \
+    void T##_##event_name##_helper__(                                   \
             T* this, event_name##_ARGS ogg_handle_flag* handled)
 
 
@@ -86,7 +86,7 @@ typedef unsigned event;
 # define OGG_KEYBOARD_EVENT_ARGS                                        \
         unsigned char key, int x, int y,
 # define OGG_KEYBOARD_EVENT_EXTRACT_ARGS                                \
-        unsigned char key = va_arg(args, unsigned char);                \
+        unsigned char key = va_arg(args, unsigned int);                 \
         int x = va_arg(args, int);                                      \
         int y = va_arg(args, int);
 # define OGG_KEYBOARD_EVENT_PASS_ARGS                                   \
@@ -202,7 +202,7 @@ typedef unsigned event;
 
 #  define OGG_MOUSE_DOWN_EVENT              /* mouse down event */      (11)
 #  define OGG_MOUSE_DOWN_EVENT_ARGS                                     \
-        int button, int x, int y, 
+        int button, int x, int y,
 #  define OGG_MOUSE_DOWN_EVENT_EXTRACT_ARGS                             \
         int button = va_arg(args, int);                                 \
         int x = va_arg(args, int);                                      \
@@ -214,7 +214,7 @@ typedef unsigned event;
 
 #  define OGG_MOUSE_UP_EVENT                /* mouse down event */      (12)
 #  define OGG_MOUSE_UP_EVENT_ARGS                                       \
-        int button, int x, int y, 
+        int button, int x, int y,
 #  define OGG_MOUSE_UP_EVENT_EXTRACT_ARGS                               \
         int button = va_arg(args, int);                                 \
         int x = va_arg(args, int);                                      \
@@ -257,7 +257,7 @@ typedef unsigned event;
 
 
 /* glutTimerFunc(
-     unsigned int millis, 
+     unsigned int millis,
      void (*func)(int value),
      int value
    ) */

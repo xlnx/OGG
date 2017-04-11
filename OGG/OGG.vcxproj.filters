@@ -45,17 +45,20 @@
     <ClCompile Include="src\components\ogg_grid.c">
       <Filter>源文件\components</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\ogg_startup.c">
-      <Filter>源文件\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utils\ogg_utils.c">
-      <Filter>源文件\utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\components\ogg_edit.c">
       <Filter>源文件\components</Filter>
     </ClCompile>
     <ClCompile Include="src\components\ogg_grid_canvas.c">
       <Filter>源文件\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\ogg_forms.c">
+      <Filter>源文件\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\ogg_utils.c">
+      <Filter>资源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogg.c">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,9 +83,6 @@
     <ClInclude Include="include\utils\geometry.h">
       <Filter>头文件\utils</Filter>
     </ClInclude>
-    <ClInclude Include="include\utils\ogg_startup.h">
-      <Filter>头文件\utils</Filter>
-    </ClInclude>
     <ClInclude Include="include\utils\ogg_utils.h">
       <Filter>头文件\utils</Filter>
     </ClInclude>
@@ -93,6 +93,9 @@
       <Filter>头文件\components</Filter>
     </ClInclude>
     <ClInclude Include="include\components\ogg_grid_canvas.h">
+      <Filter>头文件\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\ogg_forms.h">
       <Filter>头文件\components</Filter>
     </ClInclude>
   </ItemGroup>

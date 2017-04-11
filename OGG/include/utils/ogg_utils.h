@@ -1,9 +1,11 @@
 #ifndef OGG_GRAPHIC_UTILS__HEADER_FILE______
 #define OGG_GRAPHIC_UTILS__HEADER_FILE______
 #include "geometry.h"
+#include <string.h>
+#include <stdlib.h>
 
 //# define DEBUG
-# define DESIGN_TIME
+//# define DESIGN_TIME
 
 # ifdef DEBUG
     int alloc_memory;

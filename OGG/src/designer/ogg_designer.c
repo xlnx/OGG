@@ -1,4 +1,9 @@
 //#include <GL/glew.h>
+#ifdef DESIGN_TIME
+
+#ifndef GLUT_DISABLE_ATEXIT_HACK
+# define GLUT_DISABLE_ATEXIT_HACK
+#endif
 #include <GL/glut.h>
 #define OGG_GRAPHIC_STARTUP__INST____
 #include "utils/ogg_startup.h"
@@ -89,7 +94,7 @@ def_constructor(ogg_form, args)
         }
     }
     //glut_events[OGG_TIMER_EVENT]
-    glutTimerFunc(OGG_TIME_INTERVAL, 
+    glutTimerFunc(OGG_TIME_INTERVAL,
         (void(*)(int))glut_events[OGG_TIMER_EVENT], OGG_TIMER_INDEX);
     this->position = args->info.position;
     this->title = args->info.title;
@@ -113,7 +118,7 @@ def_handler(ogg_form, OGG_SPECIAL_KEY_EVENT)
 def_vtable(ogg_application) (
 );
 
-static def_constructor(ogg_application, args)
+def_constructor(ogg_application, args)
 {
     this->argc = args->argc;
     this->argv = args->argv;
@@ -121,7 +126,7 @@ static def_constructor(ogg_application, args)
     this->forms_lookup = (ogg_form**)malloc(OGG_MAX_FORM_COUNT * sizeof(ogg_form*));
 }
 
-static def_destructor(ogg_application)
+def_destructor(ogg_application)
 {
     free(this->forms_lookup);
 }
@@ -205,3 +210,5 @@ int main(int argc, char *argv[])
 }
 
 # endif
+
+#endif

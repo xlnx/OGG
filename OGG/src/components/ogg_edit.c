@@ -74,9 +74,9 @@ static void paint_caret(ogg_edit* this)
     }
     ogg_pec pec = { -1, 0 };
     int cur_pos = this->caret - this->offset;
-    ogg_pec pix = pec_add_coord(get_real_pec(this, pec), 
+    ogg_pec pix = pec_add_coord(get_real_pec(this, pec),
         coord(4 + cur_pos * 8, -8));
-    float dx = this->insert_mode ? 
+    float dx = this->insert_mode ?
         (float)(0.5 * 4 / window_width)
         :
         (float)(4.0 * 4 / window_width),
@@ -88,7 +88,7 @@ static void paint_caret(ogg_edit* this)
     glVertex2f(pix.x, pix.y + dy);
     glEnd();
     if (!this->caret_visible) {
-        ogg_paint_char(this->text.content[this->caret], this->text.color, 
+        ogg_paint_char(this->text.content[this->caret], this->text.color,
             pec_add_coord(pix, coord(0, 4)));
     }
     ogg_flush_screen();
@@ -106,7 +106,7 @@ def_handler(ogg_edit, OGG_PAINT_EVENT)
 
 def_handler(ogg_edit, OGG_KEYBOARD_EVENT)
 {
-    if (key < 32 && key != '\b' || key > 127) {
+    if ((key < 32 && key != '\b')|| key > 127) {
         return;
     }
     switch (key) {

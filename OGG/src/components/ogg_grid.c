@@ -7,12 +7,12 @@
     default_startup(ogg_grid_element)(
     )
 
-    static def_constructor(ogg_grid_element, args)
+    def_constructor(ogg_grid_element, args)
     {
         this->object = 0;
     }
 
-    static def_destructor(ogg_grid_element)
+    def_destructor(ogg_grid_element)
     {   /* do nothing */
     }
 

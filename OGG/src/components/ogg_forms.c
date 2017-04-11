@@ -1,28 +1,12 @@
-//#include <GL/glew.h>
-#include <GL/glut.h>
-#define OGG_GRAPHIC_STARTUP__INST____
-#include "utils/ogg_startup.h"
-
-# ifndef OGG_CUSTOM_STARTUP
+# include <GL/glut.h>
+# include "components/ogg_forms.h"
 # include <gl/freeglut.h>
 # define OGG_TIME_INTERVAL  (500)/* ms */
 # define OGG_TIMER_INDEX    (0)
 
-#  define OGG_MAX_FORM_COUNT (65534U)
-def_startup(ogg_application)(
-    int *argc;
-    char **argv;
-    ogg_display_mode display_mode;
-);
+# define OGG_MAX_FORM_COUNT (65534U)
 
-def_component(ogg_application)(
-    int *argc;
-    char **argv;
-    ogg_display_mode display_mode;
-    ogg_form **forms_lookup;
-);
-
-static ogg_application *application;
+ogg_application *application;
 
 # define ogg_active_form()                             \
         (application->forms_lookup[glutGetWindow()])
@@ -89,10 +73,11 @@ def_constructor(ogg_form, args)
         }
     }
     //glut_events[OGG_TIMER_EVENT]
-    glutTimerFunc(OGG_TIME_INTERVAL, 
+    glutTimerFunc(OGG_TIME_INTERVAL,
         (void(*)(int))glut_events[OGG_TIMER_EVENT], OGG_TIMER_INDEX);
     this->position = args->info.position;
     this->title = args->info.title;
+    current_component = this;
 }
 
 def_destructor(ogg_form)
@@ -113,7 +98,7 @@ def_handler(ogg_form, OGG_SPECIAL_KEY_EVENT)
 def_vtable(ogg_application) (
 );
 
-static def_constructor(ogg_application, args)
+def_constructor(ogg_application, args)
 {
     this->argc = args->argc;
     this->argv = args->argv;
@@ -121,35 +106,9 @@ static def_constructor(ogg_application, args)
     this->forms_lookup = (ogg_form**)malloc(OGG_MAX_FORM_COUNT * sizeof(ogg_form*));
 }
 
-static def_destructor(ogg_application)
+def_destructor(ogg_application)
 {
     free(this->forms_lookup);
-}
-
-static void ogg_init_application(ogg_application* this)
-{
-    glutInit(this->argc, this->argv);
-    glutInitDisplayMode(this->display_mode);
-}
-
-static void ogg_terminate_application(ogg_application* this)
-{
-    ogg_destroy(this);
-    exit(ogg_exit_status());
-}
-
-static void ogg_run_application(ogg_application* this)
-{
-    current_component = ogg_active_form();
-    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
-    glutMainLoop();
-    ogg_terminate(this);
-}
-
-/* startup */
-void ogg_terminate()
-{
-    ogg_terminate_application(application);
 }
 
 ogg_com_ptr get_current_component()
@@ -177,36 +136,8 @@ ogg_form* ogg_create_form(form_info info)
     return frm;
 }
 
-//void ogg_destroy_form(ogg_form* this)
-//{
-//    ogg_destroy(this);
-//}
-
 ogg_form* ogg_get_active_form()
 {
     return ogg_active_form();
 }
 
-int main(int argc, char *argv[])
-{
-    ogg_create(ogg_application)(
-        .ogg_component = {
-            .parent = 0,
-            .anchor = {
-                .type = ogg_anchor_pec,
-                .pec = {
-                    .top_left = { 0, 0 },
-                    .bottom_right = { 100, 100 }
-                }
-            }
-        },
-        .argc = &argc,
-        .argv = argv,
-        .display_mode = GLUT_RGB | GLUT_SINGLE,
-    )(application);
-    ogg_init_application(application);
-    ogg_init_application_forms();
-    ogg_run_application(application);
-}
-
-# endif

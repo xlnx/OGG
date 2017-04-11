@@ -1,20 +1,21 @@
-﻿生成启动时间为 2017/4/3 0:31:42。
-     1>项目“C:\Users\xlnx\Desktop\OGG-designer\OGG\OGG.vcxproj”在节点 2 上(Build 个目标)。
+﻿生成启动时间为 2017/4/11 19:03:59。
+     1>项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\xlnx\Desktop\OGG-designer\OGG\dependency\freeglut\glew-1.11.0\include" /I"C:\Users\xlnx\Desktop\OGG-designer\OGG\dependency\freeglut\freeglut\include" /I"C:\Users\xlnx\Desktop\OGG-designer\OGG\include" /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /Oy /GT /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\xlnx\Desktop\OGG-designer\OGG\temp\Release\\" /Fd"C:\Users\xlnx\Desktop\OGG-designer\OGG\temp\Release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt src\components\ogg_components.c
-         ogg_components.c
+         D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\glew-1.11.0\include" /IC:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\freeglut\include /IC:\Users\xlnx\Desktop\OGG\OGG\include /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /Oy /GT /GL /D LIB_OGG__BUILDING /D GLUT_DISABLE_ATEXIT_HACK /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\\" /Fd"C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt src\ogg.c
+         ogg.c
        Lib:
-         D:\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\Users\xlnx\Desktop\OGG-designer\OGG\bin\Release\OGG.lib" /NOLOGO /LTCG "C:\Users\xlnx\Desktop\OGG-designer\OGG\temp\Release\ogg_button.obj"
-         "C:\Users\xlnx\Desktop\OGG-designer\OGG\temp\Release\ogg_components.obj"
-         "C:\Users\xlnx\Desktop\OGG-designer\OGG\temp\Release\ogg_edit.obj"
-         "C:\Users\xlnx\Desktop\OGG-designer\OGG\temp\Release\ogg_grid.obj"
-         "C:\Users\xlnx\Desktop\OGG-designer\OGG\temp\Release\ogg_grid_canvas.obj"
-         "C:\Users\xlnx\Desktop\OGG-designer\OGG\temp\Release\ogg_shape.obj"
-         "C:\Users\xlnx\Desktop\OGG-designer\OGG\temp\Release\ogg_startup.obj"
-         "C:\Users\xlnx\Desktop\OGG-designer\OGG\temp\Release\ogg_utils.obj"
-         OGG.vcxproj -> C:\Users\xlnx\Desktop\OGG-designer\OGG\bin\Release\OGG.lib
-     1>已完成生成项目“C:\Users\xlnx\Desktop\OGG-designer\OGG\OGG.vcxproj”(Build 个目标)的操作。
+         D:\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\Users\xlnx\Desktop\OGG\OGG\bin\Release\OGG.lib" /NOLOGO /LTCG C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_button.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_components.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_edit.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_forms.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_grid.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_grid_canvas.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_shape.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_utils.obj
+         OGG.vcxproj -> C:\Users\xlnx\Desktop\OGG\OGG\bin\Release\OGG.lib
+     1>已完成生成项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”(Build 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:00.88
+已用时间 00:00:04.16
