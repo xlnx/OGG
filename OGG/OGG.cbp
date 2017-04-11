@@ -6,82 +6,37 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Debug Win32">
+			<Target title="Debug">
 				<Option output="bin/Debug/OGG" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="temp" />
+				<Option object_output="temp/Debug/" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-DLIB_OGG__BUILDING" />
-					<Add option="-DGLUT_DISABLE_ATEXIT_HACK" />
+					<Add option="-Wall" />
+					<Add option="-g" />
 					<Add directory="include" />
-					<Add directory="dependency/freeglut/glew-1.11.0/include" />
 					<Add directory="dependency/freeglut/freeglut/include" />
-				</Compiler>
-				<Linker>
-					<Add directory="dependency/freeglut/freeglut/lib" />
-					<Add directory="dependency/freeglut/glew-1.11.0/lib" />
-				</Linker>
-			</Target>
-			<Target title="DesignDebug Win32">
-				<Option output="bin/DesignDebug/OGG" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="" />
-				<Option object_output="temp" />
-				<Option type="2" />
-				<Option compiler="gcc" />
-				<Option createDefFile="1" />
-				<Compiler>
-					<Add option="-DLIB_OGG__BUILDING" />
-					<Add option="-DDESIGN_TIME" />
-					<Add option="-DGLUT_DISABLE_ATEXIT_HACK" />
-					<Add directory="include" />
 					<Add directory="dependency/freeglut/glew-1.11.0/include" />
-					<Add directory="dependency/freeglut/freeglut/include" />
 				</Compiler>
-				<Linker>
-					<Add directory="dependency/freeglut/freeglut/lib" />
-					<Add directory="dependency/freeglut/glew-1.11.0/lib" />
-				</Linker>
 			</Target>
-			<Target title="DesignRelease Win32">
-				<Option output="bin/DesignRelease/OGG" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="" />
-				<Option object_output="temp" />
-				<Option type="2" />
-				<Option compiler="gcc" />
-				<Option createDefFile="1" />
-				<Compiler>
-					<Add option="-DLIB_OGG__BUILDING" />
-					<Add option="-DDESIGN_TIME" />
-					<Add option="-DGLUT_DISABLE_ATEXIT_HACK" />
-					<Add directory="include" />
-					<Add directory="dependency/freeglut/glew-1.11.0/include" />
-					<Add directory="dependency/freeglut/freeglut/include" />
-				</Compiler>
-				<Linker>
-					<Add directory="dependency/freeglut/freeglut/lib" />
-					<Add directory="dependency/freeglut/glew-1.11.0/lib" />
-				</Linker>
-			</Target>
-			<Target title="Release Win32">
+			<Target title="Release">
 				<Option output="bin/Release/OGG" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="temp" />
+				<Option object_output="temp/Release/" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-DLIB_OGG__BUILDING" />
-					<Add option="-DGLUT_DISABLE_ATEXIT_HACK" />
+					<Add option="-Wall" />
+					<Add option="-O2" />
 					<Add directory="include" />
-					<Add directory="dependency/freeglut/glew-1.11.0/include" />
 					<Add directory="dependency/freeglut/freeglut/include" />
+					<Add directory="dependency/freeglut/glew-1.11.0/include" />
 				</Compiler>
 				<Linker>
-					<Add directory="dependency/freeglut/freeglut/lib" />
-					<Add directory="dependency/freeglut/glew-1.11.0/lib" />
+					<Add option="-s" />
 				</Linker>
 			</Target>
 		</Build>
@@ -97,6 +52,9 @@
 		<Unit filename="include/ogg.h" />
 		<Unit filename="include/utils/geometry.h" />
 		<Unit filename="include/utils/ogg_utils.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/components/ogg_button.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -118,6 +76,9 @@
 		<Unit filename="src/components/ogg_shape.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/designer/ogg_designer.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/ogg.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -128,6 +89,7 @@
 			<code_completion />
 			<envvars />
 			<debugger />
+			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
