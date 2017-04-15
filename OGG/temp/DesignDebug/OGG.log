@@ -1,8 +1,15 @@
-﻿生成启动时间为 2017/4/11 19:04:14。
+﻿生成启动时间为 2017/4/13 12:02:26。
      1>项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\glew-1.11.0\include" /IC:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\freeglut\include /IC:\Users\xlnx\Desktop\OGG\OGG\include /ZI /nologo /W3 /WX- /sdl /Oy- /D LIB_OGG__BUILDING /D DESIGN_TIME /D GLUT_DISABLE_ATEXIT_HACK /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\\" /Fd"C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt src\ogg.c
-         ogg.c
+         D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\glew-1.11.0\include" /IC:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\freeglut\include /IC:\Users\xlnx\Desktop\OGG\OGG\include /ZI /nologo /W3 /WX- /sdl /Oy- /D LIB_OGG__BUILDING /D DESIGN_TIME /D GLUT_DISABLE_ATEXIT_HACK /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\\" /Fd"C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt src\components\ogg_button.c src\components\ogg_components.c src\components\ogg_edit.c src\components\ogg_forms.c src\components\ogg_grid.c src\components\ogg_grid_canvas.c src\components\ogg_shape.c
+         ogg_shape.c
+         ogg_grid_canvas.c
+         ogg_grid.c
+         ogg_forms.c
+         ogg_edit.c
+         ogg_components.c
+         ogg_button.c
+         正在生成代码...
        Lib:
          D:\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\Users\xlnx\Desktop\OGG\OGG\bin\DesignDebug\OGG.lib" /NOLOGO C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg_button.obj
          C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg_components.obj
@@ -12,10 +19,11 @@
          C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg_grid_canvas.obj
          C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg_shape.obj
          C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg_event.obj
          C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg_utils.obj
          OGG.vcxproj -> C:\Users\xlnx\Desktop\OGG\OGG\bin\DesignDebug\OGG.lib
      1>已完成生成项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”(Build 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:00.70
+已用时间 00:00:02.54

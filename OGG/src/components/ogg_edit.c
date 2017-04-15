@@ -24,18 +24,18 @@ def_vtable(ogg_edit)(
     [OGG_RESHAPE_EVENT] = ogg_handler(ogg_edit, OGG_RESHAPE_EVENT),
 );
 
-default_startup_inh(ogg_edit, ogg_rect)(
-    .color = OGG_WHITE
-)
+//default_startup_inh(ogg_edit, ogg_rect)(
+//    .color = OGG_WHITE
+//)
 
 def_constructor(ogg_edit, args)
 {
-    memset(&this->text.content, 0, sizeof(this->text.content));
-    this->text.color = args->color;
-    ((ogg_shape*)this)->color = OGG_WHITE;
-    this->caret = this->offset = 0;
-    this->caret_visible = ogg_false;
-    this->insert_mode = ogg_true;
+    memset(&self->text.content, 0, sizeof(self->text.content));
+    self->text.color = args->color;
+    ((ogg_shape*)self)->color = OGG_WHITE;
+    self->caret = self->offset = 0;
+    self->caret_visible = ogg_false;
+    self->insert_mode = ogg_true;
 }
 
 def_destructor(ogg_edit)
@@ -45,38 +45,38 @@ def_destructor(ogg_edit)
 extern int window_width;
 extern int window_height;
 
-static int get_edit_width(ogg_edit* this)
+static int get_edit_width(ogg_edit* self)
 {
     ogg_anchor anchor;
-    get_component_real_coord_anchor(this, &anchor);
+    get_component_real_coord_anchor(self, &anchor);
     return (anchor.coord.right - anchor.coord.left) / 8 - 1;
 }
 
-static void adjust_offset(ogg_edit* this)
+static void adjust_offset(ogg_edit* self)
 {
-    const int width = get_edit_width(this),
-            length = strlen(this->text.content);
-    if (this->caret >= width + this->offset) {
-        this->offset = this->caret - width + 1;
-    } else if (this->caret < this->offset) {
-        this->offset = this->caret;
-    } else if (length < this->offset + width - 1) {
-        this->offset = max(0, length - width + 1);
+    const int width = get_edit_width(self),
+            length = strlen(self->text.content);
+    if (self->caret >= width + self->offset) {
+        self->offset = self->caret - width + 1;
+    } else if (self->caret < self->offset) {
+        self->offset = self->caret;
+    } else if (length < self->offset + width - 1) {
+        self->offset = max(0, length - width + 1);
     }
 }
 
-static void paint_caret(ogg_edit* this)
+static void paint_caret(ogg_edit* self)
 {
-    if (this->caret_visible) {
-        glColor3f(this->text.color.R, this->text.color.G, this->text.color.B);
+    if (self->caret_visible) {
+        glColor3f(self->text.color.R, self->text.color.G, self->text.color.B);
     } else {
         glColor3f(OGG_WHITE.R, OGG_WHITE.G, OGG_WHITE.B);
     }
     ogg_pec pec = { -1, 0 };
-    int cur_pos = this->caret - this->offset;
-    ogg_pec pix = pec_add_coord(get_real_pec(this, pec),
+    int cur_pos = self->caret - self->offset;
+    ogg_pec pix = pec_add_coord(get_real_pec(self, pec),
         coord(4 + cur_pos * 8, -8));
-    float dx = this->insert_mode ?
+    float dx = self->insert_mode ?
         (float)(0.5 * 4 / window_width)
         :
         (float)(4.0 * 4 / window_width),
@@ -87,8 +87,8 @@ static void paint_caret(ogg_edit* this)
     glVertex2f(pix.x + dx, pix.y + dy);
     glVertex2f(pix.x, pix.y + dy);
     glEnd();
-    if (!this->caret_visible) {
-        ogg_paint_char(this->text.content[this->caret], this->text.color,
+    if (!self->caret_visible) {
+        ogg_paint_char(self->text.content[self->caret], self->text.color,
             pec_add_coord(pix, coord(0, 4)));
     }
     ogg_flush_screen();
@@ -96,12 +96,12 @@ static void paint_caret(ogg_edit* this)
 
 def_handler(ogg_edit, OGG_PAINT_EVENT)
 {
-    ogg_handler(ogg_shape, OGG_PAINT_EVENT)((ogg_shape*)this, 0, handled);
+    ogg_handler(ogg_shape, OGG_PAINT_EVENT)((ogg_shape*)self, 0, handled);
     coordf pix = { -1, 0 };
-    pix = pec_add_coord(get_real_pec(this, pix), coord(4, -4));
-    int width = get_edit_width(this);
-    ogg_paint_string_len(this->text.content + this->offset, width, this->text.color, pix);
-    paint_caret(this);
+    pix = pec_add_coord(get_real_pec(self, pix), coord(4, -4));
+    int width = get_edit_width(self);
+    ogg_paint_string_len(self->text.content + self->offset, width, self->text.color, pix);
+    paint_caret(self);
 }
 
 def_handler(ogg_edit, OGG_KEYBOARD_EVENT)
@@ -110,91 +110,91 @@ def_handler(ogg_edit, OGG_KEYBOARD_EVENT)
         return;
     }
     switch (key) {
-    case '\b': if (this->caret != 0){
-        int ptr = this->caret--, length = strlen(this->text.content);
+    case '\b': if (self->caret != 0){
+        int ptr = self->caret--, length = strlen(self->text.content);
         for (; ptr != length + 1; ++ptr) {
-            this->text.content[ptr - 1] = this->text.content[ptr];
+            self->text.content[ptr - 1] = self->text.content[ptr];
         }
     } break;
     case 127: {
-        if ((glutGetModifiers() & GLUT_ACTIVE_CTRL) && this->caret != 0) {
-            int ptr = this->caret, det = 1, length = strlen(this->text.content);
-            for (; det != this->caret; ++det) {
-                if (this->text.content[this->caret - det] == ' ')
+        if ((glutGetModifiers() & GLUT_ACTIVE_CTRL) && self->caret != 0) {
+            int ptr = self->caret, det = 1, length = strlen(self->text.content);
+            for (; det != self->caret; ++det) {
+                if (self->text.content[self->caret - det] == ' ')
                     break;
             }
-            this->caret -= det;
+            self->caret -= det;
             for (; ptr != length + det; ++ptr) {
-                this->text.content[ptr - det] = this->text.content[ptr];
+                self->text.content[ptr - det] = self->text.content[ptr];
             }
         } else {
-            int ptr = this->caret;
-            for (; this->text.content[ptr]; ++ptr) {
-                this->text.content[ptr] = this->text.content[ptr + 1];
+            int ptr = self->caret;
+            for (; self->text.content[ptr]; ++ptr) {
+                self->text.content[ptr] = self->text.content[ptr + 1];
             }
         }
     } break;
     default: {
-        if (this->insert_mode) {
-            int ptr = strlen(this->text.content);
-            for (; ptr != this->caret; --ptr) {
-                this->text.content[ptr] = this->text.content[ptr - 1];
+        if (self->insert_mode) {
+            int ptr = strlen(self->text.content);
+            for (; ptr != self->caret; --ptr) {
+                self->text.content[ptr] = self->text.content[ptr - 1];
             }
-            this->text.content[this->caret++] = key;
+            self->text.content[self->caret++] = key;
         } else {
-            this->text.content[this->caret++] = key;
+            self->text.content[self->caret++] = key;
         }
     } break;
     }
     *handled = ogg_true;
-    adjust_offset(this);
-    ogg_send_event(this, OGG_PAINT_EVENT);
+    adjust_offset(self);
+    ogg_send_event(self, OGG_PAINT_EVENT);
     ogg_flush_screen();
 }
 
 def_handler(ogg_edit, OGG_TIMER_EVENT)
 {
-    this->caret_visible = !this->caret_visible;
-    paint_caret(this);
+    self->caret_visible = !self->caret_visible;
+    paint_caret(self);
 }
 
 def_handler(ogg_edit, OGG_SPECIAL_KEY_EVENT)
 {
     switch (key) {
-    case GLUT_KEY_LEFT: if (this->caret > 0) {
-        --this->caret;
+    case GLUT_KEY_LEFT: if (self->caret > 0) {
+        --self->caret;
     } break;
-    case GLUT_KEY_RIGHT: if (this->text.content[this->caret]){
-        ++this->caret;
+    case GLUT_KEY_RIGHT: if (self->text.content[self->caret]){
+        ++self->caret;
     } break;
     case GLUT_KEY_INSERT: {
-        this->insert_mode = !this->insert_mode;
+        self->insert_mode = !self->insert_mode;
     } break;
     case GLUT_KEY_HOME: {
-        this->caret = 0;
+        self->caret = 0;
     } break;
     case GLUT_KEY_END: {
-        this->caret = strlen(this->text.content);
+        self->caret = strlen(self->text.content);
     } break;
     default: return;
     }
     *handled = ogg_true;
-    this->caret_visible = ogg_true;
-    adjust_offset(this);
-    ogg_send_event(this, OGG_PAINT_EVENT);
+    self->caret_visible = ogg_true;
+    adjust_offset(self);
+    ogg_send_event(self, OGG_PAINT_EVENT);
     ogg_flush_screen();
 }
 
 def_handler(ogg_edit, OGG_LOSE_FOCUS_EVENT)
 {
-    this->caret_visible = ogg_false;
-    paint_caret(this);
+    self->caret_visible = ogg_false;
+    paint_caret(self);
 }
 
 def_handler(ogg_edit, OGG_RESHAPE_EVENT)
 {
-    adjust_offset(this);
-    ogg_send_event(this, OGG_PAINT_EVENT, 0);
+    adjust_offset(self);
+    ogg_send_event(self, OGG_PAINT_EVENT, 0);
     ogg_flush_screen();
 }
 

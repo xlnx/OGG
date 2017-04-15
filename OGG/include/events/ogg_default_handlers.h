@@ -77,10 +77,10 @@ static void ogg_default_handler(OGG_RESHAPE_EVENT)(int width, int height)
 
 static def_checker(OGG_DESTROY_EVENT)
 {
-    if (focused_component == this) {
+    if (focused_component == self) {
         focused_component = 0;
     }
-    if (current_component == this) {
+    if (current_component == self) {
         ogg_send_event(current_component, OGG_LOSE_FOCUS_EVENT);
         current_component = ogg_active_form();
     }
@@ -89,38 +89,38 @@ static def_checker(OGG_DESTROY_EVENT)
 
 static def_checker(OGG_KEYBOARD_EVENT)
 {
-    return is_child_of(current_component, this);
+    return is_child_of(current_component, self);
 }
 
 static def_checker(OGG_SPECIAL_KEY_EVENT)
 {
-    return is_child_of(current_component, this);
+    return is_child_of(current_component, self);
 }
 
 static def_checker(OGG_MOUSE_EVENT)
 {
     ogg_anchor anchor;
-    get_component_real_coord_anchor(this, &anchor);
+    get_component_real_coord_anchor(self, &anchor);
     if (x >= anchor.coord.left && x <= anchor.coord.right &&
             y >= anchor.coord.top && y <= anchor.coord.bottom)
     {
         if (is_top_level) {
             is_top_level = ogg_false;
-            if (current_component != this) {
+            if (current_component != self) {
                 if (current_component != 0)
                     ogg_send_event(current_component, OGG_LOSE_FOCUS_EVENT);
-                current_component = this;
-                ogg_send_event(this, OGG_FOCUS_EVENT);
+                current_component = self;
+                ogg_send_event(self, OGG_FOCUS_EVENT);
             }
-            if (focused_component != this) {
+            if (focused_component != self) {
                 if (focused_component)
                     ogg_send_event(focused_component, OGG_MOUSE_LEAVE_EVENT);
-                focused_component = this;
-                ogg_send_event(this, OGG_MOUSE_ENTER_EVENT);
+                focused_component = self;
+                ogg_send_event(self, OGG_MOUSE_ENTER_EVENT);
             }
             if (mouse_state != state) {
                 mouse_state = state;
-                ogg_send_event(this, state == GLUT_DOWN ?
+                ogg_send_event(self, state == GLUT_DOWN ?
                     OGG_MOUSE_DOWN_EVENT : OGG_MOUSE_UP_EVENT,
                     button, x, y
                 );
@@ -134,28 +134,28 @@ static def_checker(OGG_MOUSE_EVENT)
 static def_checker(OGG_MOUSE_DRAG_EVENT)
 {
     ogg_anchor anchor;
-    get_component_real_coord_anchor(this, &anchor);
+    get_component_real_coord_anchor(self, &anchor);
     if (x >= anchor.coord.left && x <= anchor.coord.right &&
             y >= anchor.coord.top && y <= anchor.coord.bottom)
     {
         if (is_top_level) {
         is_top_level = ogg_false;
-            if (focused_component != this) {
+            if (focused_component != self) {
                 if (focused_component)
                     ogg_send_event(focused_component, OGG_MOUSE_LEAVE_EVENT);
-                focused_component = this;
-                ogg_send_event(this, OGG_MOUSE_ENTER_EVENT);
+                focused_component = self;
+                ogg_send_event(self, OGG_MOUSE_ENTER_EVENT);
             }
         }
         if (!is_dragging) {
             if (mouse_state == GLUT_DOWN) {
                 is_dragging = ogg_true;
-                ogg_send_event(this, OGG_MOUSE_DRAG_BEGIN_EVENT);
+                ogg_send_event(self, OGG_MOUSE_DRAG_BEGIN_EVENT);
             }
         } else {
             if (mouse_state == GLUT_UP) {
                 is_dragging = ogg_false;
-                ogg_send_event(this, OGG_MOUSE_DRAG_END_EVENT);
+                ogg_send_event(self, OGG_MOUSE_DRAG_END_EVENT);
             }
         }
         return ogg_true;
@@ -166,17 +166,17 @@ static def_checker(OGG_MOUSE_DRAG_EVENT)
 static def_checker(OGG_MOUSE_MOVE_EVENT)
 {
     ogg_anchor anchor;
-    get_component_real_coord_anchor(this, &anchor);
+    get_component_real_coord_anchor(self, &anchor);
     if (x >= anchor.coord.left && x <= anchor.coord.right &&
             y >= anchor.coord.top && y <= anchor.coord.bottom)
     {
         if (is_top_level) {
             is_top_level = ogg_false;
-            if (focused_component != this) {
+            if (focused_component != self) {
                 if (focused_component)
                     ogg_send_event(focused_component, OGG_MOUSE_LEAVE_EVENT);
-                focused_component = this;
-                ogg_send_event(this, OGG_MOUSE_ENTER_EVENT);
+                focused_component = self;
+                ogg_send_event(self, OGG_MOUSE_ENTER_EVENT);
             }
         }
         return ogg_true;
@@ -198,7 +198,7 @@ static def_checker(OGG_MOUSE_ENTRY_EVENT)
 
 static def_checker(OGG_TIMER_EVENT)
 {
-    return is_child_of(current_component, this);
+    return is_child_of(current_component, self);
 }
 
 ogg_bool (*const event_checker[OGG_EVENT_COUNT])(ogg_component*, va_list) = {

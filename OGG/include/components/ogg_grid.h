@@ -18,7 +18,7 @@
         ogg_grid_element*** sub;
     );
 
-    void set_grid_size(ogg_grid* this, ogg_coord size);
+    void set_grid_size(ogg_grid* self, ogg_coord size);
 
     ogg_com_ptr get_grid_elem(ogg_grid* grid, ogg_coord pos);
 

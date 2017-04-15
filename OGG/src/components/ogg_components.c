@@ -20,6 +20,13 @@ void ogg_static_constructor_ogg_component___(ogg_com_ptr com_ptr, const ogg_comp
     }
 }
 
+void ogg_destructor_ogg_component___(ogg_component* self)
+{   /* leave a empty destructor of ogg_component here to ensure the macro works properly */
+}
+
+def_vtable(ogg_component)(
+);
+
 #  ifdef DEBUG
 #    define destroy_sub_components(com_ptr)                                 \
     do {                                                                    \
@@ -154,7 +161,7 @@ void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
         switch (anchor->type){
         case ogg_anchor_pec:
             switch (com->anchor_type) {
-            case ogg_anchor_pec: {              /* parent is pec and this is pec */
+            case ogg_anchor_pec: {              /* parent is pec and self is pec */
                 float x1 = anchor->pec.left, x2 = anchor->pec.right,
                     y1 = anchor->pec.top, y2 = anchor->pec.bottom;
                 anchor->pec.left =
@@ -168,7 +175,7 @@ void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
                     //((com->pec.bottom + 1) * y2 - (com->pec.bottom - 1) * y1) / 2;
                     ((1 + com->pec.bottom) * y1 + (1 - com->pec.bottom) * y2) / 2;
             } break;
-            case ogg_anchor_coord: {            /* parent is pec and this is coord */
+            case ogg_anchor_coord: {            /* parent is pec and self is coord */
                 float x1 = anchor->pec.left, y1 = anchor->pec.top;
                 anchor->coord.left = (int)(window_width * (x1 + 1) / 2 + com->coord.left);
                 anchor->coord.right = (int)(window_width * (x1 + 1) / 2 + com->coord.right);
@@ -178,7 +185,7 @@ void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
             } break;
             } break;
         case ogg_anchor_coord:
-            switch (com->anchor_type) {         /* parent is coord and this is pec */
+            switch (com->anchor_type) {         /* parent is coord and self is pec */
             case ogg_anchor_pec: {
                 int x1 = anchor->coord.left, x2 = anchor->coord.right,
                     y1 = anchor->coord.top, y2 = anchor->coord.bottom;
@@ -187,7 +194,7 @@ void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
                 anchor->coord.top += (int)((y2 - y1) * (1 - com->pec.top) / 2);
                 anchor->coord.bottom += (int)((y2 - y1) * (1 - com->pec.bottom) / 2);
             } break;
-            case ogg_anchor_coord: {            /* parent is coord and this is coord */
+            case ogg_anchor_coord: {            /* parent is coord and self is coord */
                 anchor->coord.left += com->coord.left;
                 anchor->coord.right += com->coord.right;
                 anchor->coord.top += com->coord.top;
@@ -273,17 +280,13 @@ void ogg_send_event(ogg_com_ptr com_ptr, event event_name, ...)
     va_end(args);
 }
 
-void ogg_destructor_ogg_component___(ogg_component* this)
-{   /* leave a empty destructor of ogg_component here to ensure the macro works properly */
-}
-
 void ogg_destroy(ogg_com_ptr com_ptr)
 {
     /* delete all child components */
     destroy_sub_components(com_ptr);
-    /* destroy this component */
+    /* destroy self component */
     ogg_single_event(((ogg_component*)com_ptr), OGG_DESTROY_EVENT, 0, 0);
-    /* delete this object from parent */
+    /* delete self object from parent */
     ogg_component* parent = ((ogg_component*)com_ptr)->parent;
     if (parent != 0) {
         ogg_subcomponent* p = parent->sub;
@@ -303,7 +306,7 @@ void ogg_destroy(ogg_com_ptr com_ptr)
             }
         }
     }
-    /* free the momory of this object */
+    /* free the momory of self object */
     free(com_ptr);
 # ifdef DEBUG
     alloc_memory--;
@@ -316,7 +319,7 @@ ogg_coord coord(int x, int y)
     return pos;
 }
 
-ogg_component_info ogg_default_info_ogg_component___(ogg_com_ptr parent)
+/*ogg_component_info ogg_default_info_ogg_component___(ogg_com_ptr parent)
 {
     ogg_component_info st = {
         .anchor = {
@@ -331,13 +334,13 @@ ogg_component_info ogg_default_info_ogg_component___(ogg_com_ptr parent)
         .parent = parent
     };
     return st;
-}
+}*/
 
 #  ifdef DESIGN_TIME
-void draw_design_anchor(ogg_com_ptr this)
+void draw_design_anchor(ogg_com_ptr self)
 {
     ogg_anchor anchor;
-    get_component_real_pec_anchor(this, &anchor);
+    get_component_real_pec_anchor(self, &anchor);
     static const ogg_coord det[4] = {
         { -3, -3 }, { 3, -3 }, { 3, 3 }, { -3, 3 } };
     int i = 0, j = 0;

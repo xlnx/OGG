@@ -28,9 +28,6 @@
     <Filter Include="头文件\events">
       <UniqueIdentifier>{4aab1852-221f-4c5a-9485-7d21f2ebb10e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\designer">
-      <UniqueIdentifier>{74d85f22-e785-4dac-8382-5d94a4ae43ad}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\components\ogg_shape.c">
@@ -54,11 +51,17 @@
     <ClCompile Include="src\components\ogg_forms.c">
       <Filter>源文件\components</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\ogg_utils.c">
-      <Filter>资源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\ogg.c">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\ogg_utils.c">
+      <Filter>源文件\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\ogg_event.c">
+      <Filter>源文件\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\ogg_page_control.c">
+      <Filter>源文件\components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +99,9 @@
       <Filter>头文件\components</Filter>
     </ClInclude>
     <ClInclude Include="include\components\ogg_forms.h">
+      <Filter>头文件\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\ogg_page_control.h">
       <Filter>头文件\components</Filter>
     </ClInclude>
   </ItemGroup>

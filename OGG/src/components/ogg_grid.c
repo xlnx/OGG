@@ -4,12 +4,12 @@
     def_vtable(ogg_grid_element)(
     );
 
-    default_startup(ogg_grid_element)(
-    )
+    //default_startup(ogg_grid_element)(
+    //)
 
     def_constructor(ogg_grid_element, args)
     {
-        this->object = 0;
+        self->object = 0;
     }
 
     def_destructor(ogg_grid_element)
@@ -20,26 +20,26 @@
 
     handler(ogg_grid, OGG_PAINT_EVENT);
 
-    static void destroy_grid(ogg_grid* this);
+    static void destroy_grid(ogg_grid* self);
 
-    static void set_grid_size_helper(ogg_grid* this, ogg_coord size);
+    static void set_grid_size_helper(ogg_grid* self, ogg_coord size);
 
     def_vtable(ogg_grid) (
         [OGG_PAINT_EVENT] = ogg_handler(ogg_grid, OGG_PAINT_EVENT)
     );
 
-    default_startup(ogg_grid) (
-        .size = { 1, 1 }
-    )
+    //default_startup(ogg_grid) (
+    //    .size = { 1, 1 }
+    //)
 
     def_constructor(ogg_grid, args)
     {
-        set_grid_size_helper(this, args->size);
+        set_grid_size_helper(self, args->size);
     }
 
     def_destructor(ogg_grid)
     {
-        destroy_grid(this);
+        destroy_grid(self);
     }
 
     def_handler(ogg_grid, OGG_PAINT_EVENT)
@@ -47,32 +47,32 @@
         //glClear(GL_COLOR_BUFFER_BIT);
     }
 
-    static void destroy_grid(ogg_grid* this)
+    static void destroy_grid(ogg_grid* self)
     {
         unsigned i = 0;
-        for (; i != this->size.y; ++i) {
-            free(this->sub[i]);
+        for (; i != self->size.y; ++i) {
+            free(self->sub[i]);
 # ifdef DEBUG
             alloc_memory--;
 # endif
         }
-        free(this->sub);
+        free(self->sub);
 # ifdef DEBUG
         alloc_memory--;
 # endif
     }
 
-    static void set_grid_size_helper(ogg_grid* this, ogg_coord size)
+    static void set_grid_size_helper(ogg_grid* self, ogg_coord size)
     {
         ogg_coord pos = { 0, 0 };
-        this->size.x = size.x;
-        this->size.y = size.y;
-        this->sub = (ogg_grid_element***)malloc(size.y * sizeof(ogg_grid_element**));
+        self->size.x = size.x;
+        self->size.y = size.y;
+        self->sub = (ogg_grid_element***)malloc(size.y * sizeof(ogg_grid_element**));
 # ifdef DEBUG
         alloc_memory++;
 # endif
         for (pos.y = 0; pos.y != size.y; ++pos.y) {
-            this->sub[pos.y] = (ogg_grid_element**)calloc(size.x, sizeof(ogg_grid_element*));
+            self->sub[pos.y] = (ogg_grid_element**)calloc(size.x, sizeof(ogg_grid_element*));
 # ifdef DEBUG
             alloc_memory++;
 # endif
@@ -88,42 +88,42 @@
                             .bottom = (float)(pos.y + 1) * 100 / size.y
                         }
                     },
-                    .parent = (ogg_component*)this
+                    .parent = (ogg_component*)self
                 }
-                )(this->sub[pos.y][pos.x]);
+                )(self->sub[pos.y][pos.x]);
             }
         }
     }
 
-    void set_grid_size(ogg_grid* this, ogg_coord size)
+    void set_grid_size(ogg_grid* self, ogg_coord size)
     {
         ogg_coord pos = { 0, 0 };
-        for (pos.y = 0; pos.y != this->size.y; ++pos.y) {
-            for (pos.x = 0; pos.x != this->size.x; ++pos.x) {
-                ogg_destroy(get_grid_coord(this, pos));
+        for (pos.y = 0; pos.y != self->size.y; ++pos.y) {
+            for (pos.x = 0; pos.x != self->size.x; ++pos.x) {
+                ogg_destroy(get_grid_coord(self, pos));
             }
         }
-        destroy_grid(this);
-        set_grid_size_helper(this, size);
-        ogg_send_event(this, OGG_PAINT_EVENT);
+        destroy_grid(self);
+        set_grid_size_helper(self, size);
+        ogg_send_event(self, OGG_PAINT_EVENT);
     }
 
-    ogg_com_ptr get_grid_elem(ogg_grid* this, ogg_coord pos)
+    ogg_com_ptr get_grid_elem(ogg_grid* self, ogg_coord pos)
     {
-        return this->sub[pos.y][pos.x]->object;
+        return self->sub[pos.y][pos.x]->object;
     }
 
-    ogg_bool paint_grid_elem(ogg_grid* this, ogg_coord pos)
+    ogg_bool paint_grid_elem(ogg_grid* self, ogg_coord pos)
     {
-        if (pos.x >= this->size.x || pos.y >= this->size.y) {
+        if (pos.x >= self->size.x || pos.y >= self->size.y) {
             return ogg_false;
         }
-        ogg_send_event(this->sub[pos.y][pos.x], OGG_PAINT_EVENT);
+        ogg_send_event(self->sub[pos.y][pos.x], OGG_PAINT_EVENT);
         ogg_flush_screen();
         return ogg_true;
     }
 
-    ogg_com_ptr get_grid_coord(ogg_grid* this, ogg_coord pos)
+    ogg_com_ptr get_grid_coord(ogg_grid* self, ogg_coord pos)
     {
-        return this->sub[pos.y][pos.x];
+        return self->sub[pos.y][pos.x];
     }

@@ -6,7 +6,7 @@ typedef unsigned event;
 
 /* call event by
     object->vptr[event_name](
-        ogg_com_ptr this,
+        ogg_com_ptr self,
         va_list args,
         ogg_handle_flag *handled
     );
@@ -14,23 +14,28 @@ typedef unsigned event;
 
 # define handler(T, event_name)                                         \
     void T##_##event_name##___handler__(                                \
-            T* this, va_list args, ogg_handle_flag* handled)
+            T* self, va_list args, ogg_handle_flag* handled)
 
 # define ogg_handler(T, event_name)                                     \
     T##_##event_name##___handler__
 
 # define def_handler(T, event_name)                                     \
     void T##_##event_name##___handler__(                                \
-            T* this, va_list args, ogg_handle_flag* handled)            \
+            T* self, va_list args, ogg_handle_flag* handled)            \
     {                                                                   \
         void T##_##event_name##_helper__(                               \
-            T* this, event_name##_ARGS ogg_handle_flag* handled);       \
+            T* self, event_name##_ARGS ogg_handle_flag* handled);       \
         event_name##_EXTRACT_ARGS                                       \
-        T##_##event_name##_helper__(this,                               \
+        T##_##event_name##_helper__(self,                               \
             event_name##_PASS_ARGS handled);                            \
     }                                                                   \
     void T##_##event_name##_helper__(                                   \
-            T* this, event_name##_ARGS ogg_handle_flag* handled)
+            T* self, event_name##_ARGS ogg_handle_flag* handled)
+
+# define inherited(T, event_name)                                       \
+    (T##_vtable[event_name] ?                                           \
+        T##_vtable[event_name]((void*)self,                             \
+            event_name##_PASS_ARGS handled): 0)                         \
 
 
 #  define ogg_checker(event_name)                                       \
@@ -38,15 +43,15 @@ typedef unsigned event;
 
 #  define def_checker(event_name)                                       \
     ogg_bool event_checker__##event_name##___(                          \
-        ogg_component* this, va_list args) {                            \
+        ogg_component* self, va_list args) {                            \
         ogg_bool event_checker_##event_name##__(event_name##_ARGS       \
-            ogg_component* this);                                       \
+            ogg_component* self);                                       \
         event_name##_EXTRACT_ARGS                                       \
         return event_checker_##event_name##__(                          \
-                event_name##_PASS_ARGS this);                           \
+                event_name##_PASS_ARGS self);                           \
     }                                                                   \
     ogg_bool event_checker_##event_name##__(event_name##_ARGS           \
-        ogg_component* this)
+        ogg_component* self)
 
 /* event count */
 # define OGG_EVENT_COUNT                                                (18)
@@ -287,25 +292,6 @@ typedef unsigned event;
 # define OGG_SELF_HANDLE_EVENT                                          (2)
 
 /* register event type */
-static const event ogg_event_type[OGG_EVENT_COUNT] = {
-    [OGG_DESTROY_EVENT] = OGG_CHILD_HANDLE_EVENT,
-    [OGG_PAINT_EVENT] = OGG_PARENT_HANDLE_EVENT,
-    [OGG_KEYBOARD_EVENT] = OGG_CHILD_HANDLE_EVENT,
-    [OGG_SPECIAL_KEY_EVENT] = OGG_CHILD_HANDLE_EVENT,
-    [OGG_MOUSE_EVENT] = OGG_CHILD_HANDLE_EVENT,
-    [OGG_MOUSE_DRAG_EVENT] = OGG_CHILD_HANDLE_EVENT,
-    [OGG_MOUSE_MOVE_EVENT] = OGG_CHILD_HANDLE_EVENT,
-    [OGG_MOUSE_ENTRY_EVENT] = OGG_CHILD_HANDLE_EVENT,
-    [OGG_RESHAPE_EVENT] = OGG_PARENT_HANDLE_EVENT,
-    [OGG_MOUSE_LEAVE_EVENT] = OGG_SELF_HANDLE_EVENT,
-    [OGG_MOUSE_ENTER_EVENT] = OGG_SELF_HANDLE_EVENT,
-    [OGG_MOUSE_DOWN_EVENT] = OGG_SELF_HANDLE_EVENT,
-    [OGG_MOUSE_UP_EVENT] = OGG_SELF_HANDLE_EVENT,
-    [OGG_MOUSE_DRAG_BEGIN_EVENT] = OGG_CHILD_HANDLE_EVENT,
-    [OGG_MOUSE_DRAG_END_EVENT] = OGG_CHILD_HANDLE_EVENT,
-    [OGG_FOCUS_EVENT] = OGG_SELF_HANDLE_EVENT,
-    [OGG_TIMER_EVENT] = OGG_PARENT_HANDLE_EVENT,
-    [OGG_LOSE_FOCUS_EVENT] = OGG_SELF_HANDLE_EVENT,
-};
+extern const event ogg_event_type[];
 
 #endif //OGG_GRPHIC_EVENTS__HEADER_FILE____

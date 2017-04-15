@@ -65,7 +65,7 @@ def_constructor(ogg_form, args)
 {
     glutInitWindowPosition(args->info.position.left, args->info.position.top);
     glutInitWindowSize(args->info.position.width, args->info.position.height);
-    this->form_id = glutCreateWindow(args->info.title);
+    self->form_id = glutCreateWindow(args->info.title);
     event i = 1;
     for (; i != OGG_EVENT_COUNT; ++i) {
         if (glut_events[i] != 0 && glut_form_event_register[i] != 0) {
@@ -75,9 +75,9 @@ def_constructor(ogg_form, args)
     //glut_events[OGG_TIMER_EVENT]
     glutTimerFunc(OGG_TIME_INTERVAL,
         (void(*)(int))glut_events[OGG_TIMER_EVENT], OGG_TIMER_INDEX);
-    this->position = args->info.position;
-    this->title = args->info.title;
-    current_component = this;
+    self->position = args->info.position;
+    self->title = args->info.title;
+    current_component = self;
 }
 
 def_destructor(ogg_form)
@@ -89,7 +89,7 @@ def_handler(ogg_form, OGG_SPECIAL_KEY_EVENT)
     switch (key) {
     case GLUT_KEY_F4: {
         if (glutGetModifiers() == GLUT_ACTIVE_ALT)
-            ogg_destroy(this);
+            ogg_destroy(self);
     } break;
     }
 }
@@ -100,15 +100,15 @@ def_vtable(ogg_application) (
 
 def_constructor(ogg_application, args)
 {
-    this->argc = args->argc;
-    this->argv = args->argv;
-    this->display_mode = args->display_mode;
-    this->forms_lookup = (ogg_form**)malloc(OGG_MAX_FORM_COUNT * sizeof(ogg_form*));
+    self->argc = args->argc;
+    self->argv = args->argv;
+    self->display_mode = args->display_mode;
+    self->forms_lookup = (ogg_form**)malloc(OGG_MAX_FORM_COUNT * sizeof(ogg_form*));
 }
 
 def_destructor(ogg_application)
 {
-    free(this->forms_lookup);
+    free(self->forms_lookup);
 }
 
 ogg_com_ptr get_current_component()
@@ -141,3 +141,26 @@ ogg_form* ogg_get_active_form()
     return ogg_active_form();
 }
 
+void ogg_init_application(ogg_application* self)
+{
+    glutInit(self->argc, self->argv);
+    glutInitDisplayMode(self->display_mode);
+}
+
+void ogg_terminate_application(ogg_application* self)
+{
+    ogg_destroy(self);
+    exit(0);
+}
+
+void ogg_run_application(ogg_application* self)
+{
+    //current_component = ogg_active_form();
+    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+    glutMainLoop();
+}
+
+void ogg_terminate()
+{
+    ogg_terminate_application(application);
+}

@@ -41,11 +41,11 @@
         ogg_form **forms_lookup;
     );
 
-    //void ogg_init_application(ogg_application* this);
+    //void ogg_init_application(ogg_application* self);
 
-    //void ogg_terminate_application(ogg_application* this);
+    //void ogg_terminate_application(ogg_application* self);
 
-    //void ogg_run_application(ogg_application* this);
+    //void ogg_run_application(ogg_application* self);
 
     //void ogg_terminate();
 
@@ -54,5 +54,13 @@
     ogg_form* ogg_get_active_form();
 
     ogg_com_ptr get_current_component();
+
+    void ogg_init_application(ogg_application* self);
+
+    void ogg_terminate_application(ogg_application* self);
+
+    void ogg_run_application(ogg_application* self);
+
+    void ogg_terminate();
 
 #endif //OGG_GRAPHIC_STARUP__HEADER_FILE____

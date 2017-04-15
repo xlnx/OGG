@@ -34,7 +34,7 @@
 
 /*
  * struct ogg_anchor
- * this struct determines how and where the owner component is aligned.
+ * self struct determines how and where the owner component is aligned.
  * ----------------------------------------------------------------
  * member:
  *   @ type:   ogg_anchor_type { ln 32 }
@@ -60,19 +60,19 @@
  * make owner component fill parent component(by pec) { ln 46 }.
  */
 
-    static const ogg_anchor ogg_full_anchor = {
-        .type = ogg_anchor_pec,
-        .pec = {
-            .top = 0,
-            .bottom = 100,
-            .left = 0,
-            .right = 100
-        }
-    };
+    //static const ogg_anchor ogg_full_anchor = {
+    //    .type = ogg_anchor_pec,
+    //    .pec = {
+    //        .top = 0,
+    //        .bottom = 100,
+    //        .left = 0,
+    //        .right = 100
+    //    }
+    //};
 
 /*
  * typename ogg_com_ptr = void *
- * use this type to create a generic pointer to ogg_component
+ * use self type to create a generic pointer to ogg_component
  */
     typedef void *ogg_com_ptr;
 
@@ -93,11 +93,11 @@
  * member:
  *   @ vptr          ogg_event_handler { ln 87 }
  *   @ parent        ogg_component*
- *   sub_component_list {  hold the list of all the sub component of this component
+ *   sub_component_list {  hold the list of all the sub component of self component
  *     @ sub           ogg_subcomponent*
  *     @ subrear       ogg_subcomponent*
  *   }
- *   anchor {              deternmine the anchor of this component
+ *   anchor {              deternmine the anchor of self component
  *     @ anchor_type   ogg_anchor_type
  *     @ pec           ogg_pec_anchor
  *     @ coord         ogg_coord_anchor
@@ -117,7 +117,7 @@
 /*
  * struct ogg_component_info
  * basic startup for every ogg component(inherited).
- * every component have to fill in this component info when it is created.
+ * every component have to fill in self component info when it is created.
  * ----------------------------------------------------------------
  * member:
  *   @ parent          ogg_component* { ln 106 }
@@ -130,10 +130,10 @@
 
 /*
  * typename ogg_handle_flag = unsigned
- * this type is related with the ogg event handle module.
+ * self type is related with the ogg event handle module.
  * value:
- *   $ OGG_HANDLED     this event has been handled.
- *   $ OGG_UNHANDLED   this event hasn't been handled yet.
+ *   $ OGG_HANDLED     self event has been handled.
+ *   $ OGG_UNHANDLED   self event hasn't been handled yet.
  */
     typedef unsigned ogg_handle_flag;
 #  define OGG_HANDLED     (1)
@@ -181,14 +181,14 @@
     void ogg_destroy(ogg_com_ptr com_ptr);
 
     /* create full anchor startup in a parent component */
-    ogg_component_info ogg_default_info_ogg_component___(ogg_com_ptr parent);
+    //ogg_component_info ogg_default_info_ogg_component___(ogg_com_ptr parent);
 
     /* make a int-int coord */
     ogg_coord coord(int x, int y);
 
 #  ifdef DESIGN_TIME
     /* draw the border anchor of component */
-    void draw_design_anchor(ogg_com_ptr this);
+    void draw_design_anchor(ogg_com_ptr self);
 #  endif
 
 #  define OGG_EXPAND_ARGS_DBL_BRAK(...)                                 \
@@ -215,12 +215,12 @@
     struct OGG_COMPONENT_STARTUP_##T##_info;                            \
     typedef struct OGG_COMPONENT_STARTUP_##T##_info T##_info;           \
                                                                         \
-    T##_info ogg_default_info_##T##___(ogg_com_ptr);                    \
-    extern super_class##_info ogg_default_info_##super_class##___(      \
-        ogg_com_ptr);                                                   \
+    /*T##_info ogg_default_info_##T##___(ogg_com_ptr);*/                    \
+    /*extern super_class##_info ogg_default_info_##super_class##___(*/      \
+        /*ogg_com_ptr);*/                                                   \
                                                                         \
-    static super_class##_info (*const parent_default_info_##T##__)(     \
-            ogg_com_ptr) = ogg_default_info_##super_class##___;         \
+    /*static super_class##_info (*const parent_default_info_##T##__)(*/     \
+            /*ogg_com_ptr) = ogg_default_info_##super_class##___;*/         \
                                                                         \
     struct OGG_COMPONENT_STARTUP_##T##_info {                           \
         super_class##_info super_class;                                 \
@@ -249,12 +249,12 @@
  *   )
  *   // get the default startup info of type ogg_button.
  */
-#  define default_startup_inh(T, super_class)                           \
-    T##_info ogg_default_info_##T##___(ogg_com_ptr parent)              \
-    {                                                                   \
-        T##_info info = {                                               \
-            .super_class = parent_default_info_##T##__(parent),         \
-            OGG_DEFAULT_ARGS_EXPAND_ARGS
+//#  define default_startup_inh(T, super_class)                           \
+//    T##_info ogg_default_info_##T##___(ogg_com_ptr parent)              \
+//    {                                                                   \
+//        T##_info info = {                                               \
+//            .super_class = parent_default_info_##T##__(parent),         \
+//            OGG_DEFAULT_ARGS_EXPAND_ARGS
 
 /*
  * macro def_startup(T, super_class)
@@ -267,12 +267,12 @@
  * macro default_startup(T)
  * define a component startup information type of class T, inherited from ogg_component. { ln 231 }
  */
-#  define default_startup(component_type)                               \
-    default_startup_inh(component_type, ogg_component)
+//#  define default_startup(component_type)                               \
+//    default_startup_inh(component_type, ogg_component)
     
 /* default info generate function */
-#  define ogg_default(T)                                                \
-    ogg_default_info_##T##___
+//#  define ogg_default(T)                                                \
+//    ogg_default_info_##T##___
 
 /*
  * macro def_component_inh(T, super_class)
@@ -303,12 +303,16 @@
             super_class*, const void*) =                                \
         ogg_static_constructor_##super_class##___;                      \
                                                                         \
-    void ogg_destructor_##T##___(T* this);                              \
+    void ogg_destructor_##T##___(T* self);                              \
                                                                         \
-    extern void ogg_destructor_##super_class##___(super_class* this);   \
+    extern void ogg_destructor_##super_class##___(super_class* self);   \
                                                                         \
     static void (*const parent_destructor_##T##__)(super_class*) =      \
         ogg_destructor_##super_class##___;                              \
+                                                                        \
+    extern ogg_event_handler super_class##_vtable[];                    \
+    static ogg_event_handler const* const T##_parent_vtable =           \
+        super_class##_vtable;                                           \
                                                                         \
     struct OGG_COMPONENT_HELPER_##T {                                   \
         super_class super;                                              \
@@ -338,33 +342,36 @@
  */
 # ifdef DESIGN_TIME
 #  define def_vtable(component_type)                                    \
-    static ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT];  \
+    /*static */ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT];  \
     static void ogg_design_time_painter_##component_type##_(            \
-        component_type* this, va_list args, ogg_handle_flag* handled)   \
+        component_type* self, va_list args, ogg_handle_flag* handled)   \
     {                                                                   \
         if (component_type##_vtable[OGG_PAINT_EVENT] != 0) {            \
             component_type##_vtable[OGG_PAINT_EVENT](                   \
-                    this, args, handled);                               \
+                    self, args, handled);                               \
         }                                                               \
         ogg_com_ptr get_current_component();                            \
-        if (this == get_current_component())                            \
-            draw_design_anchor(this);                                   \
+        if (self == get_current_component())                            \
+            draw_design_anchor(self);                                   \
         *handled = ogg_false;                                           \
     }                                                                   \
-    static ogg_event_handler ogg_design_time_##component_type##_vtable  \
+    /*static */ogg_event_handler ogg_design_time_##component_type##_vtable  \
             [OGG_EVENT_COUNT] = {                                       \
         [OGG_DESTROY_EVENT] = ogg_destructor(component_type),           \
         [OGG_PAINT_EVENT] = ogg_design_time_painter_##component_type##_,\
     };                                                                  \
-    static ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT]= {\
+    /*static */ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT]= {\
         [OGG_DESTROY_EVENT] = ogg_destructor(component_type),           \
         OGG_EXPAND_ARGS_WITH_BRAK
 # else
 #  define def_vtable(component_type)                                    \
-    static ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT]= {\
+    /*static */ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT]= {\
         [OGG_DESTROY_EVENT] = ogg_destructor(component_type),           \
         OGG_EXPAND_ARGS_WITH_BRAK
 # endif
+
+#  define using_handler(T, event_name)                                  \
+    [event_name] = T##_##event_name##___handler__
 
 #  define ogg_startup(T)                                                \
     T##_info
@@ -375,7 +382,7 @@
 
 #  define ogg_create_def_raw(T)                                         \
 	do {                                                                \
-        static T* (*object__constructor__)() =                          \
+        static T* (*object__constructor__)(const T##_info*) =           \
             ogg_constructor_##T##___;                                   \
         OGG_CREATOR_RAW__HELPER_DEF
 
@@ -389,7 +396,7 @@
 
 #  define ogg_create_raw(T)                                             \
 	do {                                                                \
-        static T* (*object__constructor__)() =                          \
+        static T* (*object__constructor__)(const T##_info*) =           \
             ogg_constructor_##T##___;                                   \
         OGG_CREATOR_RAW__HELPER
 
@@ -406,7 +413,7 @@
  */
 #  define ogg_create_def(T)                                             \
 	do {                                                                \
-        static T* (*object__constructor__)() =                          \
+        static T* (*object__constructor__)(const T##_info*) =           \
             ogg_constructor_##T##___;                                   \
         const ogg_startup(T) object__startup_info__ = {                 \
             OGG_CREATOR__HELPER_DEF
@@ -426,7 +433,7 @@
  */
 #  define ogg_create(T)                                                 \
 	do {                                                                \
-        static T* (*object__constructor__)() =                          \
+        static T* (*object__constructor__)(const T##_info*) =           \
             ogg_constructor_##T##___;                                   \
         const ogg_startup(T) object__startup_info__ = {                 \
             OGG_CREATOR__HELPER
@@ -439,13 +446,13 @@
  * usage:
  *   def_constructor(ogg_button, args)
  *   {
- *     this->down_color = args->down_color;
- *     this->focused_color = args->focused_color;
- *     this->default_color = ((ogg_shape*)this)->color;
- *     this->text = args->text;
- *     this->callback = args->callback;
+ *     self->down_color = args->down_color;
+ *     self->focused_color = args->focused_color;
+ *     self->default_color = ((ogg_shape*)self)->color;
+ *     self->text = args->text;
+ *     self->callback = args->callback;
  *   }
- *   // define the constructor of ogg_button type. this macro function will
+ *   // define the constructor of ogg_button type. self macro function will
  *   // automatically call the constructor of super_class before it is called.
  *   // and will automatically alloc memory for the created component.
  */
@@ -463,11 +470,11 @@
     }                                                                   \
     void ogg_static_constructor_##T##___(T* object, const void* args)   \
     {                                                                   \
-        void create_##T(T* this, const T##_info* args_name);            \
+        void create_##T(T* self, const T##_info* args_name);            \
         parent_static_constructor_##T##__((void*)object, args);         \
         create_##T(object, (const T##_info*)args);                      \
     }                                                                   \
-    void create_##T(T* this, const T##_info* args_name)
+    void create_##T(T* self, const T##_info* args_name)
 #    else
 #      define def_constructor(T, args_name)                             \
     T* ogg_constructor_##T##___(const T##_info* args_name)              \
@@ -481,11 +488,11 @@
     }                                                                   \
     void ogg_static_constructor_##T##___(T* object, const void* args)   \
     {                                                                   \
-        void create_##T(T* this, const T##_info* args_name);            \
+        void create_##T(T* self, const T##_info* args_name);            \
         parent_static_constructor_##T##__((void*)object, args);         \
         create_##T(object, (const T##_info*)args);                      \
     }                                                                   \
-    void create_##T(T* this, const T##_info* args_name)
+    void create_##T(T* self, const T##_info* args_name)
 #    endif
 #  else
 #    ifndef DESIGN_TIME
@@ -500,11 +507,11 @@
     }                                                                   \
     void ogg_static_constructor_##T##___(T* object, const void* args)   \
     {                                                                   \
-        void create_##T(T* this, const T##_info* args_name);            \
+        void create_##T(T* self, const T##_info* args_name);            \
         parent_static_constructor_##T##__((void*)object, args);         \
         create_##T(object, (const T##_info*)args);                      \
     }                                                                   \
-    void create_##T(T* this, const T##_info* args_name)
+    void create_##T(T* self, const T##_info* args_name)
 #    else
 #      define def_constructor(T, args_name)                             \
     T* ogg_constructor_##T##___(const T##_info* args_name)              \
@@ -517,11 +524,11 @@
     }                                                                   \
     void ogg_static_constructor_##T##___(T* object, const void* args)   \
     {                                                                   \
-        void create_##T(T* this, const T##_info* args_name);            \
+        void create_##T(T* self, const T##_info* args_name);            \
         parent_static_constructor_##T##__((void*)object, args);         \
         create_##T(object, (const T##_info*)args);                      \
     }                                                                   \
-    void create_##T(T* this, const T##_info* args_name)
+    void create_##T(T* self, const T##_info* args_name)
 #    endif
 #  endif
 
@@ -535,17 +542,17 @@
  *   def_destructor(ogg_button)
  *   {   // do nothing
  *   }
- *   // this macro function will automatically call the destructor after it is called.
+ *   // self macro function will automatically call the destructor after it is called.
  *   // deallocate of those memories are automatic.
  */
 #  define def_destructor(T)                                             \
-    void ogg_destructor_##T##___(T* this)                               \
+    void ogg_destructor_##T##___(T* self)                               \
     {                                                                   \
         void ogg_destructor_##T##_helper__(T*);                         \
-        ogg_destructor_##T##_helper__(this);                            \
-        parent_destructor_##T##__((ogg_com_ptr)this);                   \
+        ogg_destructor_##T##_helper__(self);                            \
+        parent_destructor_##T##__((ogg_com_ptr)self);                   \
     }                                                                   \
-    void ogg_destructor_##T##_helper__(T* this)
+    void ogg_destructor_##T##_helper__(T* self)
 
 
 #endif //OGG_GRAPHIC_COMPONENTS__HEADER_FILE_____

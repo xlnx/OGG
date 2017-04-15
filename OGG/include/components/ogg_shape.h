@@ -18,6 +18,6 @@
     def_component_inh(ogg_rect, ogg_shape)(
     );
 
-    void set_shape_color(ogg_com_ptr this, ogg_color color);
+    void set_shape_color(ogg_com_ptr self, ogg_color color);
 
 #endif //OGG_GRAPHIC_COMPONENTS__SHAPE__HEADER_FILE_____

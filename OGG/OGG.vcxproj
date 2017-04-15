@@ -170,8 +170,10 @@
     <ClCompile Include="src\components\ogg_forms.c" />
     <ClCompile Include="src\components\ogg_grid.c" />
     <ClCompile Include="src\components\ogg_grid_canvas.c" />
+    <ClCompile Include="src\components\ogg_page_control.c" />
     <ClCompile Include="src\components\ogg_shape.c" />
     <ClCompile Include="src\ogg.c" />
+    <ClCompile Include="src\utils\ogg_event.c" />
     <ClCompile Include="src\utils\ogg_utils.c" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +183,7 @@
     <ClInclude Include="include\components\ogg_forms.h" />
     <ClInclude Include="include\components\ogg_grid.h" />
     <ClInclude Include="include\components\ogg_grid_canvas.h" />
+    <ClInclude Include="include\components\ogg_page_control.h" />
     <ClInclude Include="include\components\ogg_shape.h" />
     <ClInclude Include="include\events\ogg_default_handlers.h" />
     <ClInclude Include="include\events\ogg_events.h" />
