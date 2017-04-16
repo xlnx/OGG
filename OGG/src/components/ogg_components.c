@@ -267,17 +267,25 @@ static void ogg_child_handle_event(
 
 void ogg_send_event(ogg_com_ptr com_ptr, event event_name, ...)
 {
-    va_list args; va_start(args, event_name);
-    ogg_handle_flag handled = OGG_UNHANDLED;
-    switch (ogg_event_type[event_name]) {
-    case OGG_CHILD_HANDLE_EVENT: 
-        ogg_child_handle_event(com_ptr, event_name, &handled, args); break;
-    case OGG_PARENT_HANDLE_EVENT:
-        ogg_parent_handle_event(com_ptr, event_name, &handled, args); break;
-    case OGG_SELF_HANDLE_EVENT:
-        ogg_single_event(((ogg_component*)com_ptr), event_name, &handled, args); break;
+    if (com_ptr) {
+        va_list args; va_start(args, event_name);
+        ogg_handle_flag handled = OGG_UNHANDLED;
+        ogg_bool access = ogg_true;
+        if (event_name != OGG_ACCESS_EVENT) {
+            ogg_send_event(com_ptr, OGG_ACCESS_EVENT, &access);
+        }
+        if (access) {
+            switch (ogg_event_type[event_name]) {
+            case OGG_CHILD_HANDLE_EVENT: 
+                ogg_child_handle_event(com_ptr, event_name, &handled, args); break;
+            case OGG_PARENT_HANDLE_EVENT:
+                ogg_parent_handle_event(com_ptr, event_name, &handled, args); break;
+            case OGG_SELF_HANDLE_EVENT:
+                ogg_single_event(((ogg_component*)com_ptr), event_name, &handled, args); break;
+            }
+        }
+        va_end(args);
     }
-    va_end(args);
 }
 
 void ogg_destroy(ogg_com_ptr com_ptr)
@@ -286,6 +294,10 @@ void ogg_destroy(ogg_com_ptr com_ptr)
     destroy_sub_components(com_ptr);
     /* destroy self component */
     ogg_single_event(((ogg_component*)com_ptr), OGG_DESTROY_EVENT, 0, 0);
+    if (((ogg_component*)com_ptr)->parent) {
+        ogg_send_event(((ogg_component*)com_ptr)->parent,
+            OGG_DESTROY_SUB_COMPONENT_EVENT, com_ptr);
+    }
     /* delete self object from parent */
     ogg_component* parent = ((ogg_component*)com_ptr)->parent;
     if (parent != 0) {

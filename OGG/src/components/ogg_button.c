@@ -28,7 +28,7 @@ def_vtable(ogg_button) (
 //    .callback = 0
 //)
 
-def_constructor(ogg_button, args)
+def_constructor(ogg_button, parent != 0)
 {
     self->down_color = args->down_color;
     self->focused_color = args->focused_color;

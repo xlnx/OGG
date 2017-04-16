@@ -6,8 +6,21 @@
 
     //default_startup(ogg_grid_element)(
     //)
+    /* GRID */
 
-    def_constructor(ogg_grid_element, args)
+    handler(ogg_grid, OGG_PAINT_EVENT);
+    handler(ogg_grid, OGG_CAN_ADD_CHILD);
+
+    static void destroy_grid(ogg_grid* self);
+
+    static void set_grid_size_helper(ogg_grid* self, ogg_coord size);
+
+    def_vtable(ogg_grid) (
+        [OGG_PAINT_EVENT] = ogg_handler(ogg_grid, OGG_PAINT_EVENT),
+        using_handler(ogg_grid, OGG_CAN_ADD_CHILD),
+    );
+
+    def_constructor(ogg_grid_element, ((ogg_component*)parent)->vptr == ogg_grid_vtable)
     {
         self->object = 0;
     }
@@ -16,23 +29,11 @@
     {   /* do nothing */
     }
 
-    /* GRID */
-
-    handler(ogg_grid, OGG_PAINT_EVENT);
-
-    static void destroy_grid(ogg_grid* self);
-
-    static void set_grid_size_helper(ogg_grid* self, ogg_coord size);
-
-    def_vtable(ogg_grid) (
-        [OGG_PAINT_EVENT] = ogg_handler(ogg_grid, OGG_PAINT_EVENT)
-    );
-
     //default_startup(ogg_grid) (
     //    .size = { 1, 1 }
     //)
 
-    def_constructor(ogg_grid, args)
+    def_constructor(ogg_grid, parent != 0)
     {
         set_grid_size_helper(self, args->size);
     }
@@ -45,6 +46,11 @@
     def_handler(ogg_grid, OGG_PAINT_EVENT)
     {
         //glClear(GL_COLOR_BUFFER_BIT);
+    }
+
+    def_handler(ogg_grid, OGG_CAN_ADD_CHILD)
+    {
+        *accept = vptr == ogg_grid_element_vtable;
     }
 
     static void destroy_grid(ogg_grid* self)

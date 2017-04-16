@@ -9,7 +9,7 @@
 ogg_application *application;
 
 # define ogg_active_form()                             \
-        (application->forms_lookup[glutGetWindow()])
+        (glutGetWindow() ? application->forms_lookup[glutGetWindow()] : 0)
 
 /* ogg_form */
 static const glut_register glut_form_event_register[OGG_EVENT_COUNT] = {
@@ -61,7 +61,7 @@ def_vtable(ogg_form)(
     [OGG_SPECIAL_KEY_EVENT] = ogg_handler(ogg_form, OGG_SPECIAL_KEY_EVENT),
 );
 
-def_constructor(ogg_form, args)
+def_constructor(ogg_form, parent != 0)
 {
     glutInitWindowPosition(args->info.position.left, args->info.position.top);
     glutInitWindowSize(args->info.position.width, args->info.position.height);
@@ -98,7 +98,7 @@ def_handler(ogg_form, OGG_SPECIAL_KEY_EVENT)
 def_vtable(ogg_application) (
 );
 
-def_constructor(ogg_application, args)
+def_constructor(ogg_application, ogg_true)
 {
     self->argc = args->argc;
     self->argv = args->argv;

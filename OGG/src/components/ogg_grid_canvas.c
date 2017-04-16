@@ -12,7 +12,7 @@ def_vtable(ogg_grid_canvas)(
 //    .size = { 1, 1 }
 //)
 
-def_constructor(ogg_grid_canvas, args)
+def_constructor(ogg_grid_canvas, parent != 0)
 {
     self->size = args->size;
     if (self->size.x > 0 && self->size.y > 0) {

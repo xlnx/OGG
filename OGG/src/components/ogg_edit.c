@@ -28,7 +28,7 @@ def_vtable(ogg_edit)(
 //    .color = OGG_WHITE
 //)
 
-def_constructor(ogg_edit, args)
+def_constructor(ogg_edit, parent != 0)
 {
     memset(&self->text.content, 0, sizeof(self->text.content));
     self->text.color = args->color;

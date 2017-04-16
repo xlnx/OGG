@@ -220,6 +220,10 @@ ogg_bool (*const event_checker[OGG_EVENT_COUNT])(ogg_component*, va_list) = {
     [OGG_FOCUS_EVENT] = 0,
     [OGG_TIMER_EVENT] = ogg_checker(OGG_TIMER_EVENT),
     [OGG_LOSE_FOCUS_EVENT] = 0,
+    [OGG_CREATE_SUB_COMPONENT_EVENT] = 0,
+    [OGG_DESTROY_SUB_COMPONENT_EVENT] = 0,
+    [OGG_ACCESS_EVENT] = 0,
+    [OGG_CAN_ADD_CHILD] = 0,
 };
 
 #endif //OGG_GRAPHIC_DEFAULT_EVENTS__HEADER_FILE____

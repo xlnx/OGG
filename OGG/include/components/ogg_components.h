@@ -458,82 +458,158 @@
  */
 #  ifdef DEBUG
 #    ifndef DESIGN_TIME
-#      define def_constructor(T, args_name)                             \
-    T* ogg_constructor_##T##___(const T##_info* args_name)              \
+#      define def_constructor(T, ...)                                   \
+    ogg_bool allow_create_sub_##T(ogg_com_ptr parent)                   \
     {                                                                   \
-        T* object = (T*)malloc(sizeof(T));                              \
-        alloc_memory++;                                                 \
-        void ogg_static_constructor_##T##___(T*, const void*);          \
-        ogg_static_constructor_##T##___(object, args_name);             \
-        ((ogg_component*)object)->vptr = T##_vtable;                    \
-        return object;                                                  \
+        return (__VA_ARGS__);                                           \
+    }                                                                   \
+    T* ogg_constructor_##T##___(const T##_info* args)                   \
+    {                                                                   \
+        if (allow_create_sub_##T(parent)) {                             \
+            ogg_bool accept = ogg_true;                                 \
+            if (parent != 0 && parent->vptr[OGG_CAN_ADD_CHILD]) {       \
+                ogg_send_event(parent, OGG_CAN_ADD_CHILD,               \
+                    T##_vtable, &accept);                               \
+            }                                                           \
+            if (accept) {                                               \
+                T* object = (T*)malloc(sizeof(T));                              \
+                alloc_memory++;                                                 \
+                void ogg_static_constructor_##T##___(T*, const void*);          \
+                ogg_static_constructor_##T##___(object, args);                  \
+                ((ogg_component*)object)->vptr = T##_vtable;                    \
+                if (((ogg_component_info*)args)->parent) {                      \
+                    ogg_send_event(((ogg_component_info*)args)->parent,         \
+                        OGG_CREATE_SUB_COMPONENT_EVENT, object);                \
+                }                                                               \
+                return object;                                                  \
+            }                                                           \
+        }                                                               \
+        return 0;                                                       \
     }                                                                   \
     void ogg_static_constructor_##T##___(T* object, const void* args)   \
     {                                                                   \
-        void create_##T(T* self, const T##_info* args_name);            \
+        void create_##T(T* self, const T##_info* args);                 \
         parent_static_constructor_##T##__((void*)object, args);         \
         create_##T(object, (const T##_info*)args);                      \
     }                                                                   \
-    void create_##T(T* self, const T##_info* args_name)
+    void create_##T(T* self, const T##_info* args)
 #    else
-#      define def_constructor(T, args_name)                             \
-    T* ogg_constructor_##T##___(const T##_info* args_name)              \
+#      define def_constructor(T, ...)                                   \
+    ogg_bool allow_create_sub_##T(ogg_com_ptr parent)                   \
     {                                                                   \
-        T* object = (T*)malloc(sizeof(T));                              \
-        alloc_memory++;                                                 \
-        void ogg_static_constructor_##T##___(T*, const void*);          \
-        ogg_static_constructor_##T##___(object, args_name);             \
-        ((ogg_component*)object)->vptr = ogg_design_time_##T##_vtable;  \
-        return object;                                                  \
+        return (__VA_ARGS__);                                           \
+    }                                                                   \
+    T* ogg_constructor_##T##___(const T##_info* args)                   \
+    {                                                                   \
+        ogg_component* parent = ((ogg_component_info*)args)->parent;    \
+        if (allow_create_sub_##T(parent)) {                             \
+            ogg_bool accept = ogg_true;                                 \
+            if (parent != 0 && parent->vptr[OGG_CAN_ADD_CHILD]) {       \
+                ogg_send_event(parent, OGG_CAN_ADD_CHILD,               \
+                    T##_vtable, &accept);                               \
+            }                                                           \
+            if (accept) {                                               \
+                T* object = (T*)malloc(sizeof(T));                              \
+                alloc_memory++;                                                 \
+                void ogg_static_constructor_##T##___(T*, const void*);          \
+                ogg_static_constructor_##T##___(object, args);                  \
+                ((ogg_component*)object)->vptr = ogg_design_time_##T##_vtable;  \
+                if (((ogg_component_info*)args)->parent) {                      \
+                    ogg_send_event(((ogg_component_info*)args)->parent,         \
+                        OGG_CREATE_SUB_COMPONENT_EVENT, object);                \
+                }                                                               \
+                return object;                                                  \
+            }                                                           \
+        }                                                               \
+        return 0;                                                       \
     }                                                                   \
     void ogg_static_constructor_##T##___(T* object, const void* args)   \
     {                                                                   \
-        void create_##T(T* self, const T##_info* args_name);            \
+        void create_##T(T* self, const T##_info* args);                 \
         parent_static_constructor_##T##__((void*)object, args);         \
         create_##T(object, (const T##_info*)args);                      \
     }                                                                   \
-    void create_##T(T* self, const T##_info* args_name)
+    void create_##T(T* self, const T##_info* args)
 #    endif
 #  else
 #    ifndef DESIGN_TIME
-#      define def_constructor(T, args_name)                             \
-    T* ogg_constructor_##T##___(const T##_info* args_name)              \
+#      define def_constructor(T, ...)                                   \
+    ogg_bool allow_create_sub_##T(ogg_com_ptr parent)                   \
     {                                                                   \
-        T* object = (T*)malloc(sizeof(T));                              \
-        void ogg_static_constructor_##T##___(T*, const void*);          \
-        ogg_static_constructor_##T##___(object, args_name);             \
-        ((ogg_component*)object)->vptr = T##_vtable;                    \
-        return object;                                                  \
+        return (__VA_ARGS__);                                           \
+    }                                                                   \
+    T* ogg_constructor_##T##___(const T##_info* args)                   \
+    {                                                                   \
+        ogg_component* parent = ((ogg_component_info*)args)->parent;    \
+        if (allow_create_sub_##T(parent)) {                             \
+            ogg_bool accept = ogg_true;                                 \
+            if (parent != 0 && parent->vptr[OGG_CAN_ADD_CHILD]) {       \
+                ogg_send_event(parent, OGG_CAN_ADD_CHILD,               \
+                    T##_vtable, &accept);                               \
+            }                                                           \
+            if (accept) {                                               \
+                T* object = (T*)malloc(sizeof(T));                          \
+                void ogg_static_constructor_##T##___(T*, const void*);      \
+                ogg_static_constructor_##T##___(object, args);              \
+                ((ogg_component*)object)->vptr = T##_vtable;                \
+                if (parent) {                                               \
+                    ogg_send_event(parent,                                  \
+                        OGG_CREATE_SUB_COMPONENT_EVENT, object);            \
+                }                                                           \
+                return object;                                              \
+            }                                                           \
+        }                                                               \
+        return 0;                                                       \
     }                                                                   \
     void ogg_static_constructor_##T##___(T* object, const void* args)   \
     {                                                                   \
-        void create_##T(T* self, const T##_info* args_name);            \
+        void create_##T(T* self, const T##_info* args);                 \
         parent_static_constructor_##T##__((void*)object, args);         \
         create_##T(object, (const T##_info*)args);                      \
     }                                                                   \
-    void create_##T(T* self, const T##_info* args_name)
+    void create_##T(T* self, const T##_info* args)
 #    else
-#      define def_constructor(T, args_name)                             \
-    T* ogg_constructor_##T##___(const T##_info* args_name)              \
+#      define def_constructor(T, ...)                                   \
+    ogg_bool allow_create_sub_##T(ogg_com_ptr parent)                   \
     {                                                                   \
-        T* object = (T*)malloc(sizeof(T));                              \
-        void ogg_static_constructor_##T##___(T*, const void*);          \
-        ogg_static_constructor_##T##___(object, args_name);             \
-        ((ogg_component*)object)->vptr = ogg_design_time_##T##_vtable;  \
-        return object;                                                  \
+        return (__VA_ARGS__);                                           \
+    }                                                                   \
+    T* ogg_constructor_##T##___(const T##_info* args)                   \
+    {                                                                   \
+        ogg_component* parent = ((ogg_component_info*)args)->parent;    \
+        if (allow_create_sub_##T(parent)) {                             \
+            ogg_bool accept = ogg_true;                                 \
+            if (parent != 0 && parent->vptr[OGG_CAN_ADD_CHILD]) {       \
+                ogg_send_event(parent, OGG_CAN_ADD_CHILD,               \
+                    T##_vtable, &accept);                               \
+            }                                                           \
+            if (accept) {                                               \
+                T* object = (T*)malloc(sizeof(T));                              \
+                void ogg_static_constructor_##T##___(T*, const void*);          \
+                ogg_static_constructor_##T##___(object, args);                  \
+                ((ogg_component*)object)->vptr = ogg_design_time_##T##_vtable;  \
+                if (((ogg_component_info*)args)->parent) {                      \
+                    ogg_send_event(((ogg_component_info*)args)->parent,         \
+                        OGG_CREATE_SUB_COMPONENT_EVENT, object);                \
+                }                                                               \
+                return object;                                                  \
+            }                                                           \
+        }                                                               \
+        return 0;                                                       \
     }                                                                   \
     void ogg_static_constructor_##T##___(T* object, const void* args)   \
     {                                                                   \
-        void create_##T(T* self, const T##_info* args_name);            \
+        void create_##T(T* self, const T##_info* args);                 \
         parent_static_constructor_##T##__((void*)object, args);         \
         create_##T(object, (const T##_info*)args);                      \
     }                                                                   \
-    void create_##T(T* self, const T##_info* args_name)
+    void create_##T(T* self, const T##_info* args)
 #    endif
 #  endif
 
 #  define ogg_destructor(T)                                             \
     ogg_destructor_##T##___
+
 /*
  * macro_function def_destructor(T)
  * define the destructor of component type T.

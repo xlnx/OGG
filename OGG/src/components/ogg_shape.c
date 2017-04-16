@@ -12,7 +12,7 @@
     //    .vertex = 0
     //)
 
-    def_constructor(ogg_shape, args)
+    def_constructor(ogg_shape, parent != 0)
     {
         self->color = args->color;
         self->vertex = args->vertex;
@@ -56,7 +56,7 @@
     /*default_startup_inh(ogg_rect, ogg_shape)(
     )*/
 
-    def_constructor(ogg_rect, args)
+    def_constructor(ogg_rect, parent != 0)
     {
         if (self->super.vertex) {
             free(self->super.vertex->point);

@@ -33,8 +33,8 @@ typedef unsigned event;
             T* self, event_name##_ARGS ogg_handle_flag* handled)
 
 # define inherited(T, event_name)                                       \
-    (T##_vtable[event_name] ?                                           \
-        T##_vtable[event_name]((void*)self,                             \
+    (T##_parent_vtable[event_name] ?                                    \
+        T##_parent_vtable[event_name]((void*)self,                      \
             event_name##_PASS_ARGS handled): 0)                         \
 
 
@@ -54,7 +54,7 @@ typedef unsigned event;
         ogg_component* self)
 
 /* event count */
-# define OGG_EVENT_COUNT                                                (18)
+# define OGG_EVENT_COUNT                                                (22)
 
 
 
@@ -283,6 +283,47 @@ typedef unsigned event;
         /* no args */
 # define OGG_LOSE_FOCUS_EVENT_PASS_ARGS                                 \
         /* no args */
+
+
+
+# define OGG_CREATE_SUB_COMPONENT_EVENT     /* create sub component */  (18)
+# define OGG_CREATE_SUB_COMPONENT_EVENT_ARGS                            \
+        ogg_component* sub,
+# define OGG_CREATE_SUB_COMPONENT_EVENT_EXTRACT_ARGS                    \
+        ogg_com_ptr sub = va_arg(args, ogg_com_ptr);
+# define OGG_CREATE_SUB_COMPONENT_EVENT_PASS_ARGS                       \
+        (ogg_component*)sub,
+
+
+
+# define OGG_DESTROY_SUB_COMPONENT_EVENT    /* destroy sub component */ (19)
+# define OGG_DESTROY_SUB_COMPONENT_EVENT_ARGS                           \
+        ogg_component* sub,
+# define OGG_DESTROY_SUB_COMPONENT_EVENT_EXTRACT_ARGS                   \
+        ogg_com_ptr sub = va_arg(args, ogg_com_ptr);
+# define OGG_DESTROY_SUB_COMPONENT_EVENT_PASS_ARGS                      \
+        (ogg_component*)sub,
+
+
+
+# define OGG_ACCESS_EVENT                   /* try to access */         (20)
+# define OGG_ACCESS_EVENT_ARGS                                          \
+        ogg_bool* access,
+# define OGG_ACCESS_EVENT_EXTRACT_ARGS                                  \
+        ogg_bool* access = va_arg(args, ogg_bool*);
+# define OGG_ACCESS_EVENT_PASS_ARGS                                     \
+        access,
+
+
+
+# define OGG_CAN_ADD_CHILD                  /* if can add child */      (21)
+# define OGG_CAN_ADD_CHILD_ARGS                                         \
+        void* vptr, ogg_bool* accept,
+# define OGG_CAN_ADD_CHILD_EXTRACT_ARGS                                 \
+        void* vptr = va_arg(args, void*);                               \
+        ogg_bool* accept = va_arg(args, ogg_bool*);
+# define OGG_CAN_ADD_CHILD_PASS_ARGS                                    \
+        vptr, accept,
 
 
 
