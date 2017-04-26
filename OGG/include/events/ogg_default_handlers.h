@@ -20,7 +20,7 @@ static ogg_bool is_child_of(ogg_com_ptr child, ogg_com_ptr parent)
 
 static void ogg_default_handler(OGG_PAINT_EVENT)(void)
 {
-    ogg_clear_screen();
+    ogg_clear_screen(ogg_active_form()->color);
     ogg_send_event(ogg_active_form(), OGG_PAINT_EVENT);
     ogg_flush_screen();
 }

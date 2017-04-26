@@ -27,12 +27,13 @@
     static const ogg_bool ogg_false = 0;
     static const ogg_bool ogg_true = 1;
 
-    void ogg_clear_screen(void);
     void ogg_flush_screen(void);
 
     typedef struct {
         float R, G, B;
     } ogg_color;
+
+    void ogg_clear_screen(ogg_color color);
 
     static const ogg_color OGG_BLACK = {
         0.0, 0.0, 0.0
@@ -58,8 +59,6 @@
     static const ogg_color OGG_WHITE = {
         255.0/255.0, 255.0/255.0, 255.0/255.0
     };
-
-    void set_screen_color(ogg_color color);
 
     void ogg_paint_char(char chr, ogg_color color, coordf pix);
 

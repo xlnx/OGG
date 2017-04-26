@@ -1,8 +1,11 @@
-﻿生成启动时间为 2017/4/13 12:02:26。
+﻿生成启动时间为 2017/4/26 12:40:20。
      1>项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\glew-1.11.0\include" /IC:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\freeglut\include /IC:\Users\xlnx\Desktop\OGG\OGG\include /ZI /nologo /W3 /WX- /sdl /Oy- /D LIB_OGG__BUILDING /D DESIGN_TIME /D GLUT_DISABLE_ATEXIT_HACK /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\\" /Fd"C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt src\components\ogg_button.c src\components\ogg_components.c src\components\ogg_edit.c src\components\ogg_forms.c src\components\ogg_grid.c src\components\ogg_grid_canvas.c src\components\ogg_shape.c
+         D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\glew-1.11.0\include" /IC:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\freeglut\include /IC:\Users\xlnx\Desktop\OGG\OGG\include /ZI /nologo /W3 /WX- /sdl /Oy- /D LIB_OGG__BUILDING /D DESIGN_TIME /D GLUT_DISABLE_ATEXIT_HACK /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\\" /Fd"C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt src\components\ogg_button.c src\components\ogg_components.c src\components\ogg_edit.c src\components\ogg_forms.c src\components\ogg_grid.c src\components\ogg_grid_canvas.c src\components\ogg_page_control.c src\components\ogg_shape.c src\utils\ogg_event.c src\utils\ogg_utils.c
+         ogg_utils.c
+         ogg_event.c
          ogg_shape.c
+         ogg_page_control.c
          ogg_grid_canvas.c
          ogg_grid.c
          ogg_forms.c
@@ -17,6 +20,7 @@
          C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg_forms.obj
          C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg_grid.obj
          C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg_grid_canvas.obj
+         C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg_page_control.obj
          C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg_shape.obj
          C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg.obj
          C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignDebug\ogg_event.obj
@@ -26,4 +30,4 @@
 
 生成成功。
 
-已用时间 00:00:02.54
+已用时间 00:00:02.78

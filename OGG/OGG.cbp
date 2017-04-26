@@ -16,6 +16,8 @@
 				<Compiler>
 					<Add option="-Wall" />
 					<Add option="-g" />
+					<Add option="-DLIB_OGG__BUILDING" />
+					<Add option="-DGLUT_DISABLE_ATEXIT_HACK" />
 					<Add directory="include" />
 					<Add directory="dependency/freeglut/freeglut/include" />
 					<Add directory="dependency/freeglut/glew-1.11.0/include" />
@@ -29,8 +31,49 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-Wall" />
 					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-DLIB_OGG__BUILDING" />
+					<Add option="-DGLUT_DISABLE_ATEXIT_HACK" />
+					<Add directory="include" />
+					<Add directory="dependency/freeglut/freeglut/include" />
+					<Add directory="dependency/freeglut/glew-1.11.0/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="designDebug">
+				<Option output="bin/designDebug/OGG" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="temp/designDebug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-DLIB_OGG__BUILDING" />
+					<Add option="-DDESIGN_TIME" />
+					<Add option="-DGLUT_DISABLE_ATEXIT_HACK" />
+					<Add directory="include" />
+					<Add directory="dependency/freeglut/freeglut/include" />
+					<Add directory="dependency/freeglut/glew-1.11.0/include" />
+				</Compiler>
+			</Target>
+			<Target title="designRelease">
+				<Option output="bin/designRelease/OGG" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="temp/designRelease/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-DLIB_OGG__BUILDING" />
+					<Add option="-DDESIGN_TIME" />
+					<Add option="-DGLUT_DISABLE_ATEXIT_HACK" />
 					<Add directory="include" />
 					<Add directory="dependency/freeglut/freeglut/include" />
 					<Add directory="dependency/freeglut/glew-1.11.0/include" />
@@ -52,9 +95,6 @@
 		<Unit filename="include/ogg.h" />
 		<Unit filename="include/utils/geometry.h" />
 		<Unit filename="include/utils/ogg_utils.h" />
-		<Unit filename="main.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="src/components/ogg_button.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -76,10 +116,10 @@
 		<Unit filename="src/components/ogg_shape.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/designer/ogg_designer.c">
+		<Unit filename="src/ogg.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/ogg.c">
+		<Unit filename="src/utils/ogg_event.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/utils/ogg_utils.c">

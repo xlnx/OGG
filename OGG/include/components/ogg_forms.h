@@ -15,6 +15,7 @@
     typedef struct {
         ogg_form_position position;
         const char *title;
+        ogg_color color;
     } form_info;
 
     def_startup(ogg_form)(
@@ -26,6 +27,7 @@
         ogg_form_id form_id;
         ogg_form_position position;
         const char *title;
+        ogg_color color;
     );
 
     def_startup(ogg_application)(

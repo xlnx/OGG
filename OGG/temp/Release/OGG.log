@@ -1,5 +1,5 @@
-﻿生成启动时间为 2017/4/16 0:55:31。
-     1>项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”在节点 2 上(Rebuild 个目标)。
+﻿生成启动时间为 2017/4/26 12:40:14。
+     1>项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\glew-1.11.0\include" /IC:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\freeglut\include /IC:\Users\xlnx\Desktop\OGG\OGG\include /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /Oy /GT /GL /D LIB_OGG__BUILDING /D GLUT_DISABLE_ATEXIT_HACK /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\\" /Fd"C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt src\components\ogg_button.c src\components\ogg_components.c src\components\ogg_edit.c src\components\ogg_forms.c src\components\ogg_grid.c src\components\ogg_grid_canvas.c src\components\ogg_page_control.c src\components\ogg_shape.c src\ogg.c src\utils\ogg_event.c src\utils\ogg_utils.c
          ogg_button.c
@@ -26,8 +26,8 @@
          C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_event.obj
          C:\Users\xlnx\Desktop\OGG\OGG\temp\Release\ogg_utils.obj
          OGG.vcxproj -> C:\Users\xlnx\Desktop\OGG\OGG\bin\Release\OGG.lib
-     1>已完成生成项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”(Rebuild 个目标)的操作。
+     1>已完成生成项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”(Build 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:02.91
+已用时间 00:00:02.94

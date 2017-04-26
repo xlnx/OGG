@@ -72,6 +72,7 @@ def_constructor(ogg_form, parent != 0)
             glut_form_event_register[i](glut_events[i]);
         }
     }
+    self->color = args->info.color;
     //glut_events[OGG_TIMER_EVENT]
     glutTimerFunc(OGG_TIME_INTERVAL,
         (void(*)(int))glut_events[OGG_TIMER_EVENT], OGG_TIMER_INDEX);

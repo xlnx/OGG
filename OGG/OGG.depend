@@ -1,31 +1,31 @@
 # depslib dependency file v1.0
-1491748094 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_button.c
+1492326715 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_button.c
 	<GL/glut.h>
 	"components/ogg_button.h"
 
-1491881228 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_components.c
+1492329458 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_components.c
 	<GL/glut.h>
 	"components/ogg_components.h"
 
-1491886943 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_edit.c
+1492326775 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_edit.c
 	<GL/glut.h>
 	"components/ogg_edit.h"
 
-1491883187 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_forms.c
+1493181588 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_forms.c
 	<GL/glut.h>
 	"components/ogg_forms.h"
 	<gl/freeglut.h>
 	"events/ogg_default_handlers.h"
 
-1491748099 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_grid.c
+1492328480 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_grid.c
 	<GL/glut.h>
 	"components/ogg_grid.h"
 
-1491747634 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_grid_canvas.c
+1492326938 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_grid_canvas.c
 	<GL/glut.h>
 	"components/ogg_grid_canvas.h"
 
-1490783383 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_shape.c
+1492326744 source:c:\users\xlnx\desktop\ogg\ogg\src\components\ogg_shape.c
 	<GL/glut.h>
 	"components/ogg_shape.h"
 
@@ -35,10 +35,10 @@
 	<gl/freeglut.h>
 	"events/ogg_default_handlers.h"
 
-1491908559 source:c:\users\xlnx\desktop\ogg\ogg\src\ogg.c
+1492052287 source:c:\users\xlnx\desktop\ogg\ogg\src\ogg.c
 	"ogg.h"
 
-1491886623 source:c:\users\xlnx\desktop\ogg\ogg\src\utils\ogg_utils.c
+1493181136 source:c:\users\xlnx\desktop\ogg\ogg\src\utils\ogg_utils.c
 	<GL/glut.h>
 	"utils/ogg_utils.h"
 	<gl/freeglut.h>
@@ -62,14 +62,14 @@
 1490364849 c:\users\xlnx\desktop\ogg\ogg\include\components\ogg_button.h
 	"ogg_shape.h"
 
-1490365300 c:\users\xlnx\desktop\ogg\ogg\include\components\ogg_shape.h
+1492055707 c:\users\xlnx\desktop\ogg\ogg\include\components\ogg_shape.h
 	"ogg_components.h"
 
-1491881503 c:\users\xlnx\desktop\ogg\ogg\include\components\ogg_components.h
+1492327952 c:\users\xlnx\desktop\ogg\ogg\include\components\ogg_components.h
 	"utils/ogg_utils.h"
 	"events/ogg_events.h"
 
-1491751413 c:\users\xlnx\desktop\ogg\ogg\include\utils\ogg_utils.h
+1493181212 c:\users\xlnx\desktop\ogg\ogg\include\utils\ogg_utils.h
 	"geometry.h"
 	<string.h>
 	<stdlib.h>
@@ -77,14 +77,14 @@
 1491149787 c:\users\xlnx\desktop\ogg\ogg\include\utils\geometry.h
 	<math.h>
 
-1491886894 c:\users\xlnx\desktop\ogg\ogg\include\events\ogg_events.h
+1492328118 c:\users\xlnx\desktop\ogg\ogg\include\events\ogg_events.h
 	<stdarg.h>
 	<stdlib.h>
 
 1490604030 c:\users\xlnx\desktop\ogg\ogg\include\components\ogg_edit.h
 	"ogg_shape.h"
 
-1491879672 c:\users\xlnx\desktop\ogg\ogg\include\components\ogg_forms.h
+1493181310 c:\users\xlnx\desktop\ogg\ogg\include\components\ogg_forms.h
 	"components/ogg_components.h"
 
 1426318440 c:\users\xlnx\desktop\ogg\ogg\dependency\freeglut\freeglut\include\gl\freeglut.h
@@ -94,15 +94,15 @@
 1426318440 c:\users\xlnx\desktop\ogg\ogg\dependency\freeglut\freeglut\include\gl\freeglut_ext.h
 	<stdarg.h>
 
-1491649061 c:\users\xlnx\desktop\ogg\ogg\include\events\ogg_default_handlers.h
+1493181063 c:\users\xlnx\desktop\ogg\ogg\include\events\ogg_default_handlers.h
 
-1490358992 c:\users\xlnx\desktop\ogg\ogg\include\components\ogg_grid.h
+1492055707 c:\users\xlnx\desktop\ogg\ogg\include\components\ogg_grid.h
 	"ogg_components.h"
 
 1490519145 c:\users\xlnx\desktop\ogg\ogg\include\components\ogg_grid_canvas.h
 	"ogg_components.h"
 
-1491908603 c:\users\xlnx\desktop\ogg\ogg\include\ogg.h
+1492319438 c:\users\xlnx\desktop\ogg\ogg\include\ogg.h
 	"components/ogg_components.h"
 	"components/ogg_forms.h"
 	"components/ogg_grid.h"
@@ -110,5 +110,9 @@
 	"components/ogg_button.h"
 	"components/ogg_edit.h"
 	"components/ogg_grid_canvas.h"
+	"components/ogg_page_control.h"
 	<../dependency/freeglut/freeglut/include/GL/freeglut.h>
+
+1492328557 c:\users\xlnx\desktop\ogg\ogg\include\components\ogg_page_control.h
+	"ogg_shape.h"
 
