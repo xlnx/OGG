@@ -52,9 +52,6 @@ def_vtable(ogg_component)(
     } while (0)
 #  endif
 
-int window_width;
-int window_height;
-
 ogg_pec ogg_make_pec(float x, float y)
 {
     ogg_pec pec = { x, y };
@@ -63,15 +60,15 @@ ogg_pec ogg_make_pec(float x, float y)
 
 ogg_pec coord2pec(ogg_coord p)
 {
-    ogg_pec pix = { (float)p.x * 2 / window_width - 1,
-        1 - (float)p.y * 2 / window_height };
+    ogg_pec pix = { (float)p.x * 2 / ogg_get_active_form()->position.width - 1,
+        1 - (float)p.y * 2 / ogg_get_active_form()->position.height };
     return pix;
 }
 
 ogg_coord pec2coord(ogg_pec p)
 {
-    ogg_coord pix = { (int)(window_width * (p.x + 1) / 2),
-        (int)(window_height * (1 - p.y) / 2) };
+    ogg_coord pix = { (int)(ogg_get_active_form()->position.width * (p.x + 1) / 2),
+        (int)(ogg_get_active_form()->position.height * (1 - p.y) / 2) };
     return pix;
 }
 
@@ -89,15 +86,15 @@ ogg_pec pec_sub_pec(ogg_pec a, ogg_pec b)
 
 ogg_pec pec_add_coord(ogg_pec a, ogg_coord b)
 {
-    a.x += (float)b.x * 2 / window_width;
-    a.y += (float)b.y * 2 / window_height;
+    a.x += (float)b.x * 2 / ogg_get_active_form()->position.width;
+    a.y += (float)b.y * 2 / ogg_get_active_form()->position.height;
     return a;
 }
 
 ogg_pec pec_sub_coord(ogg_pec a, ogg_coord b)
 {
-    a.x -= (float)b.x * 2 / window_width;
-    a.y -= (float)b.y * 2 / window_height;
+    a.x -= (float)b.x * 2 / ogg_get_active_form()->position.width;
+    a.y -= (float)b.y * 2 / ogg_get_active_form()->position.height;
     return a;
 }
 
@@ -112,8 +109,8 @@ ogg_pec get_real_pec(ogg_com_ptr com_ptr, ogg_pec pix)
             pix.y = ((1 + pix.y) * anchor.pec.top + (1 - pix.y) * anchor.pec.bottom) / 2;
             break;
         case ogg_anchor_coord:
-            pix.x = ((anchor.coord.right - anchor.coord.left) * (pix.x + 1) + 2 * anchor.coord.left) / window_width - 1;
-            pix.y = 1 - ((anchor.coord.bottom - anchor.coord.top) * (1 - pix.y) + 2 * anchor.coord.top) / window_height;
+            pix.x = ((anchor.coord.right - anchor.coord.left) * (pix.x + 1) + 2 * anchor.coord.left) / ogg_get_active_form()->position.width - 1;
+            pix.y = 1 - ((anchor.coord.bottom - anchor.coord.top) * (1 - pix.y) + 2 * anchor.coord.top) / ogg_get_active_form()->position.height;
         }
     }
     return pix;
@@ -126,10 +123,10 @@ void get_component_real_coord_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
         anchor->type = ogg_anchor_coord;
         float x1 = anchor->pec.left, x2 = anchor->pec.right,
             y1 = anchor->pec.top, y2 = anchor->pec.bottom;
-        anchor->coord.left = (int)(window_width * (x1 + 1) / 2);
-        anchor->coord.right = (int)(window_width * (x2 + 1) / 2);
-        anchor->coord.top = (int)(window_height * (1 - y1) / 2);
-        anchor->coord.bottom = (int)(window_height * (1 - y2) / 2);
+        anchor->coord.left = (int)(ogg_get_active_form()->position.width * (x1 + 1) / 2);
+        anchor->coord.right = (int)(ogg_get_active_form()->position.width * (x2 + 1) / 2);
+        anchor->coord.top = (int)(ogg_get_active_form()->position.height * (1 - y1) / 2);
+        anchor->coord.bottom = (int)(ogg_get_active_form()->position.height * (1 - y2) / 2);
     }
 }
 
@@ -140,10 +137,10 @@ void get_component_real_pec_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
         anchor->type = ogg_anchor_pec;
         int x1 = anchor->coord.left, x2 = anchor->coord.right,
             y1 = anchor->coord.top, y2 = anchor->coord.bottom;
-        anchor->pec.left = (float)(2 * x1) / window_width - 1;
-        anchor->pec.right = (float)(2 * x2) / window_width - 1;
-        anchor->pec.top = 1 - (float)(2 * y1) / window_height;
-        anchor->pec.bottom = 1 - (float)(2 * y2) / window_height;
+        anchor->pec.left = (float)(2 * x1) / ogg_get_active_form()->position.width - 1;
+        anchor->pec.right = (float)(2 * x2) / ogg_get_active_form()->position.width - 1;
+        anchor->pec.top = 1 - (float)(2 * y1) / ogg_get_active_form()->position.height;
+        anchor->pec.bottom = 1 - (float)(2 * y2) / ogg_get_active_form()->position.height;
     }
 }
 
@@ -177,10 +174,10 @@ void get_component_real_anchor(ogg_com_ptr com_ptr, ogg_anchor* anchor)
             } break;
             case ogg_anchor_coord: {            /* parent is pec and self is coord */
                 float x1 = anchor->pec.left, y1 = anchor->pec.top;
-                anchor->coord.left = (int)(window_width * (x1 + 1) / 2 + com->coord.left);
-                anchor->coord.right = (int)(window_width * (x1 + 1) / 2 + com->coord.right);
-                anchor->coord.top = (int)(window_height * (1 - y1) / 2 + com->coord.top);
-                anchor->coord.bottom = (int)(window_height * (1 - y1) / 2 + com->coord.bottom);
+                anchor->coord.left = (int)(ogg_get_active_form()->position.width * (x1 + 1) / 2 + com->coord.left);
+                anchor->coord.right = (int)(ogg_get_active_form()->position.width * (x1 + 1) / 2 + com->coord.right);
+                anchor->coord.top = (int)(ogg_get_active_form()->position.height * (1 - y1) / 2 + com->coord.top);
+                anchor->coord.bottom = (int)(ogg_get_active_form()->position.height * (1 - y1) / 2 + com->coord.bottom);
                 anchor->type = ogg_anchor_coord;
             } break;
             } break;

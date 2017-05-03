@@ -1,7 +1,10 @@
 #ifndef OGG_GEOMETRY__HEADER_FILE___
 #define OGG_GEOMETRY__HEADER_FILE___
 #include <math.h>
-
+# ifdef __cplusplus
+#define max(a, b) ((a)>(b)?(a):(b))
+#define min(a, b) ((a)<(b)?(a):(b))
+# endif
 #define register_geometry_system(T, id) /* register a geometry system by given type */\
 typedef struct {\
     T x, y;\

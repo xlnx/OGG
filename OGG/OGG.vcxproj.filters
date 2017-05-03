@@ -57,9 +57,6 @@
     <ClCompile Include="src\components\ogg_page_control.c">
       <Filter>源文件\components</Filter>
     </ClCompile>
-    <ClCompile Include="src\ogg.c">
-      <Filter>资源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\ogg_event.c">
       <Filter>源文件\utils</Filter>
     </ClCompile>

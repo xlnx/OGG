@@ -116,9 +116,6 @@
 		<Unit filename="src/components/ogg_shape.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/ogg.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="src/utils/ogg_event.c">
 			<Option compilerVar="CC" />
 		</Unit>

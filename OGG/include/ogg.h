@@ -16,8 +16,7 @@ extern "C" {
 
 #  include <../dependency/freeglut/freeglut/include/GL/freeglut.h>
 
-#  ifndef LIB_OGG__BUILDING
-#  ifndef DESIGN_TIME
+#ifndef LIB_OGG__BUILDING
 
 #    ifdef WIN32
 #      ifndef OGG_SHOW_CONSOLE
@@ -25,15 +24,36 @@ extern "C" {
 #      endif
 #    endif
 
+    ogg_application* application = 0;
+
     void ogg_init_application_forms();
 
-    int main(int argc, char *argv[]);
+    int main(int argc, char *argv[])
+    {
+        ogg_create(ogg_application)(
+            {
+                0,
+                {
+                    ogg_anchor_pec,
+                    {
+                        { 0, 0, 100, 100 }
+                    }
+                }
+            },
+            &argc,
+            argv,
+            GLUT_RGB | GLUT_SINGLE
+        )(application);
+        set_application(application);
+        ogg_init_application(application);
+        ogg_init_application_forms();
+        ogg_run_application(application);
+    }
 
-#  endif
-#  endif
-
-# ifdef __cplusplus
-}
 #endif
+
+#  ifdef __cplusplus
+}
+#  endif
 
 #endif //OGG__OPENGL_GRAPHIC_LIBRARY__HEADER_FILE____

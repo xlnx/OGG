@@ -6,7 +6,7 @@
 
 # define OGG_MAX_FORM_COUNT (65534U)
 
-ogg_application *application;
+static ogg_application *application;
 
 # define ogg_active_form()                             \
         (glutGetWindow() ? application->forms_lookup[glutGetWindow()] : 0)
@@ -58,7 +58,7 @@ static glut_callback glut_events[OGG_EVENT_COUNT] = {
 handler(ogg_form, OGG_SPECIAL_KEY_EVENT);
 
 def_vtable(ogg_form)(
-    [OGG_SPECIAL_KEY_EVENT] = ogg_handler(ogg_form, OGG_SPECIAL_KEY_EVENT),
+    [OGG_SPECIAL_KEY_EVENT] = ogg_handler(ogg_form, OGG_SPECIAL_KEY_EVENT)
 );
 
 def_constructor(ogg_form, parent != 0)
@@ -78,7 +78,7 @@ def_constructor(ogg_form, parent != 0)
         (void(*)(int))glut_events[OGG_TIMER_EVENT], OGG_TIMER_INDEX);
     self->position = args->info.position;
     self->title = args->info.title;
-    current_component = self;
+    application->current_component = self;
 }
 
 def_destructor(ogg_form)
@@ -105,6 +105,11 @@ def_constructor(ogg_application, ogg_true)
     self->argv = args->argv;
     self->display_mode = args->display_mode;
     self->forms_lookup = (ogg_form**)malloc(OGG_MAX_FORM_COUNT * sizeof(ogg_form*));
+    self->is_top_level = 0;
+    self->focused_component = 0;
+    self->current_component = 0;
+    self->mouse_state = -1;
+    self->is_dragging = 0;
 }
 
 def_destructor(ogg_application)
@@ -114,7 +119,7 @@ def_destructor(ogg_application)
 
 ogg_com_ptr get_current_component()
 {
-    return current_component;
+    return application->current_component;
 }
 
 ogg_form* ogg_create_form(form_info info)
@@ -140,6 +145,11 @@ ogg_form* ogg_create_form(form_info info)
 ogg_form* ogg_get_active_form()
 {
     return ogg_active_form();
+}
+
+void set_application(ogg_com_ptr app)
+{
+    application = app;
 }
 
 void ogg_init_application(ogg_application* self)

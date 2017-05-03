@@ -42,9 +42,6 @@ def_destructor(ogg_edit)
 {   /* do nothing */
 }
 
-extern int window_width;
-extern int window_height;
-
 static int get_edit_width(ogg_edit* self)
 {
     ogg_anchor anchor;
@@ -61,7 +58,9 @@ static void adjust_offset(ogg_edit* self)
     } else if (self->caret < self->offset) {
         self->offset = self->caret;
     } else if (length < self->offset + width - 1) {
-        self->offset = max(0, length - width + 1);
+        if (length - width + 1 > 0)
+            self->offset = length - width + 1;
+        else self->offset = 0; 
     }
 }
 
@@ -77,10 +76,10 @@ static void paint_caret(ogg_edit* self)
     ogg_pec pix = pec_add_coord(get_real_pec(self, pec),
         coord(4 + cur_pos * 8, -8));
     float dx = self->insert_mode ?
-        (float)(0.5 * 4 / window_width)
+        (float)(0.5 * 4 / ogg_get_active_form()->position.width)
         :
-        (float)(4.0 * 4 / window_width),
-        dy = (float)(8.0 * 4 / window_height);
+        (float)(4.0 * 4 / ogg_get_active_form()->position.width),
+        dy = (float)(8.0 * 4 / ogg_get_active_form()->position.height);
     glBegin(GL_QUADS);
     glVertex2f(pix.x, pix.y);
     glVertex2f(pix.x + dx, pix.y);

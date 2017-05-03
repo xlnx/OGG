@@ -44,10 +44,12 @@ def_destructor(ogg_button)
 def_handler(ogg_button, OGG_PAINT_EVENT)
 {
     inherited(ogg_button, OGG_PAINT_EVENT);
-    coordf pix = { 0, 0 };
-    pix = pec_sub_coord(get_real_pec(self, pix),
-        coord(strlen(self->text.content) * 4, 4));
-    ogg_paint_string(self->text.content, self->text.color, pix);
+    if (self->text.content) {
+        coordf pix = { 0, 0 };
+        pix = pec_sub_coord(get_real_pec(self, pix),
+            coord(strlen(self->text.content) * 4, 4));
+        ogg_paint_string(self->text.content, self->text.color, pix);
+    }
 }
 
 def_handler(ogg_button, OGG_MOUSE_EVENT)

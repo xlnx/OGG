@@ -351,8 +351,36 @@
                     self, args, handled);                               \
         }                                                               \
         ogg_com_ptr get_current_component();                            \
-        if (self == get_current_component())                            \
-            draw_design_anchor(self);                                   \
+        if (self == get_current_component()) {                          \
+            /*draw_design_anchor(self);*/                                   \
+            ogg_anchor anchor;                                                      \
+            get_component_real_pec_anchor(self, &anchor);                           \
+            static const ogg_coord det[4] = {                                       \
+                { -3, -3 }, { 3, -3 }, { 3, 3 }, { -3, 3 } };                       \
+            int i = 0, j = 0;                                                       \
+            ogg_pec pix;                                                            \
+            ogg_pec vec[8] = {                                                      \
+                anchor.pec.top_left,                                                \
+                anchor.pec.bottom_right,                                            \
+                { anchor.pec.left, anchor.pec.bottom },                             \
+                { anchor.pec.right, anchor.pec.top },                               \
+                { (anchor.pec.left + anchor.pec.right) / 2, anchor.pec.bottom },    \
+                { (anchor.pec.left + anchor.pec.right) / 2, anchor.pec.top },       \
+                { anchor.pec.left, (anchor.pec.bottom + anchor.pec.top) / 2 },      \
+                { anchor.pec.right, (anchor.pec.bottom + anchor.pec.top) / 2 },     \
+            };                                                                      \
+            glColor3f(OGG_BLACK.R, OGG_BLACK.G, OGG_BLACK.B);                       \
+            glBegin(GL_QUADS);                                                      \
+                for (; j != 8; ++j) {                                   \
+                    for (i = 0; i != 4; ++i) {                          \
+                        pix.x = vec[j].x + (float)det[i].x * 2 / ogg_get_active_form()->position.width;\
+                        pix.y = vec[j].y + (float)det[i].y * 2 / ogg_get_active_form()->position.height;\
+/*pix = pec_add_coord(vec[j], det[i]);*/            \
+                        glVertex2f(pix.x, pix.y);                       \
+                    }                                                   \
+                }                                                       \
+            glEnd();                                                    \
+        }                                                               \
         *handled = ogg_false;                                           \
     }                                                                   \
     /*static */ogg_event_handler ogg_design_time_##component_type##_vtable  \
@@ -465,6 +493,7 @@
     }                                                                   \
     T* ogg_constructor_##T##___(const T##_info* args)                   \
     {                                                                   \
+        ogg_component* parent = ((ogg_component_info*)args)->parent;    \
         if (allow_create_sub_##T(parent)) {                             \
             ogg_bool accept = ogg_true;                                 \
             if (parent != 0 && parent->vptr[OGG_CAN_ADD_CHILD]) {       \
@@ -588,8 +617,8 @@
                 void ogg_static_constructor_##T##___(T*, const void*);          \
                 ogg_static_constructor_##T##___(object, args);                  \
                 ((ogg_component*)object)->vptr = ogg_design_time_##T##_vtable;  \
-                if (((ogg_component_info*)args)->parent) {                      \
-                    ogg_send_event(((ogg_component_info*)args)->parent,         \
+                if (parent) {                                                   \
+                    ogg_send_event(parent,                                      \
                         OGG_CREATE_SUB_COMPONENT_EVENT, object);                \
                 }                                                               \
                 return object;                                                  \
@@ -630,5 +659,5 @@
     }                                                                   \
     void ogg_destructor_##T##_helper__(T* self)
 
-
+#include "ogg_forms.h"
 #endif //OGG_GRAPHIC_COMPONENTS__HEADER_FILE_____

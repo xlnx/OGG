@@ -41,6 +41,11 @@
         char **argv;
         ogg_display_mode display_mode;
         ogg_form **forms_lookup;
+        ogg_bool is_top_level;
+        ogg_com_ptr current_component;
+        ogg_com_ptr focused_component;
+        int mouse_state;
+        ogg_bool is_dragging;
     );
 
     //void ogg_init_application(ogg_application* self);
@@ -56,6 +61,8 @@
     ogg_form* ogg_get_active_form();
 
     ogg_com_ptr get_current_component();
+
+    void set_application(ogg_com_ptr app);
 
     void ogg_init_application(ogg_application* self);
 

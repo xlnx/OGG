@@ -172,7 +172,6 @@
     <ClCompile Include="src\components\ogg_grid_canvas.c" />
     <ClCompile Include="src\components\ogg_page_control.c" />
     <ClCompile Include="src\components\ogg_shape.c" />
-    <ClCompile Include="src\ogg.c" />
     <ClCompile Include="src\utils\ogg_event.c" />
     <ClCompile Include="src\utils\ogg_utils.c" />
   </ItemGroup>

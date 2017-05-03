@@ -3,12 +3,6 @@
 
 # define ogg_default_handler(EVENT) ogg_default_##EVENT##_handler
 
-static ogg_bool is_top_level;
-static ogg_com_ptr focused_component = 0;
-static ogg_com_ptr current_component = 0;
-static int mouse_state = -1;
-static ogg_bool is_dragging;
-
 static ogg_bool is_child_of(ogg_com_ptr child, ogg_com_ptr parent)
 {
     ogg_component* ptr = child;
@@ -37,25 +31,25 @@ static void ogg_default_handler(OGG_SPECIAL_KEY_EVENT)(int key, int x, int y)
 
 static void ogg_default_handler(OGG_MOUSE_EVENT)(int button, int state, int x, int y)
 {
-    is_top_level = ogg_true;
+    application->is_top_level = ogg_true;
     ogg_send_event(ogg_active_form(), OGG_MOUSE_EVENT, button, state, x, y);
 }
 
 static void ogg_default_handler(OGG_MOUSE_DRAG_EVENT)(int x, int y)
 {
-    is_top_level = ogg_true;
+    application->is_top_level = ogg_true;
     ogg_send_event(ogg_active_form(), OGG_MOUSE_DRAG_EVENT, x, y);
 }
 
 static void ogg_default_handler(OGG_MOUSE_MOVE_EVENT)(int x, int y)
 {
-    is_top_level = ogg_true;
+    application->is_top_level = ogg_true;
     ogg_send_event(ogg_active_form(), OGG_MOUSE_MOVE_EVENT, x, y);
 }
 
 static void ogg_default_handler(OGG_MOUSE_ENTRY_EVENT)(int state)
 {
-    is_top_level = ogg_true;
+    application->is_top_level = ogg_true;
     ogg_send_event(ogg_active_form(), OGG_MOUSE_ENTRY_EVENT, state);
 }
 
@@ -65,36 +59,34 @@ static void ogg_default_handler(OGG_TIMER_EVENT)(int value)
     glutTimerFunc(OGG_TIME_INTERVAL, ogg_default_handler(OGG_TIMER_EVENT), value);
 }
 
-extern int window_width;
-extern int window_height;
-
 static void ogg_default_handler(OGG_RESHAPE_EVENT)(int width, int height)
 {
-    window_width = width; window_height = height;
+    ogg_get_active_form()->position.width = width;
+    ogg_get_active_form()->position.height = height;
     glViewport(0, 0, width, height);
     ogg_send_event(ogg_active_form(), OGG_RESHAPE_EVENT, width, height);
 }
 
 static def_checker(OGG_DESTROY_EVENT)
 {
-    if (focused_component == self) {
-        focused_component = 0;
+    if (application->focused_component == self) {
+        application->focused_component = 0;
     }
-    if (current_component == self) {
-        ogg_send_event(current_component, OGG_LOSE_FOCUS_EVENT);
-        current_component = ogg_active_form();
+    if (application->current_component == self) {
+        ogg_send_event(application->current_component, OGG_LOSE_FOCUS_EVENT);
+        application->current_component = ogg_active_form();
     }
     return ogg_true;
 }
 
 static def_checker(OGG_KEYBOARD_EVENT)
 {
-    return is_child_of(current_component, self);
+    return is_child_of(application->current_component, self);
 }
 
 static def_checker(OGG_SPECIAL_KEY_EVENT)
 {
-    return is_child_of(current_component, self);
+    return is_child_of(application->current_component, self);
 }
 
 static def_checker(OGG_MOUSE_EVENT)
@@ -104,22 +96,22 @@ static def_checker(OGG_MOUSE_EVENT)
     if (x >= anchor.coord.left && x <= anchor.coord.right &&
             y >= anchor.coord.top && y <= anchor.coord.bottom)
     {
-        if (is_top_level) {
-            is_top_level = ogg_false;
-            if (current_component != self) {
-                if (current_component != 0)
-                    ogg_send_event(current_component, OGG_LOSE_FOCUS_EVENT);
-                current_component = self;
+        if (application->is_top_level) {
+            application->is_top_level = ogg_false;
+            if (application->current_component != self) {
+                if (application->current_component != 0)
+                    ogg_send_event(application->current_component, OGG_LOSE_FOCUS_EVENT);
+                application->current_component = self;
                 ogg_send_event(self, OGG_FOCUS_EVENT);
             }
-            if (focused_component != self) {
-                if (focused_component)
-                    ogg_send_event(focused_component, OGG_MOUSE_LEAVE_EVENT);
-                focused_component = self;
+            if (application->focused_component != self) {
+                if (application->focused_component)
+                    ogg_send_event(application->focused_component, OGG_MOUSE_LEAVE_EVENT);
+                application->focused_component = self;
                 ogg_send_event(self, OGG_MOUSE_ENTER_EVENT);
             }
-            if (mouse_state != state) {
-                mouse_state = state;
+            if (application->mouse_state != state) {
+                application->mouse_state = state;
                 ogg_send_event(self, state == GLUT_DOWN ?
                     OGG_MOUSE_DOWN_EVENT : OGG_MOUSE_UP_EVENT,
                     button, x, y
@@ -138,23 +130,23 @@ static def_checker(OGG_MOUSE_DRAG_EVENT)
     if (x >= anchor.coord.left && x <= anchor.coord.right &&
             y >= anchor.coord.top && y <= anchor.coord.bottom)
     {
-        if (is_top_level) {
-        is_top_level = ogg_false;
-            if (focused_component != self) {
-                if (focused_component)
-                    ogg_send_event(focused_component, OGG_MOUSE_LEAVE_EVENT);
-                focused_component = self;
+        if (application->is_top_level) {
+        application->is_top_level = ogg_false;
+            if (application->focused_component != self) {
+                if (application->focused_component)
+                    ogg_send_event(application->focused_component, OGG_MOUSE_LEAVE_EVENT);
+                application->focused_component = self;
                 ogg_send_event(self, OGG_MOUSE_ENTER_EVENT);
             }
         }
-        if (!is_dragging) {
-            if (mouse_state == GLUT_DOWN) {
-                is_dragging = ogg_true;
+        if (!application->is_dragging) {
+            if (application->mouse_state == GLUT_DOWN) {
+                application->is_dragging = ogg_true;
                 ogg_send_event(self, OGG_MOUSE_DRAG_BEGIN_EVENT);
             }
         } else {
-            if (mouse_state == GLUT_UP) {
-                is_dragging = ogg_false;
+            if (application->mouse_state == GLUT_UP) {
+                application->is_dragging = ogg_false;
                 ogg_send_event(self, OGG_MOUSE_DRAG_END_EVENT);
             }
         }
@@ -170,12 +162,12 @@ static def_checker(OGG_MOUSE_MOVE_EVENT)
     if (x >= anchor.coord.left && x <= anchor.coord.right &&
             y >= anchor.coord.top && y <= anchor.coord.bottom)
     {
-        if (is_top_level) {
-            is_top_level = ogg_false;
-            if (focused_component != self) {
-                if (focused_component)
-                    ogg_send_event(focused_component, OGG_MOUSE_LEAVE_EVENT);
-                focused_component = self;
+        if (application->is_top_level) {
+            application->is_top_level = ogg_false;
+            if (application->focused_component != self) {
+                if (application->focused_component)
+                    ogg_send_event(application->focused_component, OGG_MOUSE_LEAVE_EVENT);
+                application->focused_component = self;
                 ogg_send_event(self, OGG_MOUSE_ENTER_EVENT);
             }
         }
@@ -187,18 +179,18 @@ static def_checker(OGG_MOUSE_MOVE_EVENT)
 static def_checker(OGG_MOUSE_ENTRY_EVENT)
 {
     if (state == GL_LEFT) {
-        if (focused_component) {
-            ogg_send_event(focused_component, OGG_MOUSE_LEAVE_EVENT);
-            focused_component = 0;
+        if (application->focused_component) {
+            ogg_send_event(application->focused_component, OGG_MOUSE_LEAVE_EVENT);
+            application->focused_component = 0;
         }
-        is_dragging = ogg_false;
+        application->is_dragging = ogg_false;
     }
     return ogg_true;
 }
 
 static def_checker(OGG_TIMER_EVENT)
 {
-    return is_child_of(current_component, self);
+    return is_child_of(application->current_component, self);
 }
 
 ogg_bool (*const event_checker[OGG_EVENT_COUNT])(ogg_component*, va_list) = {
