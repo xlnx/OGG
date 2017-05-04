@@ -343,6 +343,153 @@
 # ifdef DESIGN_TIME
 #  define def_vtable(component_type)                                    \
     /*static */ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT];  \
+    extern ogg_application *application;                                \
+    static void ogg_design_time_drag_handler_##component_type##_(       \
+        component_type *self, va_list args, ogg_handle_flag *handled)   \
+    {                                                                   \
+        ogg_anchor anchor;                                              \
+        get_component_real_coord_anchor(self, &anchor);                 \
+        OGG_MOUSE_DRAG_EVENT_EXTRACT_ARGS                               \
+        int x = application->last_drag_pc.x + dx,                       \
+            y = application->last_drag_pc.y + dy;                       \
+        ogg_bool is_on_anchor = ogg_false;                              \
+        if (x <= anchor.coord.left + 3) {                               \
+            if (y <= anchor.coord.top + 3) {/*top_left*/                \
+                /*make move*/                                           \
+                switch (((ogg_component*)self)->anchor_type) {          \
+                case ogg_anchor_pec:                                    \
+                    ((ogg_component*)self)->pec.top_left = pec_add_coord(    \
+                        ((ogg_component*)self)->pec.top_left, coord(dx, dy));\
+                break;                                                  \
+                case ogg_anchor_coord:                                  \
+                    ((ogg_component*)self)->coord.left += dx;           \
+                    ((ogg_component*)self)->coord.top += dy;            \
+                }                                                       \
+                is_on_anchor = ogg_true;                                \
+            } else if (y >= anchor.coord.bottom - 3) {/*bottom_left*/   \
+                /*make move*/                                           \
+                switch (((ogg_component*)self)->anchor_type) {          \
+                case ogg_anchor_pec: {                                  \
+                    ogg_pec pix = {                                         \
+                        ((ogg_component*)self)->pec.left,                   \
+                        ((ogg_component*)self)->pec.bottom                  \
+                    };                                                      \
+                    pix = pec_add_coord(pix, coord(dx, dy));                \
+                    ((ogg_component*)self)->pec.left = pix.x;               \
+                    ((ogg_component*)self)->pec.bottom = pix.y;             \
+                } break;                                                \
+                case ogg_anchor_coord:                                  \
+                    ((ogg_component*)self)->coord.left += dx;           \
+                    ((ogg_component*)self)->coord.bottom += dy;         \
+                }                                                       \
+                is_on_anchor = ogg_true;                                \
+            } else if (y >= (anchor.coord.top + anchor.coord.bottom) / 2 - 3 && \
+                y <= (anchor.coord.top + anchor.coord.bottom) / 2 + 3)  \
+            {/*left*/                                                   \
+                /*make move*/                                           \
+                switch (((ogg_component*)self)->anchor_type) {          \
+                case ogg_anchor_pec: {                                  \
+                    ogg_pec pix = {                                         \
+                        ((ogg_component*)self)->pec.left,                   \
+                        0,                                                  \
+                    };                                                      \
+                    pix = pec_add_coord(pix, coord(dx, 0));                 \
+                    ((ogg_component*)self)->pec.left = pix.x;               \
+                } break;                                                \
+                case ogg_anchor_coord:                                  \
+                    ((ogg_component*)self)->coord.left += dx;           \
+                }                                                       \
+                is_on_anchor = ogg_true;                                \
+            }                                                           \
+        } else if (x >= anchor.coord.right - 3) {                       \
+            if (y <= anchor.coord.top + 3) {/*top_right*/               \
+                /*make move*/                                           \
+                switch (((ogg_component*)self)->anchor_type) {          \
+                case ogg_anchor_pec: {                                  \
+                    ogg_pec pix = {                                         \
+                        ((ogg_component*)self)->pec.right,                  \
+                        ((ogg_component*)self)->pec.top,                    \
+                    };                                                      \
+                    pix = pec_add_coord(pix, coord(dx, dy));                \
+                    ((ogg_component*)self)->pec.right = pix.x;              \
+                    ((ogg_component*)self)->pec.top = pix.y;                \
+                } break;                                                \
+                case ogg_anchor_coord:                                  \
+                    ((ogg_component*)self)->coord.right += dx;          \
+                    ((ogg_component*)self)->coord.top += dy;            \
+                }                                                       \
+                is_on_anchor = ogg_true;                                \
+            } else if (y >= anchor.coord.bottom - 3) {/*bottom_right*/  \
+                /*make move*/                                           \
+                switch (((ogg_component*)self)->anchor_type) {          \
+                case ogg_anchor_pec: {                                  \
+                    ogg_pec pix = {                                         \
+                        ((ogg_component*)self)->pec.right,                  \
+                        ((ogg_component*)self)->pec.bottom,                 \
+                    };                                                      \
+                    pix = pec_add_coord(pix, coord(dx, dy));                \
+                    ((ogg_component*)self)->pec.right = pix.x;              \
+                    ((ogg_component*)self)->pec.bottom = pix.y;             \
+                } break;                                                \
+                case ogg_anchor_coord:                                  \
+                    ((ogg_component*)self)->coord.right += dx;          \
+                    ((ogg_component*)self)->coord.bottom += dy;         \
+                }                                                       \
+                is_on_anchor = ogg_true;                                \
+            } else if (y >= (anchor.coord.top + anchor.coord.bottom) / 2 - 3 && \
+                y <= (anchor.coord.top + anchor.coord.bottom) / 2 + 3)  \
+            {/*right*/                                                  \
+                /*make move*/                                           \
+                switch (((ogg_component*)self)->anchor_type) {          \
+                case ogg_anchor_pec: {                                  \
+                    ogg_pec pix = {                                         \
+                        ((ogg_component*)self)->pec.right,                  \
+                        0,                                                  \
+                    };                                                      \
+                    pix = pec_add_coord(pix, coord(dx, 0));                 \
+                    ((ogg_component*)self)->pec.right = pix.x;              \
+                } break;                                                \
+                case ogg_anchor_coord:                                  \
+                    ((ogg_component*)self)->coord.right += dx;          \
+                }                                                       \
+                is_on_anchor = ogg_true;                                \
+            }                                                           \
+        } else if (x >= (anchor.coord.left + anchor.coord.right) / 2 - 3 && \
+                x <= (anchor.coord.left + anchor.coord.right) / 2 + 3)  \
+        {/*mid*/                                                        \
+            if (y <= anchor.coord.top + 3) {/*top*/                     \
+                /*make move*/                                           \
+                switch (((ogg_component*)self)->anchor_type) {          \
+                case ogg_anchor_pec: {                                  \
+                    ogg_pec pix = {                                         \
+                        0,                                                  \
+                        ((ogg_component*)self)->pec.top,                    \
+                    };                                                      \
+                    pix = pec_add_coord(pix, coord(0, dy));                 \
+                    ((ogg_component*)self)->pec.top = pix.y;                \
+                } break;                                                \
+                case ogg_anchor_coord:                                  \
+                    ((ogg_component*)self)->coord.top += dy;            \
+                }                                                       \
+                is_on_anchor = ogg_true;                                \
+            } else if (y >= anchor.coord.bottom - 3) {/*bottom*/        \
+                /*make move*/                                           \
+                switch (((ogg_component*)self)->anchor_type) {          \
+                case ogg_anchor_pec: {                                  \
+                    ogg_pec pix = {                                         \
+                        0,                                                  \
+                        ((ogg_component*)self)->pec.bottom,                 \
+                    };                                                      \
+                    pix = pec_add_coord(pix, coord(0, dy));                 \
+                    ((ogg_component*)self)->pec.bottom = pix.y;             \
+                } break;                                                \
+                case ogg_anchor_coord:                                  \
+                    ((ogg_component*)self)->coord.bottom += dy;         \
+                }                                                       \
+                is_on_anchor = ogg_true;                                \
+            }                                                           \
+        }                                                               \
+    }                                                                   \
     static void ogg_design_time_painter_##component_type##_(            \
         component_type* self, va_list args, ogg_handle_flag* handled)   \
     {                                                                   \
@@ -352,7 +499,7 @@
         }                                                               \
         ogg_com_ptr get_current_component();                            \
         if (self == get_current_component()) {                          \
-            /*draw_design_anchor(self);*/                                   \
+            /*draw_design_anchor(self);*/                               \
             ogg_anchor anchor;                                                      \
             get_component_real_pec_anchor(self, &anchor);                           \
             static const ogg_coord det[4] = {                                       \
@@ -387,6 +534,7 @@
             [OGG_EVENT_COUNT] = {                                       \
         [OGG_DESTROY_EVENT] = ogg_destructor(component_type),           \
         [OGG_PAINT_EVENT] = ogg_design_time_painter_##component_type##_,\
+        [OGG_MOUSE_DRAG_EVENT] = ogg_design_time_drag_handler_##component_type##_,\
     };                                                                  \
     /*static */ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT]= {\
         [OGG_DESTROY_EVENT] = ogg_destructor(component_type),           \

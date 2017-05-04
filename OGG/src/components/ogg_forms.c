@@ -6,7 +6,7 @@
 
 # define OGG_MAX_FORM_COUNT (65534U)
 
-static ogg_application *application;
+/*static */ogg_application *application;
 
 # define ogg_active_form()                             \
         (glutGetWindow() ? application->forms_lookup[glutGetWindow()] : 0)
@@ -110,6 +110,7 @@ def_constructor(ogg_application, ogg_true)
     self->current_component = 0;
     self->mouse_state = -1;
     self->is_dragging = 0;
+    self->last_drag_pc.x = self->last_drag_pc.y = 0;
 }
 
 def_destructor(ogg_application)

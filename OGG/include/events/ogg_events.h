@@ -135,12 +135,12 @@ typedef unsigned event;
    ) */
 # define OGG_MOUSE_DRAG_EVENT               /* mouse drag event */      (5)
 # define OGG_MOUSE_DRAG_EVENT_ARGS                                      \
-        int x, int y,
+        int dx, int dy,
 # define OGG_MOUSE_DRAG_EVENT_EXTRACT_ARGS                              \
-        int x = va_arg(args, int);                                      \
-        int y = va_arg(args, int);
+        int dx = va_arg(args, int);                                     \
+        int dy = va_arg(args, int);
 # define OGG_MOUSE_DRAG_EVENT_PASS_ARGS                                 \
-        x, y,
+        dx, dy,
 
 
 

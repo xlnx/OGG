@@ -38,7 +38,8 @@ static void ogg_default_handler(OGG_MOUSE_EVENT)(int button, int state, int x, i
 static void ogg_default_handler(OGG_MOUSE_DRAG_EVENT)(int x, int y)
 {
     application->is_top_level = ogg_true;
-    ogg_send_event(ogg_active_form(), OGG_MOUSE_DRAG_EVENT, x, y);
+    ogg_send_event(ogg_active_form(), OGG_MOUSE_DRAG_EVENT, 
+        x - application->last_drag_pc.x, y - application->last_drag_pc.y);
 }
 
 static void ogg_default_handler(OGG_MOUSE_MOVE_EVENT)(int x, int y)
@@ -127,6 +128,7 @@ static def_checker(OGG_MOUSE_DRAG_EVENT)
 {
     ogg_anchor anchor;
     get_component_real_coord_anchor(self, &anchor);
+    int x = application->last_drag_pc.x + dx, y = application->last_drag_pc.y + dy;
     if (x >= anchor.coord.left && x <= anchor.coord.right &&
             y >= anchor.coord.top && y <= anchor.coord.bottom)
     {
@@ -142,12 +144,15 @@ static def_checker(OGG_MOUSE_DRAG_EVENT)
         if (!application->is_dragging) {
             if (application->mouse_state == GLUT_DOWN) {
                 application->is_dragging = ogg_true;
+                application->last_drag_pc.x += x;
+                application->last_drag_pc.y += y;
                 ogg_send_event(self, OGG_MOUSE_DRAG_BEGIN_EVENT);
             }
         } else {
             if (application->mouse_state == GLUT_UP) {
                 application->is_dragging = ogg_false;
                 ogg_send_event(self, OGG_MOUSE_DRAG_END_EVENT);
+                application->last_drag_pc.x = application->last_drag_pc.y = 0;
             }
         }
         return ogg_true;

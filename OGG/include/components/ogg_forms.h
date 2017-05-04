@@ -46,6 +46,7 @@
         ogg_com_ptr focused_component;
         int mouse_state;
         ogg_bool is_dragging;
+        ogg_coord last_drag_pc;
     );
 
     //void ogg_init_application(ogg_application* self);
