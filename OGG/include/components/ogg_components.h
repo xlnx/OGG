@@ -343,15 +343,14 @@
 # ifdef DESIGN_TIME
 #  define def_vtable(component_type)                                    \
     /*static */ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT];  \
-    extern ogg_application *application;                                \
     static void ogg_design_time_drag_handler_##component_type##_(       \
         component_type *self, va_list args, ogg_handle_flag *handled)   \
     {                                                                   \
         ogg_anchor anchor;                                              \
         get_component_real_coord_anchor(self, &anchor);                 \
         OGG_MOUSE_DRAG_EVENT_EXTRACT_ARGS                               \
-        int x = application->last_drag_pc.x + dx,                       \
-            y = application->last_drag_pc.y + dy;                       \
+        int x = get_application()->last_drag_pc.x + dx,                       \
+            y = get_application()->last_drag_pc.y + dy;                       \
         ogg_bool is_on_anchor = ogg_false;                              \
         if (x <= anchor.coord.left + 3) {                               \
             if (y <= anchor.coord.top + 3) {/*top_left*/                \
@@ -808,4 +807,5 @@
     void ogg_destructor_##T##_helper__(T* self)
 
 #include "ogg_forms.h"
+
 #endif //OGG_GRAPHIC_COMPONENTS__HEADER_FILE_____

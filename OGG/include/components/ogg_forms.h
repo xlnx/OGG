@@ -64,6 +64,8 @@
     ogg_com_ptr get_current_component();
 
     void set_application(ogg_com_ptr app);
+    
+    ogg_application *get_application(void);
 
     void ogg_init_application(ogg_application* self);
 

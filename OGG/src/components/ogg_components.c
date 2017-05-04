@@ -1,10 +1,10 @@
 #include <GL/glut.h>
 #include "components/ogg_components.h"
 
-void ogg_static_constructor_ogg_component___(ogg_com_ptr com_ptr, const ogg_component_info* cominfo)
+void ogg_static_constructor_ogg_component___(ogg_component *com, const void* cominfo_ptr)
 {
-    set_component_anchor(com_ptr, &cominfo->anchor);
-    ogg_component* com = (ogg_component*)com_ptr;
+    const ogg_component_info *cominfo = (const ogg_component_info*)cominfo_ptr;
+    set_component_anchor(com, &cominfo->anchor);
     com->parent = cominfo->parent;
     com->sub = com->subrear = (ogg_subcomponent*)calloc(1, sizeof(ogg_subcomponent));
 # ifdef DEBUG
@@ -16,7 +16,7 @@ void ogg_static_constructor_ogg_component___(ogg_com_ptr com_ptr, const ogg_comp
         alloc_memory++;
 # endif
         com->parent->subrear = com->parent->subrear->next;
-        com->parent->subrear->object = com_ptr;
+        com->parent->subrear->object = com;
     }
 }
 
