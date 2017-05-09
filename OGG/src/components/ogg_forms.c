@@ -6,7 +6,7 @@
 
 # define OGG_MAX_FORM_COUNT (65534U)
 
-static ogg_application *application;
+ogg_application *application;
 
 # define ogg_active_form()                             \
         (glutGetWindow() ? application->forms_lookup[glutGetWindow()] : 0)
@@ -151,11 +151,6 @@ ogg_form* ogg_get_active_form()
 void set_application(ogg_com_ptr app)
 {
     application = app;
-}
-
-ogg_application *get_application(void)
-{
-    return application;
 }
 
 void ogg_init_application(ogg_application* self)

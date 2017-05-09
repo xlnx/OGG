@@ -21,7 +21,7 @@
  * deternines the alignment type of a particular component.
  * ----------------------------------------------------------------
  * value:
- *   $ ogg_anchor_pec:     align by percentage of parent component, 
+ *   $ ogg_anchor_pec:     align by percentage of parent component,
  *                         automatically resize when parent component
  *                         resizes and keep the percentage.
  *   $ ogg_anchor_coord:   align by pixel and will keep size.
@@ -40,7 +40,7 @@
  *   @ type:   ogg_anchor_type { ln 32 }
  *                         component alignment type, valued among { ogg_anchor_pec, ogg_anchor_coord }
  *   @ pec:    ogg_pec_anchor { ln 17 }
- *                         determine the percentage of owner component (relative to parent component), 
+ *                         determine the percentage of owner component (relative to parent component),
  *                         only valid when (type == ogg_anchor_pec).
  *   @ coord:  ogg_coord_anchor { ln 18 }
  *                         determine the pixel location of owner component (relative to parent component),
@@ -83,9 +83,9 @@
         struct ogg_component_ty* object;
         struct ogg_subcomponent_ty* next;
     } ogg_subcomponent;
-    
+
     typedef void (*ogg_event_handler)();
-    
+
 /*
  * struct ogg_component
  * base of all ogg components.
@@ -143,7 +143,7 @@
     /* coord utils */
     /* create percentage by two float params x, y */
     ogg_pec ogg_make_pec(float x, float y);
-	
+
     /* convert absolute coord position to pec position */
     ogg_pec coord2pec(ogg_coord p);
     /* convert absolute pec position to coord position */
@@ -269,7 +269,7 @@
  */
 //#  define default_startup(component_type)                               \
 //    default_startup_inh(component_type, ogg_component)
-    
+
 /* default info generate function */
 //#  define ogg_default(T)                                                \
 //    ogg_default_info_##T##___
@@ -343,14 +343,16 @@
 # ifdef DESIGN_TIME
 #  define def_vtable(component_type)                                    \
     /*static */ogg_event_handler component_type##_vtable[OGG_EVENT_COUNT];  \
+    extern ogg_application *application;                                \
     static void ogg_design_time_drag_handler_##component_type##_(       \
         component_type *self, va_list args, ogg_handle_flag *handled)   \
     {                                                                   \
+                    exit(0);\
         ogg_anchor anchor;                                              \
         get_component_real_coord_anchor(self, &anchor);                 \
         OGG_MOUSE_DRAG_EVENT_EXTRACT_ARGS                               \
-        int x = get_application()->last_drag_pc.x + dx,                       \
-            y = get_application()->last_drag_pc.y + dy;                       \
+        int x = application->last_drag_pc.x + dx,                       \
+            y = application->last_drag_pc.y + dy;                       \
         ogg_bool is_on_anchor = ogg_false;                              \
         if (x <= anchor.coord.left + 3) {                               \
             if (y <= anchor.coord.top + 3) {/*top_left*/                \
@@ -615,7 +617,7 @@
 
 /*
  * macro_function def_constructor(T, args_name)
- * define the constructor of component type T. args_name indicates the name of 
+ * define the constructor of component type T. args_name indicates the name of
  * the input T type startup ptr.
  * ----------------------------------------------------------------
  * usage:
