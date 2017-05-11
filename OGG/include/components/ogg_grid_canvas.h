@@ -12,10 +12,15 @@
     } ogg_paint_unit_rect;
 
     typedef struct {
+        ogg_coord size;
+        void *data;
+    } ogg_paint_unit_bitmap, ogg_bitmap;
+
+    typedef struct {
         ogg_paint_unit_type type;
         union {
             ogg_paint_unit_rect rect;
-            //ogg_paint_unit_bitmap bitmap;
+            ogg_paint_unit_bitmap bitmap;
         };
     } ogg_paint_unit;
 
@@ -33,6 +38,10 @@
     void resize_canvas(ogg_com_ptr canvas, ogg_coord size);
 
     void set_canvas_color(ogg_com_ptr canvas, ogg_coord pos, ogg_color color);
+
+    void set_canvas_bitmap(ogg_com_ptr canvas, ogg_coord pos, ogg_bitmap data);
+
+    ogg_bitmap load_bitmap(const char *fname);
 
     //void set_canvas_bitmap
 

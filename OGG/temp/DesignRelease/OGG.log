@@ -1,15 +1,8 @@
-﻿生成启动时间为 2017/5/4 14:34:44。
+﻿生成启动时间为 2017/5/10 12:12:38。
      1>项目“C:\Users\xlnx\Desktop\OGG\OGG\OGG.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\glew-1.11.0\include" /IC:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\freeglut\include /IC:\Users\xlnx\Desktop\OGG\OGG\include /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /Oy /GT /GL /D LIB_OGG__BUILDING /D DESIGN_TIME /D GLUT_DISABLE_ATEXIT_HACK /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignRelease\\" /Fd"C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignRelease\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt src\components\ogg_button.c src\components\ogg_components.c src\components\ogg_edit.c src\components\ogg_forms.c src\components\ogg_grid.c src\components\ogg_grid_canvas.c src\components\ogg_page_control.c src\components\ogg_shape.c
-         ogg_button.c
-         ogg_components.c
-         ogg_edit.c
-         ogg_forms.c
-         ogg_grid.c
+         D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\glew-1.11.0\include" /IC:\Users\xlnx\Desktop\OGG\OGG\dependency\freeglut\freeglut\include /IC:\Users\xlnx\Desktop\OGG\OGG\include /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /Oy /GT /GL /D LIB_OGG__BUILDING /D _CRT_SECURE_NO_WARNINGS /D DESIGN_TIME /D GLUT_DISABLE_ATEXIT_HACK /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignRelease\\" /Fd"C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignRelease\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt src\components\ogg_grid_canvas.c
          ogg_grid_canvas.c
-         ogg_page_control.c
-         ogg_shape.c
        Lib:
          D:\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\Users\xlnx\Desktop\OGG\OGG\bin\DesignRelease\OGG.lib" /NOLOGO /LTCG C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignRelease\ogg_button.obj
          C:\Users\xlnx\Desktop\OGG\OGG\temp\DesignRelease\ogg_components.obj
@@ -26,4 +19,4 @@
 
 生成成功。
 
-已用时间 00:00:02.70
+已用时间 00:00:00.80
