@@ -2,14 +2,19 @@
 # include "components/ogg_forms.h"
 # include <gl/freeglut.h>
 # define OGG_TIME_INTERVAL  (500)/* ms */
-# define OGG_TIMER_INDEX    (0)
+//# define OGG_TIMER_INDEX    (0)
 
 # define OGG_MAX_FORM_COUNT (65534U)
 
 ogg_application *application;
 
+jmp_buf *__exception_jmp_pos;
+int __exception_jmp_cnt, __exception_jmp_capacity;
+
 # define ogg_active_form()                             \
         (glutGetWindow() ? application->forms_lookup[glutGetWindow()] : 0)
+
+static int ogg_timer_lookup[100] = { OGG_TIME_INTERVAL };
 
 /* ogg_form */
 static const glut_register glut_form_event_register[OGG_EVENT_COUNT] = {
@@ -74,8 +79,14 @@ def_constructor(ogg_form, parent != 0)
     }
     self->color = args->info.color;
     //glut_events[OGG_TIMER_EVENT]
+    int timer_idx = 0;
     glutTimerFunc(OGG_TIME_INTERVAL,
-        (void(*)(int))glut_events[OGG_TIMER_EVENT], OGG_TIMER_INDEX);
+        (void(*)(int))glut_events[OGG_TIMER_EVENT], timer_idx++);
+    int idx = 0;
+    for (; idx < OGG_TIMER_MAXCOUNT && args->info.timer_interval[idx]; ++idx, ++timer_idx) {
+        glutTimerFunc(ogg_timer_lookup[timer_idx] = args->info.timer_interval[idx],
+            (void(*)(int))glut_events[OGG_TIMER_EVENT], timer_idx);
+    }
     self->position = args->info.position;
     self->title = args->info.title;
     application->current_component = self;
@@ -155,6 +166,7 @@ void set_application(ogg_com_ptr app)
 
 void ogg_init_application(ogg_application* self)
 {
+    ogg_initialize_exception();
     glutInit(self->argc, self->argv);
     glutInitDisplayMode(self->display_mode);
 }
@@ -162,6 +174,7 @@ void ogg_init_application(ogg_application* self)
 void ogg_terminate_application(ogg_application* self)
 {
     ogg_destroy(self);
+    ogg_finalize_exception();
     exit(0);
 }
 
@@ -170,6 +183,7 @@ void ogg_run_application(ogg_application* self)
     //current_component = ogg_active_form();
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
     glutMainLoop();
+    ogg_terminate_application(self);
 }
 
 void ogg_terminate()

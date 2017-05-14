@@ -181,6 +181,7 @@
     <ClCompile Include="src\components\ogg_page_control.c" />
     <ClCompile Include="src\components\ogg_shape.c" />
     <ClCompile Include="src\utils\ogg_event.c" />
+    <ClCompile Include="src\utils\ogg_exception.c" />
     <ClCompile Include="src\utils\ogg_utils.c" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +197,7 @@
     <ClInclude Include="include\events\ogg_events.h" />
     <ClInclude Include="include\ogg.h" />
     <ClInclude Include="include\utils\geometry.h" />
+    <ClInclude Include="include\utils\ogg_exception.h" />
     <ClInclude Include="include\utils\ogg_utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

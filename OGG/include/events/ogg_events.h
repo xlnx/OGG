@@ -268,11 +268,11 @@ typedef unsigned event;
    ) */
 # define OGG_TIMER_EVENT                    /* on timer */              (16)
 # define OGG_TIMER_EVENT_ARGS                                           \
-        /* no args */
+        int timer_id,
 # define OGG_TIMER_EVENT_EXTRACT_ARGS                                   \
-        /* no args */
+        int timer_id = va_arg(args, int);
 # define OGG_TIMER_EVENT_PASS_ARGS                                      \
-        /* no args */
+        timer_id,
 
 
 

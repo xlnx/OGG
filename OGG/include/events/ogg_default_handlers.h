@@ -56,8 +56,8 @@ static void ogg_default_handler(OGG_MOUSE_ENTRY_EVENT)(int state)
 
 static void ogg_default_handler(OGG_TIMER_EVENT)(int value)
 {
-    ogg_send_event(ogg_active_form(), OGG_TIMER_EVENT);
-    glutTimerFunc(OGG_TIME_INTERVAL, ogg_default_handler(OGG_TIMER_EVENT), value);
+    ogg_send_event(ogg_active_form(), OGG_TIMER_EVENT, value);
+    glutTimerFunc(ogg_timer_lookup[value], ogg_default_handler(OGG_TIMER_EVENT), value);
 }
 
 static void ogg_default_handler(OGG_RESHAPE_EVENT)(int width, int height)
@@ -193,10 +193,10 @@ static def_checker(OGG_MOUSE_ENTRY_EVENT)
     return ogg_true;
 }
 
-static def_checker(OGG_TIMER_EVENT)
-{
-    return is_child_of(application->current_component, self);
-}
+//static def_checker(OGG_TIMER_EVENT)
+//{
+    //return is_child_of(application->current_component, self);
+//}
 
 ogg_bool (*const event_checker[OGG_EVENT_COUNT])(ogg_component*, va_list) = {
     [OGG_DESTROY_EVENT] = ogg_checker(OGG_DESTROY_EVENT),
@@ -215,7 +215,8 @@ ogg_bool (*const event_checker[OGG_EVENT_COUNT])(ogg_component*, va_list) = {
     [OGG_MOUSE_DRAG_BEGIN_EVENT] = 0,
     [OGG_MOUSE_DRAG_END_EVENT] = 0,
     [OGG_FOCUS_EVENT] = 0,
-    [OGG_TIMER_EVENT] = ogg_checker(OGG_TIMER_EVENT),
+    [OGG_TIMER_EVENT] = 0,
+    //[OGG_TIMER_EVENT] = ogg_checker(OGG_TIMER_EVENT),
     [OGG_LOSE_FOCUS_EVENT] = 0,
     [OGG_CREATE_SUB_COMPONENT_EVENT] = 0,
     [OGG_DESTROY_SUB_COMPONENT_EVENT] = 0,

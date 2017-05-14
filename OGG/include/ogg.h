@@ -14,6 +14,8 @@ extern "C" {
 #  include "components/ogg_grid_canvas.h"
 #  include "components/ogg_page_control.h"
 
+#  include "utils/ogg_exception.h"
+
 #  include <../dependency/freeglut/freeglut/include/GL/freeglut.h>
 
 #ifndef LIB_OGG__BUILDING

@@ -1,6 +1,7 @@
 #ifndef OGG_GRAPHIC_UTILS__HEADER_FILE______
 #define OGG_GRAPHIC_UTILS__HEADER_FILE______
 #include "geometry.h"
+#include "ogg_exception.h"
 #include <string.h>
 #include <stdlib.h>
 

@@ -153,8 +153,10 @@ def_handler(ogg_edit, OGG_KEYBOARD_EVENT)
 
 def_handler(ogg_edit, OGG_TIMER_EVENT)
 {
-    self->caret_visible = !self->caret_visible;
-    paint_caret(self);
+    if (!timer_id) {
+        self->caret_visible = !self->caret_visible;
+        paint_caret(self);
+    }
 }
 
 def_handler(ogg_edit, OGG_SPECIAL_KEY_EVENT)

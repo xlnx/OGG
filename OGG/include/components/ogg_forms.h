@@ -2,6 +2,8 @@
 #define OGG_GRAPHIC_STARUP__HEADER_FILE____
 #include "components/ogg_components.h"
 
+#define OGG_TIMER_MAXCOUNT      (50)
+
     typedef unsigned int ogg_display_mode;
 
     typedef void(*glut_callback)();
@@ -16,6 +18,7 @@
         ogg_form_position position;
         const char *title;
         ogg_color color;
+        unsigned timer_interval[OGG_TIMER_MAXCOUNT];
     } form_info;
 
     def_startup(ogg_form)(
