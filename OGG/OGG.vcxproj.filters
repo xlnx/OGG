@@ -63,6 +63,9 @@
     <ClCompile Include="src\utils\ogg_exception.c">
       <Filter>源文件\utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\utils\ogg_painter.c">
+      <Filter>源文件\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\events\ogg_default_handlers.h">
@@ -105,6 +108,9 @@
       <Filter>头文件\components</Filter>
     </ClInclude>
     <ClInclude Include="include\utils\ogg_exception.h">
+      <Filter>头文件\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\ogg_painter.h">
       <Filter>头文件\utils</Filter>
     </ClInclude>
   </ItemGroup>

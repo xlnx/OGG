@@ -25,9 +25,28 @@ typedef struct {\
             T left, top, right, bottom;\
         };\
     };\
-} rect##id;
+} rect##id;\
+\
+point##id make_point##id(T x, T y);\
+point##id rev_point##id(point##id p);\
+point##id add_point##id(point##id lhs, point##id rhs);\
+point##id sub_point##id(point##id lhs, point##id rhs);\
+point##id mul_point##id(point##id lhs, T rhs);\
+point##id div_point##id(point##id lhs, T rhs);\
+double norm##id(point##id v);\
+T inner_product##id(point##id lhs, point##id rhs);\
+T outer_product##id(point##id lhs, point##id rhs);\
+double angle##id(point##id lhs, point##id rhs);
 
 #define inst_geometry_system(T, id) /* inst a geometry system */\
+point##id make_point##id(T x, T y) {\
+    point##id result = { x, y };\
+    return result;\
+}\
+point##id rev_point##id(point##id p) {\
+    p.x = -p.x; p.y = -p.y;\
+    return p;\
+}\
 point##id add_point##id(point##id lhs, point##id rhs) {\
     lhs.x += rhs.x; lhs.y += rhs.y;\
     return lhs;\
